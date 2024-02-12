@@ -932,7 +932,7 @@
 		},
 		"armour":
 		{
-			"templates": ["object", "description, enchanted", "grants-spellcasting"],
+			"templates": ["object", "description", "enchanted", "grants-spellcasting"],
 			"armourCoverage": "Partial",
 			"damageReduction": 0,
 			"armourCheckPenalty": 0,

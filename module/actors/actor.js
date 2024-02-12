@@ -75,6 +75,7 @@ export default class ActorFC extends Actor {
       if (data.castingLevel > 0)
         this._prepareCasting(actorData);
 
+      this._calculateDamageReduction(actorData);
       this._compileResistances(actorData);
       this._getTrickUses(actorData);
 
@@ -513,6 +514,22 @@ export default class ActorFC extends Actor {
       return guard
     }
 
+    _calculateDamageReduction(actorData)
+    {
+        let dr = 0;
+        const armour = this.items.find(item => (item.type == "armour" && item.system.equipped == true))
+        if (armour != null)
+        {
+            dr += armour.system.damageReduction;
+        }
+
+        console.log(`DR is now ${dr}`);
+
+        let magic = this._calculateEssenceBonus("damageReduction");
+        dr += magic;
+        this.system.dr = dr;
+    }
+
     _prepareAttack(actorData)
     {
         //total = BAB + ability + misc + magic
@@ -709,7 +726,11 @@ export default class ActorFC extends Actor {
       {
         greaterBonus = 3;
         lesserBonus = 1;
-      } 
+      }
+      else if (type == "damageReduction")
+      {
+          greaterBonus = 2;   // Only available in Greater form
+      }
 
       for (let item of magicItems)
       {
@@ -1183,7 +1204,7 @@ export default class ActorFC extends Actor {
       }
 
       //get resistances from items(armour and magic items)
-      let items = actor.items.filter(function(item) {return item.type == "armour" || item.type == "general" || item.type == "weapon"})
+      let items = actor.items.filter(function(item) {return (item.type == "armour" && item.system.equipped) || item.type == "general" || (item.type == "weapon" && item.system.readied) })
       for (let [key, item] of Object.entries(items))
       {
         if (item.type == "armour")
@@ -1688,7 +1709,7 @@ export default class ActorFC extends Actor {
       }
 
         //if a character has heartseeker then there attack bonus is equal to their career level
-      if ((target[0]?.document._actor.system?.type == "special" || target[0]?.document._actor.type == "character") && this.items.find(item => item.type == "feature" && item.name == game.i18n.localize("fantasycraft.heartseeker")))
+      if (( target[0]?.document.actor.type == "character" ||  target[0]?.document.actor.system?.type == "special") && this.items.find(item => item.type == "feature" && item.name == game.i18n.localize("fantasycraft.heartseeker")))
       {
         attackBonus = actor.careerLevel.value;
       }
@@ -2238,11 +2259,7 @@ export default class ActorFC extends Actor {
       if (this.effects.find(e => e.flags?.core?.statusId === 'unconscious') && options.damageType == "subdual") 
         options.damageType = "lethal";
 
-        let dr = this.system.dr;
-        const armour = this.items.find(item => (item.type == "armour" && item.system.equipped == true))
-      if (armour != null)
-        dr += armour.system.damageReduction;
-
+      let dr = this.system.dr;
       dr = (dr - options.ap < 0) ? 0 : dr - options.ap;
 
 

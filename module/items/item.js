@@ -131,7 +131,10 @@ export default class ItemFC extends Item {
         essenceCost = (essenceInfo.greater) ? 10 : 6;
       }
       else if (essenceInfo.ability == "damageResistance")
-        essenceCost = 8;
+      {
+        essenceInfo.canBeGreater = true;
+        essenceCost = (essenceInfo.greater) ? 15 : 8;
+      }
       else if (essenceInfo.ability == "edgeSurge")
       {  
         essenceInfo.canBeGreater = true;
@@ -163,14 +166,30 @@ export default class ItemFC extends Item {
         essenceCost = (essenceInfo.greater) ? 20 : 10;
       }
       else if (essenceInfo.ability == "damageReduction")
+      {
+        essenceInfo.mustBeGreater = true;
         essenceCost = 15;
+      }
       else if (essenceInfo.ability == "feat" || essenceInfo.ability == "castingLevel" || essenceInfo.ability == "classAbility")
+      {
+        essenceInfo.mustBeGreater = true;
         essenceCost = 20;
+      }
       else if (essenceInfo.ability == "classEnhancement")
+      {
+        essenceInfo.mustBeGreater = true;
         essenceCost = 25;
+      }
       
       totalRepCost += essenceCost;
-      essenceInfo.greater = (essenceInfo.canBeGreater) ? essenceInfo.greater : false;
+      if(essenceInfo.mustBeGreater)
+      {
+        essenceInfo.greater = true;
+      }
+      else
+      {
+        essenceInfo.greater = (essenceInfo.canBeGreater) ? essenceInfo.greater : false;
+      }
     }
 
 

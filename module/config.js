@@ -893,7 +893,7 @@ fantasycraft.attackType =
 }
 fantasycraft.numericWeaponProperties = 
 {
-	armourPiercing: "fantasycraft.ap",
+	//armourPiercing: "fantasycraft.ap",
 	ap: "fantasycraft.ap",
 	blast: "fantasycraft.blast",
 	guard: "fantasycraft.guard",
