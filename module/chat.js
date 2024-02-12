@@ -318,7 +318,7 @@ function setUpAttackData(attackRoll, attacker, item, threat, qualities, ammo=nul
     d['qualities'] = qualities;
     d['threat'] = (attackRoll.dice[0].results[0].result >= threat) ? true : false;
     d['error'] = (attackRoll.dice[0].results[0].result <= item.system.errorRange || attackRoll.total < 0) ? true : false;
-    d['target'] = (Utils.getTargets().length > 0) ? Utils.getTargets()[0].document._actor._id : "";
+    d['target'] = (Utils.getTargets().length > 0) ? Utils.getTargets()[0].document.actor._id : "";
     d['ammo'] = (!!ammo) ? ammo._id : null;
     d['attackType'] = item.system.attackType;
     if (item.system?.attackType == "extraSave") d['saveType'] = game.i18n.localize(CONFIG.fantasycraft.extraordinarySaveDescription[item.system.attackDescription])

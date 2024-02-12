@@ -234,6 +234,7 @@
 			"spell-casting":
 			{
 				"castingLevel": 0,
+				"isSpellcaster": false,
 				"isArcane": false,
 				"isDivine": false,
 				"spellSave": 0,
@@ -872,11 +873,15 @@
 						"spellLevel": 0
 					}
 				}
+			},
+			"grants-spellcasting":
+			{
+				"castingLevel": false
 			}
 		},
 		"ancestry":
 		{
-			"templates": ["description"],
+			"templates": ["description", "grants-spellcasting"],
 			"isTalent": false,
 			"stats": {
 				"stat1":
@@ -927,7 +932,7 @@
 		},
 		"armour":
 		{
-			"templates": ["object", "description, enchanted"],
+			"templates": ["object", "description", "enchanted", "grants-spellcasting"],
 			"armourCoverage": "Partial",
 			"damageReduction": 0,
 			"armourCheckPenalty": 0,
@@ -998,7 +1003,7 @@
 		},
 		"weapon":
 		{
-			"templates": ["object", "description", "enchanted"],
+			"templates": ["object", "description", "enchanted", "grants-spellcasting"],
 			"weaponProficiency": "Edged",
 			"weaponCategory": "axe",
 			"damage": "1d6",
@@ -1048,7 +1053,7 @@
 		},
 		"general":
 		{
-			"templates": ["object", "description", "enchanted"],
+			"templates": ["object", "description", "enchanted", "grants-spellcasting"],
 			"itemType": "good",
 			"availability": 0,
 			"speed": 
@@ -1116,7 +1121,7 @@
  		},
 		"class":
 		{
-			"templates": ["description"],
+			"templates": ["description", "grants-spellcasting"],
 			"levels": 1,
 			"vitality": 9,
 			"skillPoints": 6,
@@ -1136,7 +1141,6 @@
 			"lifeStyle": [],
 			"legend": [],
 			"spellPoints": [],
-			"castingLevel": false,
 			"abilities": "",
 			"classTable": ""
 		},
@@ -1172,7 +1176,7 @@
 		},
 		"feat":
 		{
-			"templates": ["description"],
+			"templates": ["description", "grants-spellcasting"],
 			"featType": "Basic Combat",
 			"flavorText": "",
 			"prerequisites": "",
@@ -1234,7 +1238,7 @@
 		},
 		"path":
 		{
-			"templates": ["description"],
+			"templates": ["description", "grants-spellcasting"],
 			"pathStep": 0,
 			"step1":
 			{
@@ -1304,7 +1308,7 @@
 		},
 		"spell":
 		{
-			"templates": ["description"],
+			"templates": ["description", "grants-spellcasting"],
 			"school:": "none",
 			"discipline": "none",
 			"level": 0,
@@ -1369,13 +1373,13 @@
 		},
 		"specialty":
 		{
-			"templates": ["description"],
+			"templates": ["description", "grants-spellcasting"],
 			"feat": "none",
 			"requirement": "none"
 		},
 		"stance":
 		{
-			"templates": ["description"],
+			"templates": ["description", "grants-spellcasting"],
 			"inStance": false,
 			"effect1": 
 			{
@@ -1392,7 +1396,7 @@
 		},
 		"trick":
 		{
-			"templates": ["description"],
+			"templates": ["description", "grants-spellcasting"],
 			"effect": 
 			{
 				"rollModifier": 0,

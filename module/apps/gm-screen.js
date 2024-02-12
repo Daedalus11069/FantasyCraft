@@ -162,8 +162,8 @@ function awardAD(event)
 
     for (let target of Object.entries(targets))
     {
-        characterList = (target[0] == 0) ? characterList + target[1].document._actor.name : characterList + ", " + target[1].document._actor.name ;
-        target = target[1].document._actor;
+        characterList = (target[0] == 0) ? characterList + target[1].document.actor.name : characterList + ", " + target[1].document.actor.name ;
+        target = target[1].document.actor;
         if (target.type == "character")
         {
             let updateString = "system.actionDice"

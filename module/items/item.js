@@ -51,8 +51,9 @@ export default class ItemFC extends Item {
       this.charms = [data.charms.charm1, data.charms.charm2,
         data.charms.charm3, data.charms.charm4]
       
-      this._calculateMagicItemReputationCost(itemData)
+      this._calculateMagicItemReputationCost(itemData);
 
+      this._calculateCharmCastingLevel(itemData);
 
       for (let i = itemData.system.charms.charmNumber+1; i <= 4; i++)
       {
@@ -130,7 +131,10 @@ export default class ItemFC extends Item {
         essenceCost = (essenceInfo.greater) ? 10 : 6;
       }
       else if (essenceInfo.ability == "damageResistance")
-        essenceCost = 8;
+      {
+        essenceInfo.canBeGreater = true;
+        essenceCost = (essenceInfo.greater) ? 15 : 8;
+      }
       else if (essenceInfo.ability == "edgeSurge")
       {  
         essenceInfo.canBeGreater = true;
@@ -162,14 +166,30 @@ export default class ItemFC extends Item {
         essenceCost = (essenceInfo.greater) ? 20 : 10;
       }
       else if (essenceInfo.ability == "damageReduction")
+      {
+        essenceInfo.mustBeGreater = true;
         essenceCost = 15;
+      }
       else if (essenceInfo.ability == "feat" || essenceInfo.ability == "castingLevel" || essenceInfo.ability == "classAbility")
+      {
+        essenceInfo.mustBeGreater = true;
         essenceCost = 20;
+      }
       else if (essenceInfo.ability == "classEnhancement")
+      {
+        essenceInfo.mustBeGreater = true;
         essenceCost = 25;
+      }
       
       totalRepCost += essenceCost;
-      essenceInfo.greater = (essenceInfo.canBeGreater) ? essenceInfo.greater : false;
+      if(essenceInfo.mustBeGreater)
+      {
+        essenceInfo.greater = true;
+      }
+      else
+      {
+        essenceInfo.greater = (essenceInfo.canBeGreater) ? essenceInfo.greater : false;
+      }
     }
 
 
@@ -179,6 +199,18 @@ export default class ItemFC extends Item {
       totalRepCost -= repDiscount;
 
     itemData.system.totalReputation = totalRepCost;
+  }
+
+  _calculateCharmCastingLevel(itemData)
+  {
+    for (let i = 1; i <= itemData.system.charms.charmNumber; i++)
+    {
+      let charmNum = "charm" + i;
+      let charmInfo = itemData.system.charms[charmNum];
+
+      if (charmInfo.ability == "spellEffect")
+        itemData.system.castingLevel = itemData.system.itemLevel;
+    }
   }
 
   _separateSpellTerms(terms) 

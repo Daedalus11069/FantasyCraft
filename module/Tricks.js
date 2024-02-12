@@ -22,7 +22,7 @@ export function determinePreRollTrickEffect(trick, actor, rollInfo, rollFormula,
     }
 
     //If the roll has an attack roll bonus and a condition, add the attack roll bonus only if the condition is met.
-    if (trick.system.effect.rollModifier && (checkConditions(trick, target[0]?.document._actor, 0, actor) || trick.system.effect.condition == ""))
+    if (trick.system.effect.rollModifier && (checkConditions(trick, target[0]?.document.actor, 0, actor) || trick.system.effect.condition == ""))
         //Tricks that affect the attack roll by either a flat roll modifier or replacing the roll with a different kind.
         rollFormula += Utils.returnPlusOrMinusString(trick.system.effect.rollModifier);
 
@@ -66,7 +66,7 @@ export function determinePostRollTrickEffect(trick, actor, item, target, attackR
     //If the attack is using a trick that instantly causes a failed damage save, see if the target auto-fails a save.
     if (target != null)
     {
-        if (!checkConditions(trick, target[0]?.document._actor, attackRoll, actor))
+        if (!checkConditions(trick, target[0]?.document.actor, attackRoll, actor))
             return null;
 
         if (trick.system.effect.additionalEffect == "failDamageSave") autoFailSaveCheck(attackRoll, target, trick.system, item, actor);
@@ -124,7 +124,7 @@ export function autoFailSaveCheck(attackRoll, targets, trick, item, actor)
 {
   for (let [k, v] of Object.entries(targets))
   {
-    let t = v.document._actor;
+    let t = v.document.actor;
     if (t.type != "npc") continue;
 
     let autoFailCheck = trick.effect.secondaryCheck;

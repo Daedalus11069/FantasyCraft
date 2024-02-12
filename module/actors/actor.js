@@ -70,10 +70,12 @@ export default class ActorFC extends Actor {
       this._prepareSaves(actorData);
       this._calculateWounds(actorData);
       this._linkAttacks(actorData);
-      
+      this._prepareCastingFromItems(actorData);
+
       if (data.castingLevel > 0)
         this._prepareCasting(actorData);
 
+      this._calculateDamageReduction(actorData);
       this._compileResistances(actorData);
       this._getTrickUses(actorData);
 
@@ -512,6 +514,22 @@ export default class ActorFC extends Actor {
       return guard
     }
 
+    _calculateDamageReduction(actorData)
+    {
+        let dr = 0;
+        const armour = this.items.find(item => (item.type == "armour" && item.system.equipped == true))
+        if (armour != null)
+        {
+            dr += armour.system.damageReduction;
+        }
+
+        console.log(`DR is now ${dr}`);
+
+        let magic = this._calculateEssenceBonus("damageReduction");
+        dr += magic;
+        this.system.dr = dr;
+    }
+
     _prepareAttack(actorData)
     {
         //total = BAB + ability + misc + magic
@@ -708,7 +726,11 @@ export default class ActorFC extends Actor {
       {
         greaterBonus = 3;
         lesserBonus = 1;
-      } 
+      }
+      else if (type == "damageReduction")
+      {
+          greaterBonus = 2;   // Only available in Greater form
+      }
 
       for (let item of magicItems)
       {
@@ -844,7 +866,7 @@ export default class ActorFC extends Actor {
     {
       const char = actorData.system;
       let castingFeats = [];
-      
+
       //Go through all feats and add any spellcasting feats to the castingFeats array
       for ( let [l, f] of Object.entries(this.itemTypes.feat || {}) ) 
       {
@@ -856,7 +878,6 @@ export default class ActorFC extends Actor {
 
       //Characters spellsave equals number of spellcasting feats plus Charisa modifier.
       char.spellSave = 10 + char.abilityScores.charisma.mod + char.castingFeats;
-
 
       if (char.isArcane)
       {
@@ -883,6 +904,28 @@ export default class ActorFC extends Actor {
         char.arcane.spellPointMax = (this.getFlag("fantasycraft", "Spell Power")) ? classSpellPoints + char.startingActionDice + magicBonus : classSpellPoints + magicBonus
 
       }
+    }
+
+    _prepareCastingFromItems(actorData)
+    {
+        const char = actorData.system;
+
+        // Get information from every item on the character that has a castingLevel
+        let items = actorData.items.filter(function(item) {return item.system.castingLevel})
+        // Drop weapons and armor that are not equipped
+        items = items.filter(item => ((item.type != "weapon" && item.type != "armour") || item.system.readied || item.system.equipped) )
+        if(items.length > 0)
+        {
+            // Only set the casting level if we don't already have a class that gives us casting levels
+            if(items.filter(function(item) {return item.system.type === 'class'}).length === 0)
+            {
+                char.castingLevel = 1;
+            }
+        }
+        else
+        {
+            char.castingLevel = 0;
+        }
     }
 
     _prepareLifeStyle()
@@ -1161,7 +1204,7 @@ export default class ActorFC extends Actor {
       }
 
       //get resistances from items(armour and magic items)
-      let items = actor.items.filter(function(item) {return item.type == "armour" || item.type == "general" || item.type == "weapon"})
+      let items = actor.items.filter(function(item) {return (item.type == "armour" && item.system.equipped) || item.type == "general" || (item.type == "weapon" && item.system.readied) })
       for (let [key, item] of Object.entries(items))
       {
         if (item.type == "armour")
@@ -1665,8 +1708,8 @@ export default class ActorFC extends Actor {
           mastersTouchII = true
       }
 
-        //if a character has heartseeker then their attack bonus is equal to their career level
-      if ((target[0]?.document._actor.system?.type == "special" || target[0]?.document._actor.type == "character") && this.items.find(item => item.type == "feature" && item.name == game.i18n.localize("fantasycraft.heartseeker")))
+        //if a character has heartseeker then there attack bonus is equal to their career level
+      if (( target[0]?.document.actor.type == "character" ||  target[0]?.document.actor.system?.type == "special") && this.items.find(item => item.type == "feature" && item.name == game.i18n.localize("fantasycraft.heartseeker")))
       {
         attackBonus = actor.careerLevel.value;
       }
@@ -2216,11 +2259,7 @@ export default class ActorFC extends Actor {
       if (this.effects.find(e => e.flags?.core?.statusId === 'unconscious') && options.damageType == "subdual") 
         options.damageType = "lethal";
 
-        let dr = this.system.dr;
-        const armour = this.items.find(item => (item.type == "armour" && item.system.equipped == true))
-      if (armour != null)
-        dr += armour.system.damageReduction;
-
+      let dr = this.system.dr;
       dr = (dr - options.ap < 0) ? 0 : dr - options.ap;
 
 
@@ -2258,10 +2297,8 @@ export default class ActorFC extends Actor {
             vitality.value = 0
           }
 
-          //Health not updating when gaining the unconcious or dead condidtion caused by the system essentially just forgetting that it needed to do this during the async process. added await.
-          await this.update({"system.vitality.value": vitality.value});
-          await this.update({"system.wounds.value": wounds.value});
-
+          this.system.vitality.value = vitality.value;
+          this.system.wounds.value = wounds.value;
 
           if (this.system.wounds.value <= -10)
           {

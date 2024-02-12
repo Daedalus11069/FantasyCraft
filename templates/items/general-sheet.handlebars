@@ -1,21 +1,28 @@
 <form class="{{cssClass}} item-form flexcol" autocomplete="off">
 
     {{!-- Item Sheet Header --}}
-    <header class="itemHeader">
-        <h1 class="itemName flexrow">
-            <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.ItemName' }}"/>
-        </h1>
-        <section>
-            <input type="text" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.source' }}"/>
-        </section>
-        {{!-- Item Sheet Navigation --}}
-        <nav class="sheet-navigation sheet-tabs" data-group="primary">
-            <a class="item active" data-tab="description">{{ localize "fantasycraft.description" }}</a>
-            <a class="item" data-tab="details">{{ localize "fantasycraft.details" }}</a>
-            {{#if item.system.isMagic}}
-                <a class="item" data-tab="effects">{{ localize "fantasycraft.magic" }}</a>
-            {{/if}}
-        </nav>
+    <header class="sheet-header flexrow">
+        <img class="profile-left" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+
+        <div class="header-details flexcol">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
+            </h1>
+
+            <ul class="summary flexrow">
+                <li>
+                    <input type="text" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.Source' }}"/>
+                </li>
+            </ul>
+            {{!-- Item Sheet Navigation --}}
+            <nav class="sheet-navigation sheet-tabs" data-group="primary">
+                <a class="item active" data-tab="description">{{ localize "fantasycraft.description" }}</a>
+                <a class="item" data-tab="details">{{ localize "fantasycraft.details" }}</a>
+                {{#if item.system.isMagic}}
+                    <a class="item" data-tab="effects">{{ localize "fantasycraft.magic" }}</a>
+                {{/if}}
+            </nav>
+        </div>
     </header>
 
     <section>
