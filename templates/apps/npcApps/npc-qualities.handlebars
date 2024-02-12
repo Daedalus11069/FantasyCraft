@@ -13,7 +13,7 @@
                     {{ability.system.number}}
                 {{/compare}}
                 </span>
-                <span>
+                <span style="text-align: right;">
                     <a class="editItem">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -31,7 +31,7 @@
         {{#each feats as |feat id|}}
             <div class="item ownedItem item-card flexrow" data-item-id="{{_id}}" data-item-name="{{feat.name}}">
                 <span class="flex5">{{feat.name}}</span>
-                <span>
+                <span style="text-align: right;">
                     <a class="editItem">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -59,7 +59,7 @@
                     {{/select}}
                 </select>
 
-                <span>
+                <span style="text-align: right;">
                     <a class="editItem">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -77,7 +77,7 @@
         {{#each tricks as |trick id|}}
             <div class="item ownedItem item-card flexrow" data-item-id="{{_id}}" data-item-name="{{trick.name}}">
                 <span class="flex5">{{trick.name}}</span>
-                <span>
+                <span style="text-align: right;">
                     <a class="editItem">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -101,7 +101,22 @@
                     {{quality.system.number}}
                 {{/compare}}
                 </span>
-                <span>
+                
+                {{#compare system.xpMultiplier "points" operator="=="}}
+                    <input style="height: 18px;" class="changeGrade" type="number" name="number" value="{{system.number}}" />
+                {{/compare}}
+
+                {{#compare system.xpMultiplier "grades" operator="=="}}
+                <select style="height: 18px;" class="changeGrade" name="grades.value">
+                    {{#select quality.system.grades.value}}
+                        {{#each quality.system.grades.gradeArray as |grade index|}}
+                        <option value="{{grade}}">{{grade}}</option>
+                        {{/each}}
+                    {{/select}}
+                </select>
+                {{/compare}}
+
+                <span style="text-align: right;">
                     <a class="editItem">
                         <i class="fas fa-edit"></i>
                     </a>

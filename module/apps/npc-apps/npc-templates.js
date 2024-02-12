@@ -1,3 +1,5 @@
+import * as Utils from '../../Utils.js';
+
 export default class TemplateSelector extends Application   {
     constructor(actor, options, ...args)
     {
@@ -326,10 +328,10 @@ export default class TemplateSelector extends Application   {
 
     async changeGrade(trait, value)
     {
-        let newGrade = this.numeralConverter(this.actor.system.traits[trait].grade) + value;
+        let newGrade = Utils.numeralConverter(this.actor.system.traits[trait].grade) + value;
         if (newGrade > 10) newGrade = 10;
         if (newGrade < 1) newGrade = 1;
-        newGrade = this.numberToNumeralConverter(newGrade);
+        newGrade = Utils.numberToNumeralConverter(newGrade);
 
         let gradeString = "system.traits." + trait + ".grade"
         await this.actor.update({[gradeString]: newGrade})
@@ -344,7 +346,7 @@ export default class TemplateSelector extends Application   {
         if (existingFeature != null)
         {
             //if the new version has a higher grade/point value/new entries add those to the existing feature before returning, otherwise just return
-            if (grade != "" && this.numeralConverter(grade) > this.numeralConverter(existingFeature.system.grades.value))
+            if (grade != "" && Utils.numeralConverter(grade) > Utils.numeralConverter(existingFeature.system.grades.value))
             {
                 let newGrade = "system.grades.value"
                 existingFeature.update({[newGrade]: grade});
@@ -393,7 +395,7 @@ export default class TemplateSelector extends Application   {
         {
             if (v.skillName == skill)
             {
-                if (this.numeralConverter(v.skillGrade) >= this.numeralConverter(grade))
+                if (Utils.numeralConverter(v.skillGrade) >= Utils.numeralConverter(grade))
                     return;
                 else 
                 {
@@ -449,47 +451,17 @@ export default class TemplateSelector extends Application   {
 
         for (let attack of naturalAttacks)
         {
-            let newGrade = this.numeralConverter(attack.system.attackGrade);
+            let newGrade = Utils.numeralConverter(attack.system.attackGrade);
             newGrade = newGrade + number;
             if (newGrade > 10) newGrade = 10;
             else if (newGrade < 1) newGrade = 1;
-            newGrade = this.numberToNumeralConverter(newGrade);
+            newGrade = Utils.numberToNumeralConverter(newGrade);
             let attackString = "system.attackGrade";
             await attack.update({[attackString]: newGrade});
         }
     }
 
     //Utility Functions
-
-    numeralConverter(grade)
-    {
-        if (grade == "I") return 1;
-        else if (grade == "II") return 2;
-        else if (grade == "III") return 3;
-        else if (grade == "IV") return 4;
-        else if (grade == "V") return 5;
-        else if (grade == "VI") return 6;
-        else if (grade == "VII") return 7;
-        else if (grade == "VIII") return 8;
-        else if (grade == "IX") return 9;
-        else if (grade == "X") return 10;
-        else return 0
-    }
-
-    numberToNumeralConverter(number)
-    {
-        if (number == 1) return "I";
-        else if (number == 2) return "II";
-        else if (number == 3) return "III";
-        else if (number == 4) return "IV";
-        else if (number == 5) return "V";
-        else if (number == 6) return "VI";
-        else if (number == 7) return "VII";
-        else if (number == 8) return "VIII";
-        else if (number == 9) return "IX";
-        else if (number == 10) return "X";
-        else return ""
-    }
 
     sizeToNumber(size)
     {

@@ -118,9 +118,9 @@
                 {{/each}}
                 </section>
             </div>
-            <div style="border-left: 1px groove lightgray">
-                {{localize "fantasycraft.Dialog.totalWeight"}}: {{actor.system.totalWeight}} {{localize "fantasycraft.lbs"}}
-                <b>{{localize "fantasycraft.carryingCapacity"}}</b> <i>{{localize "fantasycraft.light"}}:</i> {{actor.system.carryingCapacity.light}} <i>{{localize "fantasycraft.heavy"}}: </i>{{actor.system.carryingCapacity.heavy}}  <i>{{localize "fantasycraft.overloaded"}}: </i>{{actor.system.carryingCapacity.overloaded}}+
+            <div class="flexrow" style="align-contents: center; justify-contents: space-between; border-left: 1px groove lightgray">
+                <div>{{localize "fantasycraft.Dialog.totalWeight"}}: {{actor.system.totalWeight}} {{localize "fantasycraft.lbs"}}</div>
+                <div><b>{{localize "fantasycraft.carryingCapacity"}}</b> <i>{{localize "fantasycraft.light"}}:</i> {{actor.system.carryingCapacity.light}} <i>{{localize "fantasycraft.heavy"}}: </i>{{actor.system.carryingCapacity.heavy}}  <i>{{localize "fantasycraft.overloaded"}}: </i>{{actor.system.carryingCapacity.overloaded}}+</div>
             </div>
         </li>
     </ul>

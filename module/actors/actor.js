@@ -1665,7 +1665,7 @@ export default class ActorFC extends Actor {
           mastersTouchII = true
       }
 
-        //if a character has heartseeker then there attack bonus is equal to their career level
+        //if a character has heartseeker then their attack bonus is equal to their career level
       if ((target[0]?.document._actor.system?.type == "special" || target[0]?.document._actor.type == "character") && this.items.find(item => item.type == "feature" && item.name == game.i18n.localize("fantasycraft.heartseeker")))
       {
         attackBonus = actor.careerLevel.value;
@@ -2258,8 +2258,10 @@ export default class ActorFC extends Actor {
             vitality.value = 0
           }
 
-          this.system.vitality.value = vitality.value;
-          this.system.wounds.value = wounds.value;
+          //Health not updating when gaining the unconcious or dead condidtion caused by the system essentially just forgetting that it needed to do this during the async process. added await.
+          await this.update({"system.vitality.value": vitality.value});
+          await this.update({"system.wounds.value": wounds.value});
+
 
           if (this.system.wounds.value <= -10)
           {

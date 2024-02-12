@@ -33,6 +33,25 @@ export default class Qualities extends Application   {
         paths.sort( Utils.alphabatize )
         tricks.sort( Utils.alphabatize )
 
+        for (let quality of Object.entries(qualities))
+        {
+            quality = quality[1].system;   
+            if (quality.xpMultiplier != "grades")
+                continue;
+
+            quality.grades.gradeArray = (quality.grades.gradeArray === 'undefined') ? [] : quality.grades.gradeArray;
+
+            let maxGrades = Utils.numeralConverter(quality.grades.maximum)
+
+
+            for (let i = 0; i < maxGrades; i++)
+            {
+                quality.grades.gradeArray[i] = Utils.numberToNumeralConverter(i+1)
+            }
+
+            console.log(quality.grades.gradeArray)
+        }
+
         // Populate choices
         const choices = 
         {
@@ -57,7 +76,10 @@ export default class Qualities extends Application   {
             let itemId = ev.currentTarget.closest(".item").dataset.itemId;
             let item = this.actor.items.get(itemId);
             let updateString = "system." + event.name;
-            await item.update({[updateString]: parseInt(event.value)});
+            let newValue = (updateString != "system.grades.value") ? parseInt(event.value) : event.value;
+            await item.update({[updateString]: newValue});
+            this.render(false);
+
         })
 
         html.find('.editItem').click( async ev => {

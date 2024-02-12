@@ -1158,7 +1158,8 @@
 			"grades":
 			{
 				"value": "",
-				"maximum": "X"
+				"maximum": "X",
+				"gradeArray": []
 			},
 			"flawless":
 			{
