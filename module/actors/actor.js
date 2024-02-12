@@ -516,18 +516,18 @@ export default class ActorFC extends Actor {
 
     _calculateDamageReduction(actorData)
     {
-        let dr = 0;
-        const armour = this.items.find(item => (item.type == "armour" && item.system.equipped == true))
-        if (armour != null)
-        {
-            dr += armour.system.damageReduction;
-        }
-
-        console.log(`DR is now ${dr}`);
-
-        let magic = this._calculateEssenceBonus("damageReduction");
-        dr += magic;
-        this.system.dr = dr;
+        //let dr = 0;
+        //const armour = this.items.find(item => (item.type == "armour" && item.system.equipped == true))
+        //if (armour != null)
+        //{
+        //    dr += armour.system.damageReduction;
+        //}
+//
+        //console.log(`DR is now ${dr}`);
+//
+        //let magic = this._calculateEssenceBonus("damageReduction");
+        //dr += magic;
+        //this.system.dr = dr;
     }
 
     _prepareAttack(actorData)
