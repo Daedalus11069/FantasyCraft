@@ -203,7 +203,7 @@ export function onCombatAction(actionRoll, actor, combatAction, trick=null)
     d['roll'] = actionRoll.total;
     d['formula'] = actionRoll.formula;
     d['diceRoll'] = actionRoll.terms[0].results[0].result;
-    d['threat'] = (actionRoll.total >= threat) ? true: false;
+    d['threat'] = (actionRoll.dice[0].results[0].result >= threat) ? true: false;
     if (trick != null) d['trick'] = trick
 
     if (damage.value != "") 
@@ -310,6 +310,8 @@ function setUpAttackData(attackRoll, attacker, item, threat, qualities, ammo=nul
         item: {id: item.id, data: item, name: item.name},
         data: {}
     }
+
+    threat = (threat == null) ? 21 : threat;
 
     const d = attackInfo.data
     d['roll'] = attackRoll.total;
@@ -502,6 +504,11 @@ async function onDamage(event)
 
     if ((trick1?.system.effect.additionalEffect == "bonusWeaponDamage" && Tricks.checkConditions(trick1, target, attackRoll)) || (trick2?.system.effect.additionalEffect == "bonusWeaponDamage" && Tricks.checkConditions(trick2, target, attackRoll)))
     {
+        if(rollInfo?.sneakAttack.checked) 
+        {
+            rollFormula = rollFormula.replace(" + " + sneakAttack + "d6", '')
+        }
+
         if (Tricks.multipleDamageRolls(attackRoll, target, trick1) == 1)
             rollDamageAndSendToChat(rollFormula, actor, itemInformation, damageType, ap, trick1, trick2)
         else if (Tricks.multipleDamageRolls(attackRoll, target, trick1) == 2)
@@ -685,7 +692,7 @@ async function spellCasting(event)
 
     onSkillCheck(skillRoll, act, skillName, null, trick);
 
-    if (act.tpe =="character")
+    if (act.type =="character")
     {
         //reduce spellpoints by the spell level, or spell level modified by the trick
         let spellPointCost = parseInt(spell.system.level);

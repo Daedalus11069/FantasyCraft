@@ -917,7 +917,7 @@ export default class ActorFC extends Actor {
         if(items.length > 0)
         {
             // Only set the casting level if we don't already have a class that gives us casting levels
-            if(items.filter(function(item) {return item.system.type === 'class'}).length === 0)
+            if(items.filter(function(item) {return item.type === 'class'}).length === 0)
             {
                 char.castingLevel = 1;
             }

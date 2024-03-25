@@ -12,8 +12,79 @@
         </div>
     </td>
     <td>
-        <div class="item" data-item-id="{{id}}" data-item-name="{{name}}">
-        <a class="spellCard">{{name}}</a>
+        <div class="tooltip" style="border: none">
+            <div class="item" data-item-id="{{id}}" data-item-name="{{name}}">
+                <a class="spellCard">{{name}}</a>
+            </div>
+            <div class="tooltiptext" style="width: 350px; text-align: left;">
+                <b style="text-align:center">{{name}}</b>
+                
+                <div>
+                    <strong><label>{{ localize "fantasycraft.castingTime"}}: </label></strong>
+                    <span> {{system.castingTime.value}} {{localize system.castingTime.increment}}</span>
+                </div>
+                <div>
+                    <strong><label>{{ localize "fantasycraft.distance"}}: </label></strong>
+                    <span> {{localize system.distance.description}} {{#if system.distance.rangedAttack}}{{localize "fantasycraft.rangedAttack"}} {{/if}}</span>
+                </div>
+                {{#if system.area.value}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.area"}}: </label></strong>
+                    <span> {{system.area.value}} 
+                        {{#if system.area.customShape}}{{else}}{{localize "fantasycraft.ft"}}{{/if}} 
+                        {{#if system.area.perLevel}}{{localize "fantasycraft.perCastingLevel"}}{{/if}} 
+                        {{#if system.area.penetrating}}{{localize "fantasycraft.penetrating"}}{{/if}} 
+                        {{#if system.area.customShape}}{{else}}{{localize system.area.shape}}{{/if}}
+                    </span>
+                </div>
+                {{/if}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.spellDuration"}}: </label></strong>
+                    <span> 
+                        {{#if system.duration.isNotInstantOrPermanent}}
+                            {{> "systems/fantasycraft/templates/items/parts/durationInformation.handlebars"}}
+                        {{else}}
+                            {{localize system.duration.durationText}}
+                        {{/if}}
+
+                        {{#if system.duration.durationKeyword}} ({{~/if}}
+                        {{~#if system.duration.dismissable}}
+                            {{~localize "fantasycraft.dismissable"~}}                    
+                        {{/if}}
+                        {{#if system.duration.enduring~}}
+                            {{~localize "fantasycraft.enduring"~}}
+                        {{/if~}}
+                        {{#if system.duration.durationKeyword~}}){{/if}}
+                    </span>
+                </div>
+                {{#if system.save.hasSave}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.savingThrow"}}: </label></strong>
+                    {{system.save.saveType}} {{system.save.saveEffect}} (
+                    {{#each system.save.saveKeywords as |v k|}}
+                        {{v}}
+                    {{/each}}
+                    )
+                {{#if system.save2.hasSave}}
+                    , {{system.save2.saveType}} {{system.save2.saveEffect}} (
+                    {{#each system.save2.saveKeywords as |v k|}}
+                        {{v}}
+                    {{/each}}
+                    )
+                {{/if}}
+                </div>
+                {{/if}}
+                {{#if system.preparationCost}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.preparationCost"}}: </label></strong>
+                    <span> {{system.preparationCost}}</span>
+                </div>
+                {{/if}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.spellEffect"}}: </strong></label>
+                    <span>{{{system.description.value}}}</span>
+                </div>
+            </div>
         </div>
     </td>
     <td class="table-item">{{system.level}}</td>

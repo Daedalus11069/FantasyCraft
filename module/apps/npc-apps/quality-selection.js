@@ -48,8 +48,6 @@ export default class Qualities extends Application   {
             {
                 quality.grades.gradeArray[i] = Utils.numberToNumeralConverter(i+1)
             }
-
-            console.log(quality.grades.gradeArray)
         }
 
         // Populate choices

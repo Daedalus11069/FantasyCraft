@@ -541,7 +541,15 @@ export default class FCCharacterSheet extends ActorSheetFC {
 
 	_sortFunction(event, pinnedList, startPosition = 1)
 	{
-		let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+		let table;
+		let rows;
+		let switching;
+		let i;
+		let x;
+		let y;
+		let shouldSwitch;
+		let dir;
+		let switchcount = 0;
 		table = event.currentTarget.parentElement.closest(".item-table");
 		let col = event.target.attributes.value.value;
 		switching = true;
@@ -559,9 +567,9 @@ export default class FCCharacterSheet extends ActorSheetFC {
 				shouldSwitch = false;
 				/* Get the two elements you want to compare, one from current row and one from the next: */
 				x = (col == 1 ) ? rows[i].getElementsByTagName("td")[col].children[0].children[0] : rows[i].getElementsByTagName("td")[col];
-				let xPin = (pinnedList == null) ? true : pinnedList.filter(item => item.name == rows[i].getElementsByTagName("td")[1].children[0].children[0].innerHTML)[0]?.system.pinned;
+				let xPin = (pinnedList == null) ? true : pinnedList.filter(item => item.name == rows[i].getElementsByTagName("td")[1].children[0].children[0].children[0].innerHTML)[0]?.system.pinned;
 				y = (col == 1 ) ? rows[i+1].getElementsByTagName("td")[col].children[0].children[0] : rows[i+1].getElementsByTagName("td")[col];
-				let yPin = (pinnedList == null) ? true : pinnedList.filter(item => item.name == rows[i+1].getElementsByTagName("td")[1].children[0].children[0].innerHTML)[0]?.system.pinned;
+				let yPin = (pinnedList == null) ? true : pinnedList.filter(item => item.name == rows[i+1].getElementsByTagName("td")[1].children[0].children[0].children[0].innerHTML)[0]?.system.pinned;
 
 				/* Check if the two rows should switch place, based on the direction, asc or desc: */
 				/* Also, if checking pinned items only, switch if y is a pinned item */

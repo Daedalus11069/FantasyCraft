@@ -49,7 +49,8 @@ export default class ActorSheetFC extends ActorSheet
         data.data = data.actor.system;
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
-        
+        data.collapsed = this._collapsed;
+
         //Set Labels for 
         this._setLabel(data.data.abilityScores, CONFIG.fantasycraft.abilityScores);   //Ability Modifiers
         this._setLabel(data.data.saves, CONFIG.fantasycraft.savingThrow);             //Saves
@@ -143,6 +144,7 @@ export default class ActorSheetFC extends ActorSheet
       html.find('.roll-treasure').click(this._rollTreasure.bind(this));
       html.find('.open-gm-screen').click(this.openGMScreen.bind(this));
       html.find('.pin-spell').click(this.pinSpell.bind(this));
+      html.find('.collapse').click(this.collapseCategory.bind(this));
       
       
       const filterLists = html.find(".filter-list");
@@ -1110,4 +1112,18 @@ export default class ActorSheetFC extends ActorSheet
 
       item.update({'system.pinned': true});
     }
+    
+    _collapsed = new Set();
+
+    async collapseCategory(event)
+    {
+      const li = event.target
+
+			if (!li.parentNode.open) {
+				this._collapsed.add(li.dataset.collapseId);
+			} else {
+				this._collapsed.delete(li.dataset.collapseId);
+			};
+    }
+
 }

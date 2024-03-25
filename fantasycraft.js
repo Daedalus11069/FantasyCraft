@@ -168,7 +168,18 @@ Hooks.once("init", function () {
 			return options.inverse(this);
 	});
 
+	Handlebars.registerHelper('collapse', function (collapsed, collapseId) {
+		return collapsed.has(collapseId) ? "open" : null;
+	});
+
 });
+
+
+
+///////////////////////////////////////
+//////// Hooks and Conditions /////////
+///////////////////////////////////////
+
 
 Hooks.once ('setup', function(){
 

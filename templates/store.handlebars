@@ -1,0 +1,37 @@
+<form class="{{cssClass}} item-form flexcol" autocomplete="off">
+
+    {{!-- Item Sheet Header --}}
+    <header class="itemHeader">
+        <h1 class="itemName flexrow">
+            <input name="name" type="text" value="{{store.name}}" placeholder="{{ localize 'fantasycraft.ItemName' }}"/>
+        </h1>
+        {{!-- TODO: need to add code here to make it so that this is only visible to GMs --}}
+        <nav class="sheet-navigation sheet-tabs" data-group="primary">
+            <a class="item active" data-tab="Store">{{ localize "fantasycraft.store" }}</a>
+            <a class="item" data-tab="GM Control Panel">{{ localize "fantasycraft.controlPanel" }}</a>        
+        </nav>
+    </header>
+    <body>
+        <section class="flexrow">
+            {{!-- if the store is set to "Shop" mode have a field that shows all items available for sale from that shop, when selected will move down to another field of a shopping cart--}}
+            {{!-- if the store is set to "free-buy" mode have a field where you can drag items in freely, essentially just dragging items directly into the shopping cart. --}}
+            <div class="flexcol">
+                {{!-- Store inventory field, only displayed if the store is not in FreeBuy mode --}}
+                {{!-- Sale field, only available if the store is not in FreeBuy mode --}}
+                {{!-- Shopping Cart field --}}
+            </div>
+            <div class="flexcol">
+                {{!-- Merchants silver on hand, only editable by the GM --}}
+                {{!-- Move to Cart button --}}
+                {{!-- Remove from Cart button --}}
+                {{!-- haggle button? automatically rolls an opposed haggle check for a selected item with an at level merchant (haggle skill X) --}}
+            </div>
+            {{!-- at the bottom there will be a "purchase" button --}}
+            <div>
+                {{!-- Buy button --}} 
+            </div>
+        </section>
+    </body>
+</form>
+
+{{!-- It would be cool if the player sheets had a "Shopping cart" icon on the gear page that when clicked opens a free-buy shop that is linked to their character.}}
