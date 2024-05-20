@@ -188,7 +188,6 @@ function rollAD(event)
     let explodesOn = diceSize;
     let rollFormula = "d" + diceSize + "x";
     let rollData;
-    console.log("test");
 
     //if a token is selected during the roll
     if (token != null)
