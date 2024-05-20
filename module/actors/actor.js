@@ -1243,6 +1243,12 @@ export default class ActorFC extends Actor {
           if (trick.system.uses.counter == "feat")
           {
             let featNumber = actor.items.filter(item => (item.type == "feat" && game.i18n.localize(item.system.featType) == game.i18n.localize(CONFIG.fantasycraft.featType[trick.system.uses.featType]))).length;
+            let expertFeats = actor.items.filter(item => (item.type == "feature" && item.name.includes(game.i18n.localize("fantasycraft.expert"))));
+            
+            if (expertFeats.length > 0)
+              if(expertFeats.find(item => item.name.includes(game.i18n.localize(CONFIG.fantasycraft.featType[trick.system.uses.featType]))))
+                featNumber += 2
+                
             trick.system.uses.maxUses = featNumber;
           }
           else if (trick.system.uses.counter == "actionDie")

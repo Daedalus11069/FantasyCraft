@@ -59,7 +59,7 @@
             <h3 class="category-label">
                 {{localize "fantasycraft.reputationAndRenown"}}
             </h3>
-            <div class="category-body">
+            <div class="category-body right-border">
                 <div class="flexrow">
                     <label>{{localize "fantasycraft.totalRenown"}}:</label> 
                     <input type="number" class="smallBox" name="system.reputationAndRenown.renownTotal" value="{{actor.system.reputationAndRenown.renownTotal}}" disabled=true/>
@@ -88,9 +88,9 @@
                 </div>
                 {{!Custom Renown}}
                 <div class="flexrow">
-                    <input type="text" name="system.reputationAndRenown.customRenownTitle" value="{{actor.system.reputationAndRenown.customRenownTitle}}" placeholder="Custom Renown" />
+                    <input type="text" name="system.reputationAndRenown.customRenownTitle" value="{{actor.system.reputationAndRenown.customRenownTitle}}" style="height: 17px" placeholder="Custom Renown" />
                     <input type="number" class="smallBox" name="system.reputationAndRenown.customRenown" min=0 max=10 value="{{actor.system.reputationAndRenown.customRenown}}" placeholder="0"/>
-                    <input type="text" name="system.reputationAndRenown.customTitle" value="{{actor.system.reputationAndRenown.customTitle}}" placeholder="Custom Title"/>
+                    <input type="text" name="system.reputationAndRenown.customTitle" value="{{actor.system.reputationAndRenown.customTitle}}" style="height: 17px" placeholder="Custom Title"/>
                 </div>
             </div>
         </li>
@@ -99,13 +99,13 @@
         {{!Equipment}}
         <li class="flex3">
             <h3 class="category-label flexrow">
-                <span style="flex: 0 0 92%">{{localize "fantasycraft.gear"}}</span>
+                <span style="flex: 0 0 88%">{{localize "fantasycraft.gear"}}</span>
                 
-                <a class="item-create" data-type="general" style="max-height: 11px; flex: 0 0 8%">
+                <a class="item-create" data-type="general" style="max-height: 11px; flex: 0 0 12%">
                     <i class="fas fa-plus"></i> {{localize "fantasycraft.addItem"}}
                 </a>
             </h3>
-            <div class="category-body" style="padding: 0px">
+            <div class="category-body right-border" style="padding: 0px">
                 <section class="two-column item-list">
                 {{#each ownedItems as |item id|}}
                     {{> "systems/fantasycraft/templates/partials/item-part.hbs" item id=_id inSheet=true}}
@@ -118,7 +118,7 @@
                 {{/each}}
                 </section>
             </div>
-            <div class="flexrow" style="align-contents: center; justify-contents: space-between; border-left: 1px groove lightgray">
+            <div class="flexrow right-border" style="align-contents: center; justify-contents: space-between; border-left: 1px groove lightgray">
                 <div>{{localize "fantasycraft.Dialog.totalWeight"}}: {{actor.system.totalWeight}} {{localize "fantasycraft.lbs"}}</div>
                 <div><b>{{localize "fantasycraft.carryingCapacity"}}</b> <i>{{localize "fantasycraft.light"}}:</i> {{actor.system.carryingCapacity.light}} <i>{{localize "fantasycraft.heavy"}}: </i>{{actor.system.carryingCapacity.heavy}}  <i>{{localize "fantasycraft.overloaded"}}: </i>{{actor.system.carryingCapacity.overloaded}}+</div>
             </div>
@@ -154,7 +154,7 @@
             <h3 class="category-label">
                 {{localize "fantasycraft.mounts"}}
             </h3>
-            <div class="category-body flexcol">
+            <div class="category-body flexcol right-border">
                 {{#each mounts as |mount id|}}
                 <div class="actor" data-actor-id="{{mount._id}}">
                     <span>{{mount.name}} 
@@ -179,12 +179,12 @@
             </div>
         </li>
     </ul>
-    <ul class="flexrow attributes">
+    <ul class="flexrow attributes" style="border-bottom: 1px groove grey">
         <li class="flex2">
             <h3 class="category-label">
                 {{localize "fantasycraft.contacts"}}
             </h3>
-            <div class="category-body flexcol">
+            <div class="category-body flexcol" style="min-height: 166px">
                 {{#each actor.system.contacts as |contact id|}}
                 <div class="actor" data-actor-id="{{contact.id}}">
                     {{contact.name}}
@@ -202,7 +202,7 @@
             <h3 class="category-label">
                 {{localize "fantasycraft.holdings"}}
             </h3>
-            <div class="category-body flexcol">
+            <div class="category-body flexcol right-border">
                 <div>
                     <label>{{localize "fantasycraft.holdingName"}}</label>
                     <input class="wideField underline" type="text" name="system.holding1.name" value="{{actor.system.holding1.name}}">

@@ -169,6 +169,12 @@
   margin: 0px;
   vertical-align: middle;
 }
+.fantasycraft.sheet.actor .featCat {
+  text-align: right;
+  font-size: 10px;
+  font-style: italic;
+  align-self: center;
+}
 .fantasycraft.sheet.actor .traits .form-group,
 .fantasycraft.sheet.actor .traits .form-group-stacked {
   margin: 0 0 3px 0;

@@ -42,9 +42,11 @@
                     <h4 class="box-title">{{ localize "fantasycraft.actionDice" }}</h4>
                     <div class="attribute-value">
                         <input name="system.actionDice" type="number" value="{{actor.system.actionDice}}" placeholder="3"/>
+                        <input name="system.bonusActionDice" type="number" value="{{actor.system.bonusActionDice}}" placeholder="0"/>
                     </div>
-                    <footer class="footer-text">
+                    <footer class="footer-text flexrow" style="font-size: 10px; line-height: 14px">
                         <span>{{localize "fantasycraft.startingActionDice"}} {{actor.system.startingActionDice}}D{{actor.system.actionDiceSize}}</span>
+                        <span>{{localize "fantasycraft.additionalActionDice"}}</span>
                     </footer>
                 </li>
                 <li class="attribute">
@@ -112,9 +114,17 @@
                     </footer>
                 </li>
                 <li class="attribute">
-                    <div class="button">
-                        <a class="roll-ad" data-dice-size={{actor.system.actionDiceSize}}>{{ localize "fantasycraft.rollAD" }}</a>
+                    <div class="button flexrow">
+                        <a class="roll-ad" data-dice-size={{actor.system.actionDiceSize}}>{{ localize "fantasycraft.default" }}</a>
                         <a class="action-dice-info" data-options="no-options" data-target="none">{{ localize "fantasycraft.actionDiceInformation" }}</a>
+                    </div>
+                    <div class="button flexrow">
+                        <a class="roll-ad" data-dice-size="4" style="margin: 0 5px; height: 17px">{{ localize "fantasycraft.d4" }}</a>
+                        <a class="roll-ad" data-dice-size="6" style="margin: 0 5px; height: 17px">{{ localize "fantasycraft.d6" }}</a>
+                        <a class="roll-ad" data-dice-size="8" style="margin: 0 5px; height: 17px">{{ localize "fantasycraft.d8" }}</a>
+                        <a class="roll-ad" data-dice-size="10" style="margin: 0 5px; height: 17px">{{ localize "fantasycraft.d10" }}</a>
+                        <a class="roll-ad" data-dice-size="12" style="margin: 0 5px; height: 17px">{{ localize "fantasycraft.d12" }}</a>
+                        <a class="roll-ad" data-dice-size="20" style="margin: 0 5px; height: 17px">{{ localize "fantasycraft.d20" }}</a>
                     </div>
                 </li>
                 <li class="attribute">

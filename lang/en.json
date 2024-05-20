@@ -952,6 +952,10 @@
 		"newAdventure": "New Adventure",
 		"awardActionDie": "Award Action Dice",
 		"journal": "Journal Entry",
+		"additionalActionDice": "Additional Action Dice",
+		"graceUnderPressure": "Grace under Pressure",
+		"fortuneFavorsTheBold": "Fortune Favors the Bold",
+		"default": "Default",
 		"Dialog":
 		{
 			"requiresTargetWarningMessage": "You require a target for the selected Trick.",

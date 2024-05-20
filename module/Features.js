@@ -1705,5 +1705,130 @@ export const OriginFeatures =
         {
             "spellcasting": "Spellcasting"
         }
+    },
+    "beggar":
+    {
+        "feat":"Compendium.fantasycraft.feats.9wyRtkpMC7GLYZp4",
+        "features":
+        {
+            "charming": "Compendium.fantasycraft.originfeatures.0XpVdgbATqFsQ996",
+            "contagion sense": "Compendium.fantasycraft.originfeatures.A0aE7VkmRmSku38F",
+            "odd jobs": "Compendium.fantasycraft.originfeatures.co6CTWkH8Bfm2bhW",
+            "paired skills": "Compendium.fantasycraft.originfeatures.P4aUgRw7s2DdJjPE"
+        },
+        "paired":
+        {
+            "survival": "Survival",
+            "search": "Search"
+        }
+    },
+    "cultist":
+    {
+        "feat":"Compendium.fantasycraft.feats.Htz6WN40WxvpkVBW",
+        "features":
+        {
+            "chance expert": "Compendium.fantasycraft.originfeatures.4Bn9udW9ct5mrcW0",
+            "devotee": "Compendium.fantasycraft.originfeatures.ailkyNR4c04ZoltF",
+            "no Pain": "Compendium.fantasycraft.originfeatures.wIuttOWFrWrXVba4",
+            "terrifying look": "Compendium.fantasycraft.originfeatures.pj2n6V9mjDUrZGve"
+        },
+        "expert":
+        {
+            "chance": "Chance"
+        }
+    },
+    "highwayman":
+    {
+        "feat":"Compendium.fantasycraft.feats.YcJCcZ3GdGLhvw7R",
+        "features":
+        {
+            "harsh beating": "Compendium.fantasycraft.originfeatures.Huwirxg2L51N9FQm", 
+            "pick on the little guy": "Compendium.fantasycraft.originfeatures.PMQQf2uF14VjWpdH",
+            "practiced": "Compendium.fantasycraft.originfeatures.9045owFIw2bUxAKG",
+            "riding mounts focus": "Compendium.fantasycraft.originfeatures.VHISzZX1YW5Iwp5Y"
+        },
+        "practiced": 
+        {
+            "intimidate": "Intimidate"
+        }
+    },
+    "jester":
+    {
+        "feat":"Compendium.fantasycraft.feats.NsqXfTzzWZG1zu5E",
+        "features":
+        {
+            "attribute training": "Compendium.fantasycraft.originfeatures.npFEdz4KXtbUM21R",
+            "charming": "Compendium.fantasycraft.originfeatures.0XpVdgbATqFsQ996",
+            "inquisitive mind": "Compendium.fantasycraft.originfeatures.gsGbDhuCTR1JlC6G",
+            "more than luck": "Compendium.fantasycraft.originfeatures.K4qaDP25qZzfLhGX"
+        },
+        "attributes":
+        {
+            "dexterity": "Dexterity",
+            "charisma": "Charisma"
+        }
+    },
+    "mercenary":
+    {
+        "feat":"Compendium.fantasycraft.feats.zCNfBPXsh48n6iOg",
+        "features":
+        {
+            "decisive": "Compendium.fantasycraft.originfeatures.VJKLL3qFjPnpXoyE",
+            "extra proficiency 1": "Compendium.fantasycraft.originfeatures.phhoRjRz0vMBgmqa",
+            "extra proficiency 2": "Compendium.fantasycraft.originfeatures.phhoRjRz0vMBgmqa",   
+            "paired skills": "Compendium.fantasycraft.originfeatures.P4aUgRw7s2DdJjPE"     
+        },
+        "paired":
+        {
+            "haggle": "Haggle",
+            "resolve": "Resolve"
+        },
+    },
+    "peasant":
+    {
+        "feat":"Compendium.fantasycraft.feats.FKXg0v10abbTX6G8",
+        "features":
+        {
+            "edged proficiency": "Compendium.fantasycraft.originfeatures.sZJrUUXJ0UMKoUrO",
+            "paired skills": "Compendium.fantasycraft.originfeatures.P4aUgRw7s2DdJjPE",
+            "ride focus": "Compendium.fantasycraft.originfeatures.VHISzZX1YW5Iwp5Y",
+            "thrifty": "Compendium.fantasycraft.originfeatures.MKR2IqBqKd1vgJeN"
+        },
+        "paired":
+        {
+            "survival": "Survival",
+            "resolve": "Resolve"
+        },
+    },
+    "scholar":
+    {
+        "feat":"Compendium.fantasycraft.feats.5xxGKNWxoXYaaT3u",
+        "features":
+        {
+            "inquisitive mind": "Compendium.fantasycraft.originfeatures.gsGbDhuCTR1JlC6G",
+            "inscription focus": "Compendium.fantasycraft.originfeatures.LLjtHoD6daEBfFCm",
+            "paired skills": "Compendium.fantasycraft.originfeatures.P4aUgRw7s2DdJjPE",
+            "sharp mind": "Compendium.fantasycraft.originfeatures.9S1cdZjYz5XgRduz"
+        },
+        "paired":
+        {
+            "resolve": "Resolve",
+            "investigate": "Investigate"
+        },
+    },
+    "slave":
+    {
+        "feat":"Compendium.fantasycraft.feats.pkLPvDkViD8soNBi",
+        "features":
+        {
+            "crafting focus": "Compendium.fantasycraft.originfeatures.cDV0orHbL1WjRNck",
+            "practiced": "Compendium.fantasycraft.originfeatures.9045owFIw2bUxAKG",
+            "push it to the limit": "Compendium.fantasycraft.originfeatures.0F13p1qj22DMhYd0",
+            "tenacious Spirit": "Compendium.fantasycraft.originfeatures.ctGxcgyI3kievP9n"
+        },
+        "practiced": 
+        {
+            "blend": "Blend"
+        }
     }
 }

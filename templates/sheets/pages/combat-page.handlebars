@@ -3,7 +3,7 @@
     <ul class="flexrow attributes">
         <li>
             <h4 class="category-label"> {{localize "fantasycraft.weapons"}} </h4>
-            <section class="weapons flexcol item-list">
+            <section class="weapons flexcol item-list category-body right-border" style="min-height: 50px">
                 <div class="item ownedItem flexrow" data-item-name="unarmedStrike">
                     <div class="flex2">
                         <a class="roll-unarmed">
@@ -157,7 +157,7 @@
         <h3 class="category-label">
             {{localize "fantasycraft.tricks"}}
         </h3>
-        <div class="category-body" style="min-height: 158px;">
+        <div class="category-body right-border" style="min-height: 158px;">
             {{#each tricks as |trick id|}}
             <div class="item ownnedItem flexrow" data-item-id="{{_id}}" data-item-name="{{armour.name}}">
                 <label class="flex4">{{trick.name}}</label>
@@ -181,7 +181,7 @@
     <ul class="flexrow attributes">
         <li>
             <h4 class="category-label"> {{localize "fantasycraft.armour"}} </h4>
-            <section class="armour-list flexcol item-list">
+            <section class="armour-list flexcol item-list category-body right-border" style="min-height: 50px">
                 {{#each armour as |armour id|}}
                 <div class="item ownedItem item-card flexrow" data-item-id="{{_id}}" data-item-name="{{armour.name}}">
                     <span class="flex6">{{armour.name}}, {{localize "fantasycraft.dr"}}: {{armour.system.damageReduction}}, {{localize "fantasycraft.acp"}}: {{armour.system.armourCheckPenalty}} {{localize "fantasycraft.dp"}}: {{armour.system.defensePenalty}}</span>
@@ -302,7 +302,7 @@
             <h3 class="category-label">
                 {{localize "fantasycraft.proficiencies"}}
             </h3>
-            <div class="flexrow category-body">
+            <div class="flexrow category-body right-border">
                 <section class="two-column">
                     {{#each actor.system.proficency as |prof id|}}
                         <section class="push">
@@ -425,7 +425,7 @@
             <h3 class="category-label">
                 {{localize "fantasycraft.attack"}}
             </h3>
-            <div class="flexcol category-body" style="border-bottom: 1px groove lightgray">
+            <div class="flexcol category-body right-border" style="border-bottom: 1px groove lightgray">
                 {{#each actor.system.attackTypes as |name id|}}
                 <ul class="flexrow remove-space"> 
                     <li class="flex5">{{localize name.label}}:</li>

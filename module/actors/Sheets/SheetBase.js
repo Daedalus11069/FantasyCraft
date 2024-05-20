@@ -908,18 +908,20 @@ export default class ActorSheetFC extends ActorSheet
       let diceSize = event.currentTarget.dataset.diceSize;
       let explodesOn = (act.getFlag("fantasycraft", "Lady Luck's Smile")) ? ">=" + (diceSize - 1) : diceSize;
       let rollFormula = "d" + diceSize + "x" + explodesOn;
-  
+      let grace = act.items.find(item => item.name == game.i18n.localize("fantasycraft.graceUnderPressure"))?._id
+      let fortune = act.items.find(item => item.name == game.i18n.localize("fantasycraft.fortuneFavorsTheBold"))?._id
+
       //Check to see if the character has any flags that modify AD, if so add to the roll formula
-      if (act.getFlag("fantasycraft", "Fortune Favors the Bold"))
+      if (fortune != undefined)
           rollFormula += " + @fortuneFavors";
-  
-      if (act.getFlag("fantasycraft", "Grace under Pressure"))
+      
+      if (grace != undefined)
           rollFormula += " + @graceUnderPressure";
   
       let rollData = 
       {
-          fortuneFavors: (act.getFlag("fantasycraft", "Fortune Favors the Bold")) ? 2 : 0,
-          graceUnderPressure:  (act.getFlag("fantasycraft", "Grace under Pressure")) ? 2 : 0
+          fortuneFavors: (act.items.get(fortune)) ? 2 : 0,
+          graceUnderPressure:  (act.items.get(grace)) ? 2 : 0
       };
   
       let messageData = 
