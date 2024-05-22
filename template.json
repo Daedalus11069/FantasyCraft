@@ -1444,7 +1444,11 @@
 			"shoppingCart": [],
 			"freeBuy": true,
 			"silverOnHand": 0,
+			"canBeHaggled": false,
 			"haggleSkill": "X",
+			"hasBeenHaggled": false,
+			"pricePercent": 1,
+			"merchantLevel": 1,
 			"AD": {
 				"value": 0,
 				"starting": 0

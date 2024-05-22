@@ -4,23 +4,23 @@
         <h4> </h4>
         <div class="flexrow">
             <div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel"> {{ localize 'fantasycraft.damage'}} </span>
                     <input type="text" class="short mediumField" name="system.damage" value="{{item.system.damage}}" placeholder="1d6"/>
                 </div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.threatRange'}} </span>
-                    <input type="number" class="short narrowField" name="system.threatRange" value="{{item.system.threatRange}}" placeholder="20"/>
+                    <input type="number" class="short mediumField" name="system.threatRange" value="{{item.system.threatRange}}" placeholder="20"/>
                 </div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.weaponRange'}} </span>
                     <input type="text" class="short mediumField" name="system.range" value="{{item.system.range}}" placeholder="0"/>
                 </div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.sizeHand'}} </span>
                     <div class="item-customization-section">
                         <div>
-                            <select name="system.size.size"> 
+                            <select class="minimal-flex" name="system.size.size"> 
                             {{#select item.system.size.size}}
                                 {{#each config.sizeLetter as |v k|}}
                                     <option value="{{k}}">{{localize v}}</option>
@@ -28,7 +28,7 @@
                             {{/select}}
                             </select>
 
-                            <select name="system.size.hands"> 
+                            <select class="minimal-flex" name="system.size.hands"> 
                             {{#select item.system.size.hands}}
                                 <option value="-"> - </option>
                                 <option value="1h">{{localize "fantasycraft.1h"}}</option>
@@ -38,24 +38,24 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.const'}} </span>
-                    <input type="text" class="short mediumField" name="system.construction.hardness" value="{{item.system.construction.hardness}}" placeholder="Hard"/>
-                    <input type="number" class="short narrowField" name="system.construction.saveNumbers" value="{{item.system.construction.saveNumbers}}" placeholder="2"/>
+                    <input type="text" class="short mediumField minimal-flex" name="system.construction.hardness" value="{{item.system.construction.hardness}}" placeholder="Hard"/>
+                    <input type="number" class="short narrowField minimal-flex" name="system.construction.saveNumbers" value="{{item.system.construction.saveNumbers}}" placeholder="2"/>
                 </div>
             </div>
             <div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.comp'}} </span>
-                    <input type="number" class="short narrowField" name="system.complexity.number" value="{{item.system.complexity.number}}" placeholder="10"/> <input type="text" class="narrowField" name="system.complexity.time" value="{{item.system.complexity.time}}" placeholder="D"/>
+                    <input type="number" class="short narrowField" name="system.complexity.number" value="{{item.system.complexity.number}}" placeholder="10"/> <input type="text" class="narrowField short" name="system.complexity.time" value="{{item.system.complexity.time}}" placeholder="D"/>
                 </div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.weight'}} </span>
                     <input type="number" class="short narrowField" name="system.weight" value="{{item.system.weight}}" placeholder="5"/> <span class="categorylabel">  lbs.</span>
                 </div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.era'}} </span>
-                    <select name="system.era">
+                    <select class="minimal-flex" name="system.era">
                         {{#select item.system.era}}
                             {{#each config.eras as |name type|}}
                                 <option value="{{type}}">{{localize type}}</option>
@@ -63,19 +63,19 @@
                         {{/select}}
                     </select>
                 </div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.cost'}} </span>
                     <input type="number" class="short mediumField" name="system.cost" value="{{item.system.cost}}" placeholder="20"/> 
-                    <select name="system.currency">
+                    <select class="minimal-flex" name="system.currency">
                         {{#select item.system.currency}}
                         <option value="Silver">{{localize "fantasycraft.silver"}}</option>
                         <option value="Reputation">{{localize "fantasycraft.reputation"}}</option>
                         {{/select}}
                     </select>
                 </div>
-                <div>
+                <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.weaponProficiency'}} </span>
-                    <select name="system.weaponProficiency">
+                    <select class="minimal-flex" name="system.weaponProficiency">
                         {{#select item.system.weaponProficiency}}
                             {{#each config.attackProficiency as |v k|}}
                             <option value="{{k}}">{{localize v}}</option>
@@ -86,7 +86,7 @@
             </div>
         </div>
         <span class="categorylabel">  {{ localize 'fantasycraft.damageType'}} </span>
-        <select name="system.damageType">
+        <select class="minimal-flex" name="system.damageType">
             {{#select item.system.damageType}}
                 {{#each config.damageTypes as |v k|}}
                 <option value="{{k}}">{{localize v}}</option>
@@ -94,7 +94,7 @@
             {{/select}}
         </select>
 
-        <select name="system.attackType">
+        <select class="minimal-flex" name="system.attackType">
             {{#select item.system.attackType}}
             <option value="melee">{{localize "fantasycraft.melee"}}</option>
             <option value="ranged">{{localize "fantasycraft.ranged"}}</option>

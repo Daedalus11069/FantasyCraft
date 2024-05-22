@@ -956,6 +956,13 @@
 		"graceUnderPressure": "Grace under Pressure",
 		"fortuneFavorsTheBold": "Fortune Favors the Bold",
 		"default": "Default",
+		"buy": "Buy",
+		"store": "Store",
+		"controlPanel": "GM Control Panel",
+		"freeBuy": "Free Buy",
+		"shoppingCart": "Shopping Cart",
+		"canBeHaggled": "Can Be Haggled",
+		"resetHaggle": "Reset Haggling",
 		"Dialog":
 		{
 			"requiresTargetWarningMessage": "You require a target for the selected Trick.",
@@ -982,7 +989,9 @@
 			"entriesDialog": "Enter the types of damage/skills/condition/etc. affected, separate with a comma for multiple types",
 			"actionDiceUses": "ACTION DIE USES",
 			"noReadiedWeapon": "You do not have a weapon readied",
-			"noUsesRemainingForChosenTrick": "You have no uses remaining for the chosen Trick."
+			"noUsesRemainingForChosenTrick": "You have no uses remaining for the chosen Trick.",
+			"changeValueTooltipText": "Hold Shift to increase the value by 5, Ctrl by 10, alt by 20, and ctrl + shift to increase by 100.",
+			"youCantAffordThat": "You Can't Afford That!"
 		},
 				
 		"SETTINGS":

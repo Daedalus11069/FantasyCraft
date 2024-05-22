@@ -1,18 +1,20 @@
 <form class="{{cssClass}} item-form flexcol" autocomplete="off">
 
     {{!-- Item Sheet Header --}}
-    <header class="itemHeader">
+    <header class="trick-header">
         <h1 class="itemName flexrow">
             <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.ItemName' }}"/>
         </h1>
 
         <div class="flexrow">
-            <ul class="flexrow">
-                <li>
-                    <input type="text" name="system.requirement" value="{{item.system.requirement}}" placeholder="{{ localize 'fantasycraft.feat' }}"/>
+            <ul class="flexrow center-contents">
+                <li class="flex200">
+                    <input type="text" class="header-input-field" name="system.requirement" value="{{item.system.requirement}}" placeholder="{{ localize 'fantasycraft.feat' }}"/>
+                    <footer class="footer-text">{{ localize 'fantasycraft.feat' }}</footer>
                 </li>
-                <li>
-                    <input type="text" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.source' }}"/>
+                <li class="flex200">
+                    <input type="text" class="header-input-field" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.source' }}"/>
+                    <footer class="footer-text">{{ localize 'fantasycraft.source' }}</footer>
                 </li>
             </ul>
         </div>
@@ -45,11 +47,11 @@
                         </select>
 
                         {{#if effect1IsNumeric}}
-                            <input type="number" name="system.effect1.bonus" value="{{item.system.effect1.bonus}}">
+                            <input class="minimal-flex" type="number" name="system.effect1.bonus" value="{{item.system.effect1.bonus}}">
                         {{/if}}
 
                         {{!attributes to adjust}}
-                        {{#compare item.system.effect1.effect "increasesAttributes" operator="=="}}
+                        {{#compare item.system.effect1.effect "increaseAttributes" operator="=="}}
                         <select name="system.effect1.bonusTarget">
                             {{#select item.system.effect1.bonusTarget}}
                             {{#each config.abilityScores as |name type|}}
@@ -108,11 +110,11 @@
                         </select>
 
                         {{#if effect2IsNumeric}}
-                            <input type="number" name="system.effect2.bonus" value="{{item.system.effect2.bonus}}">
+                            <input class="minimal-flex" type="number" name="system.effect2.bonus" value="{{item.system.effect2.bonus}}">
                         {{/if}}
 
                         {{!attributes to adjust}}
-                        {{#compare item.system.effect2.effect "increasesAttributes" operator="=="}}
+                        {{#compare item.system.effect2.effect "increaseAttributes" operator="=="}}
                         <select name="system.effect2.bonusTarget">
                             {{#select item.system.effect2.bonusTarget}}
                             {{#each config.abilityScores as |name type|}}

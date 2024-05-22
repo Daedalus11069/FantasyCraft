@@ -905,6 +905,31 @@ export default class ActorFC extends Actor {
 
       }
     }
+    
+	async onCreateItemFromStore(itemData)
+	{
+    const itemFromId = await fromUuid(itemData.referenceId);
+    let item = {... itemFromId};
+    item.system.quantity = itemData.system.quantity;
+		let dontAdd = false;
+
+		if (item.type == "general")
+		{
+			let itemCheck = this.itemTypes.general.find(i => i.name == item.name);
+			let hasItem = !!itemCheck;
+
+			if (hasItem)
+			{
+				dontAdd = true;
+				await itemCheck.update({"system.quantity": itemCheck.system.quantity += itemData.system.quantity});
+			}
+		}
+
+		if (dontAdd)
+			return;
+
+		await this.createEmbeddedDocuments("Item", [item]);
+	}
 
     _prepareCastingFromItems(actorData)
     {
@@ -1508,6 +1533,8 @@ export default class ActorFC extends Actor {
         flawlessResult = 0;
 
       Chat.onSkillCheck(skillRoll, this, skillName, flawlessResult);
+
+      return skillRoll;
     }
     async rollCompetence()
     {

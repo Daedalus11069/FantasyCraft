@@ -1,7 +1,7 @@
 <form class="{{cssClass}} item-form flexcol" autocomplete="off">
 
     {{!-- Sheet Header --}}
-    <header class="sheet-header flexrow">
+    <header class="sheet-header large-header flexrow">
 
         <section class="header-details flexrow">
             
@@ -163,7 +163,7 @@
                     <ul class="category-body ability-scores">
                     {{#each actor.system.abilityScores as |ability name|}}
                         <li>
-                            <h4 class="ability-name flexcol" style="line-height: 20px">{{localize ability.label}}</h4>
+                            <h4 class="ability-name extra-space flexcol">{{localize ability.label}}</h4>
                         </li>
                         <li class="ability flex1 flexrow" data-ability={{name}}>
                             <div style="text-align: center">

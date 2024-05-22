@@ -392,6 +392,8 @@
 }
 .fantasycraft span.categorylabel {
   font-weight: bold;
+  flex: 0 0 90px;
+  text-align: right;
 }
 .fantasycraft .form-header {
   margin: 0 0 0.25em 0;
@@ -424,8 +426,8 @@
 }
 .fantasycraft .tooltip .tooltiptext {
   visibility: hidden;
-  width: 100px;
-  background-color: white;
+  background-color: floralwhite;
+  border: 2px outset tan;
   color: black;
   text-align: center;
   padding: 5px 0;
@@ -502,7 +504,7 @@
 }
 .sheet input[type="text"],
 .sheet input[type="number"] {
-  background: none;
+  background: rgba(0, 0, 0, 0.1);
   border: 1px solid transparent;
 }
 .sheet input[type="text"]:hover,
@@ -574,8 +576,13 @@
 .sheet .editor .tox-toolbar__primary {
   background: none;
 }
-.sheet .sheet-header {
+.sheet .small-header {
+  flex: 0 0 80px;
+}
+.sheet .large-header {
   flex: 0 0 160px;
+}
+.sheet .sheet-header {
   border-bottom: 2px groove #eeede0;
   /* Character Name */
   /* Profile Image */
@@ -621,9 +628,9 @@
   border-left: 2px groove #eeede0;
 }
 .sheet .sheet-header img.profile-left {
-  flex: 0 0 160px;
-  max-width: 160px;
-  height: 160px;
+  flex: 0 0 80px;
+  max-width: 80px;
+  height: 80px;
   object-fit: contain;
   border: none;
 }
@@ -643,6 +650,7 @@
 }
 .sheet .sheet-navigation {
   flex: 0 0 30px;
+  margin-top: 0px !important;
   margin-bottom: 5px;
   font-family: "Freebooter", "Palatino Linotype", serif;
   font-size: 20px;
@@ -773,13 +781,18 @@ h4.box-title {
 }
 h4.ability-name {
   min-width: 100px;
-  line-height: 35px;
-  margin: 4px 8px 2px;
+  line-height: 25px;
+  margin: 0px 8px;
   font-family: "Freebooter", "Palatino Linotype", serif;
   font-size: 20px;
   font-weight: 700;
   font-size: 17px;
   text-align: center;
+}
+h4.extra-space {
+  line-height: 35px;
+  padding-top: 4px;
+  padding-bottom: 2px;
 }
 h1.chat-window-header {
   justify-content: center;
@@ -810,10 +823,19 @@ textarea.text-area {
   max-width: 100%;
   height: 175px;
 }
+.center-contents {
+  justify-content: center;
+}
+.center-text {
+  text-align: center;
+}
 .fantasycraft.item .item-form header {
   background: url(../fantasycraft/assets/ui/header2.png) repeat-x local;
   background-size: auto;
   color: white;
+}
+.fantasycraft.item .item-form header li.flex200 {
+  flex: 0 0 200px;
 }
 .fantasycraft.item .item-form header input {
   color: white;
@@ -821,10 +843,16 @@ textarea.text-area {
 .fantasycraft.item .item-form header select {
   color: white;
 }
+.fantasycraft.item .item-form header select option {
+  background: #0e0e3c;
+}
+.fantasycraft.item .item-form .large-font {
+  font-size: 15px;
+}
 .fantasycraft.sheet.item {
   min-width: 600px;
   max-width: 685px;
-  min-height: 525px;
+  min-height: 275px;
 }
 .fantasycraft.sheet.item input.short {
   max-height: 15px;
@@ -845,6 +873,16 @@ textarea.text-area {
   position: relative;
   padding: 5px;
   max-height: 120px;
+}
+.fantasycraft.sheet.item header.trick-header {
+  position: relative;
+  padding: 5px;
+  max-height: 95px;
+}
+.fantasycraft.sheet.item header.path-header {
+  position: relative;
+  padding: 5px;
+  max-height: 55px;
 }
 .fantasycraft.sheet.item .sheet-header .attributes {
   flex: 0 0 100%;
@@ -903,9 +941,62 @@ textarea.text-area {
 .fantasycraft.sheet.item ul.attributes li.attribute .button a:hover {
   background-color: white;
 }
+.fantasycraft.sheet.item header .header-input-field {
+  background: rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+.fantasycraft.sheet.item header .footer-text {
+  text-align: center;
+  font-size: x-small;
+}
+.fantasycraft.sheet.item .sub-navigation {
+  max-height: 20px;
+  padding-left: 30%;
+  padding-right: 30%;
+  text-align: center;
+}
+.fantasycraft.sheet.item .remove-flex {
+  flex: none;
+}
+.fantasycraft.sheet.item .shopping-pane {
+  min-height: 200px;
+  border: 1px groove grey;
+  background-color: rgba(0, 26, 100, 0.12);
+}
+.fantasycraft.sheet.item .shopping-pane .item-list-entry {
+  max-height: 18px;
+  background-image: linear-gradient(to right, lightcyan, lightblue);
+  border: 2px outset lightblue;
+  margin: 1px;
+  overflow: hidden;
+}
+.fantasycraft.sheet.item .shopping-pane .item-list-entry .item-cost {
+  flex: 0 0 60px;
+  text-align: right;
+}
+.fantasycraft.sheet.item .shopping-pane .item-list-entry .item-detail {
+  flex: 0 0 60px;
+  text-align: center;
+}
+.fantasycraft.sheet.item .shopping-pane .item-list-entry .item-icons {
+  flex: 0 0 35px;
+  text-align: right;
+}
+.fantasycraft.sheet.item .item-list-header {
+  max-height: 18px;
+}
+.fantasycraft.sheet.item .item-list-header .item-detail {
+  flex: 0 0 60px;
+  text-align: center;
+}
+.fantasycraft.sheet.item .item-list-header .item-icons {
+  flex: 0 0 35px;
+  text-align: right;
+}
 .fantasycraft.sheet.item .itemName {
   text-align: center;
   flex: 0 0 100%;
+  margin-bottom: 2px;
 }
 .fantasycraft.sheet.item .item-subtitle {
   text-align: center;
@@ -920,12 +1011,20 @@ textarea.text-area {
   text-align: left;
 }
 .fantasycraft.sheet.item .item-customization-section {
-  padding: 2px 16px;
+  padding: 2px 8px;
   line-height: 1.4;
+  font-family: 'Freebooter';
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 700;
+  src: url('fonts/FREEBOOT.woff') format('woff'), url('fonts/FREEBOOT.woff2') format('woff2'), url('fonts/FREEBOOT.otf') format('opentype');
 }
 .fantasycraft.sheet.item .item-customization-section.margins {
   margin-top: 3px;
   margin-bottom: 3px;
+}
+.fantasycraft.sheet.item .item-customization-section > select {
+  font-size: 16px !important;
 }
 .fantasycraft.sheet.item .item-customization-section > div {
   display: flex;
@@ -938,11 +1037,23 @@ textarea.text-area {
   align-items: center;
   gap: 4px;
 }
+.fantasycraft.sheet.item .item-customization-section > div > select {
+  font-size: 16px !important;
+}
 .fantasycraft.sheet.item .item-customization-section > div > input {
   text-align: right;
 }
+.fantasycraft.sheet.item .minimal-flex {
+  flex: 0 0 0px;
+}
 .fantasycraft.sheet.item .item-upgrades label.checkbox {
   flex: 0 0 98px;
+}
+.fantasycraft.sheet.item .capitalize {
+  text-transform: capitalize;
+}
+.fantasycraft.sheet.item select {
+  font-size: 16px;
 }
 .body {
   font-family: 'ariel';

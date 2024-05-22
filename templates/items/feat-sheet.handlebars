@@ -5,13 +5,14 @@
         <h1 class="itemName flexrow">
             <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.ItemName' }}"/>
         </h1>
-        <div class="item-subtitle flexrow">
-            <input name="system.flavorText" type="text" value="{{item.system.flavorText}}" placeholder="{{ localize 'fantasycraft.flavorText' }}"/>
+        <div class="item-subtitle">
+            <input class="header-input-field" name="system.flavorText" type="text" value="{{item.system.flavorText}}" placeholder="{{ localize 'fantasycraft.flavorText' }}"/>
+            <footer class="footer-text">{{localize "fantasycraft.flavorText"}}</footer>
         </div>
 
         <div class="flexrow">
-            <ul class="flexrow">
-                <li>
+            <ul class="flexrow center-contents">
+                <li class="center-text">
                     <select name="system.featType"> 
                         {{#select item.system.featType}}
                             {{#each config.featType as |name type|}}
@@ -19,12 +20,15 @@
                             {{/each}}
                         {{/select}}
                     </select>
+                    <footer class="footer-text">{{ localize 'fantasycraft.feat' }} {{ localize 'fantasycraft.type' }}</footer>
                 </li>
-                <li>
-                    <input type="text" name="system.prerequisites" value="{{item.system.prerequisites}}" placeholder="{{ localize 'fantasycraft.prerequisite' }}"/>
+                <li style="flex: 0 0 200px">
+                    <input type="text" class="header-input-field" name="system.requirement" value="{{item.system.requirement}}" placeholder="{{ localize 'fantasycraft.prerequisite' }}"/>
+                    <footer class="footer-text">{{ localize 'fantasycraft.prerequisite' }}</footer>
                 </li>
-                <li>
-                    <input type="text" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.source' }}"/>
+                <li style="flex: 0 0 200px">
+                    <input type="text" class="header-input-field" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.source' }}"/>
+                    <footer class="footer-text">{{ localize 'fantasycraft.source' }}</footer>
                 </li>
             </ul>
         </div>

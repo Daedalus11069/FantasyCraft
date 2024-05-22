@@ -1290,7 +1290,7 @@ fantasycraft.stanceEffects =
 	maxDamage: "fantasycraft.maxWeaponDamage",
 	dr: "fantasycraft.dr",
 	reduceHandRequirement: "fantasycraft.reduceHandRequirement",
-	increaseAttributes: "fantasycraft.increasesAttribute",
+	increaseAttributes: "fantasycraft.increaseAttribute",
 	skillBonus: "fantasycraft.skillBonus",
 	reduceThreat: "fantasycraft.reduceThreat",
 	conditionImmunity: "fantasycraft.conditionImmunity"

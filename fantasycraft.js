@@ -73,7 +73,8 @@ Hooks.once("init", function () {
 			'spell',
 			'trick',
 			'stance',
-			'weapon'
+			'weapon',
+			'store'
 		],
 		makeDefault: true 
 	});

@@ -1,0 +1,230 @@
+<form class="{{cssClass}} item-form flexcol" autocomplete="off">
+
+    {{!-- Item Sheet Header --}}
+    <header class="itemHeader">
+        <h1 class="itemName flexrow">
+            <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
+        </h1>
+        {{!-- TODO: need to add code here to make it so that this is only visible to GMs --}}
+    </header>
+    <nav class="sheet-navigation sheet-tabs" {{#unless isGM}} style="visibility: hidden; max-height: 0px" {{/unless}}data-group="primary">
+        <a class="item active" data-tab="store">{{ localize "fantasycraft.store" }}</a>
+        {{!--<a class="item" data-tab="gm-control-panel">{{ localize "fantasycraft.controlPanel" }}</a> --}}
+    </nav>
+    <section class="sheet-body">
+
+        <div class="tab attributes flexcol" data-group="primary" data-tab="store">
+          {{!-- if the store is set to "Shop" mode have a field that shows all items available for sale from that shop, when selected will move down to another field of a shopping cart--}}
+          {{!-- if the store is set to "free-buy" mode have a field where you can drag items in freely, essentially just dragging items directly into the shopping cart. --}}
+          {{#if isGM}}
+          <section class="flexrow sub-navigation">
+              <div>
+                <label>{{localize "fantasycraft.store"}}</label>
+                <input type="radio" class="freeBuy" name="freeBuy" value="false">
+              </div>
+              <div>
+                <label>{{localize "fantasycraft.freeBuy"}}</label>
+                <input type="radio" class="freeBuy" name="freeBuy" value="true">
+              </div>
+          </section>
+          {{/if}}
+          <section class="flexrow">
+              <div class="flex5 flexcol">
+                {{#if item.system.freeBuy}}
+                {{else}}
+                <div class="remove-flex">
+                  <div class="flexrow item-list-header">
+                    <label>{{localize "fantasycraft.store"}}</label>
+                    <div class="item-detail">{{localize "fantasycraft.itemType"}}</div>
+                    <div class="item-detail">{{localize "fantasycraft.cost"}}</div>
+                    <div class="item-detail {{#if isGM}}tooltip{{/if}}">{{localize "fantasycraft.quantity"}}
+                      {{#if isGM}}
+                        <div class="tooltiptext" style="width: 150px; font-family: signika">
+                          {{localize "fantasycraft.Dialog.changeValueTooltipText"}}
+                        </div>
+                      {{/if}}
+                    </div>
+                    <div class="item-icons"></div>
+                  </div>
+                  <div class="flex6 shopping-pane item-list flexcol" name="store">
+                    {{#each item.system.storeArray}}
+                      <div class="flexrow item-list-entry" id="{{name}}">
+                        <div>{{name}}</div>
+                        <div class="item-detail">
+                          {{#compare type "general" opperator="=="}}
+                          {{system.itemType}}
+                          {{/compare}}
+                          {{#compare type "general" opperator="!="}}
+                          {{type}}
+                          {{/compare}}
+                        </div>
+                        <div class="item-cost">
+                          {{system.newCost}}
+                          {{#compare system.currency "Silver" opperator="=="}}
+                            <span class="tooltip" style="background-color: initial; border: none"><i class="fas fa-coins">
+                              <div class="tooltiptext" style="font-family: signika">
+                                {{localize "fantasycraft.silver"}}
+                              </div>
+                            </i>
+                            </span>
+                          {{/compare}}
+                          {{#compare system.currency "Reputation" opperator="=="}}
+                            <span class="tooltip" style="background-color: initial; border: none"><i class="fas fa-star">
+                              <div class="tooltiptext" style="font-family: signika">
+                                {{localize "fantasycraft.reputation"}}
+                              </div>
+                            </i>
+                            </span>
+                          {{/compare}}
+                        </div>
+                        
+                        <div class="item-detail">
+                          {{#if ../isGM}}
+                          <a class="decrease">
+                              <i class="fas fa-minus"></i>
+                          </a>
+                          {{/if}}
+
+                          {{system.quantity}}
+                          
+                          {{#if ../isGM}}
+                          <a class="increase">
+                              <i class="fas fa-plus"></i>
+                          </a>
+                          {{/if}}
+                        </div>
+                        
+                        <div class="item-icons">
+                          {{#if ../isGM}}
+                          <a class="deleteItem" style="float: right; margin-left: 6px">
+                              <i class="fas fa-trash"></i>
+                          </a>
+                          {{/if}}
+                          <a class="moveItem" style="float: right;">
+                              <i class="fas fa-arrow-down"></i>
+                          </a>
+                        </div>
+                      </div>
+                    {{/each}}
+                  </div>
+                </div>
+                {{/if}}
+                <div>
+                  <div class="flexrow item-list-header">
+                    <label>{{localize "fantasycraft.shoppingCart"}}</label>
+                    <div class="item-detail">{{localize "fantasycraft.itemType"}}</div>
+                    <div class="item-detail">{{localize "fantasycraft.cost"}}</div>
+                    <div class="item-detail {{#if item.system.freeBuy}}tooltip{{/if}}">{{localize "fantasycraft.quantity"}}
+                      {{#if item.system.freeBuy}}
+                        <div class="tooltiptext" style="width: 150px; font-family: signika">
+                          {{localize "fantasycraft.Dialog.changeValueTooltipText"}}
+                        </div>
+                      {{/if}}
+                    </div>
+                    <div class="item-icons"></div>
+                  </div>
+                  <div class="flex6 shopping-pane item-list flexcol" name="cart">
+                    {{#each item.system.shoppingCart}}
+                      <div class="flexrow item-list-entry" id="{{name}}">
+                        <div>{{name}}</div>
+                          <div class="item-detail">
+                        {{#if (eq type "general")}}
+                            {{system.itemType}}
+                            {{else}}
+                            {{type}}
+                        {{/if}}
+                          </div>
+                        <div class="item-cost">
+                          {{system.newCost}}
+                          {{#compare system.currency "Silver" opperator="=="}}
+                            <span class="tooltip" style="background-color: initial; border: none"><i class="fas fa-coins">
+                              <div class="tooltiptext" style="font-family: signika">
+                                {{localize "fantasycraft.silver"}}
+                              </div>
+                            </i>
+                            </span>
+                          {{/compare}}
+                          {{#compare system.currency "Reputation" opperator="=="}}
+                            <span class="tooltip" style="background-color: initial; border: none"><i class="fas fa-star">
+                              <div class="tooltiptext" style="font-family: signika">
+                                {{localize "fantasycraft.reputation"}}
+                              </div>
+                            </i>
+                            </span>
+                          {{/compare}}
+                        </div>
+
+                        <div class="item-detail">
+                          {{#if ../item.system.freeBuy}}
+                          <a class="decrease">
+                              <i class="fas fa-minus"></i>
+                          </a>
+                          {{/if}}
+
+                          {{system.quantity}}
+                          
+                          {{#if ../item.system.freeBuy}}
+                          <a class="increase">
+                              <i class="fas fa-plus"></i>
+                          </a>
+                          {{/if}}
+                        </div>
+
+                        <div class="item-icons">
+                          {{#if ../item.system.freeBuy}}
+                          <a class="deleteItem" style="float: right; margin-left: 6px">
+                              <i class="fas fa-trash"></i>
+                          </a>
+                          {{else}}
+                          <a class="moveItem" style="float: right;">
+                              <i class="fas fa-arrow-up"></i>
+                          </a>
+                          {{/if}}
+                        </div>
+                      </div>
+                    {{/each}}
+                  </div>
+                  <div class="flexrow item-list-header">
+                    <label>{{localize "fantasycraft.total"}}</label>
+                    <div class="item-detail"></div>
+                    <div class="item-detail">
+                      {{silverTotal}} <i class="fas fa-coins"></i>
+                      <br>
+                      {{reputationTotal}} <i class="fas fa-star"></i>
+                    </div>
+                    <div class="item-detail"></div>
+                    <div class="item-icons"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex2">
+                  {{!-- at the bottom there will be a "purchase" button --}}
+                <div class="itemName">
+                    <input class="itemName" name="system.silverOnHand" value="{{item.system.silverOnHand}}" disabled="true"></input>
+                    <footer>{{localize "fantasycraft.silver"}}</footer>
+                </div>
+                {{#if item.system.canBeHaggled}}
+                  {{#if item.system.hasBeenHaggled}}
+                  <button class="" style="background-color: darkred; text-decoration: line-through" disabled="true">{{localize "fantasycraft.haggle"}}</button>
+                  {{else}}
+                  <button class="haggle">{{localize "fantasycraft.haggle"}}</button>
+                  {{/if}}
+                {{/if}}
+                <button class="buy">{{localize "fantasycraft.buy"}}</button>
+                {{#if isGM}}
+                <input type="checkbox" name="system.canBeHaggled" data-dtype="Boolean" {{checked item.system.canBeHaggled}}> 
+                {{localize "fantasycraft.canBeHaggled"}}
+                <div>
+                  {{#if item.system.canBeHaggled}}
+                    <button class="resetHaggle">{{localize "fantasycraft.resetHaggle"}}</button>
+                  {{/if}}
+                </div>
+                {{/if}}
+              </div>
+          </section>
+        </div>
+        <div class="tab attributes flexcol" data-group="primary" data-tab="gm-control-panel">
+          test
+        </div>
+    </section>
+</form>

@@ -65,6 +65,8 @@
     span.categorylabel 
     {
       font-weight: bold;
+      flex: 0 0 90px;
+      text-align: right;
     }
   
     // Form Headers
@@ -103,8 +105,8 @@
 
     .tooltip .tooltiptext {
         visibility: hidden;
-        width: 100px;
-        background-color: white;
+        background-color: floralwhite;
+        border: 2px outset tan;
         color: black;
         text-align: center;
         padding: 5px 0;
@@ -180,7 +182,7 @@
     // Input Fields
     input[type="text"],
     input[type="number"] {
-      background: none;
+      background: rgba(0, 0, 0, 0.1);
       border: 1px solid transparent;
       &:hover,
       &:focus {
@@ -281,8 +283,17 @@
     /*  Sheet Header                             */
     /* ----------------------------------------- */
   
-    .sheet-header {
+    .small-header
+    {
+      flex: 0 0 80px;
+    }
+
+    .large-header
+    {
       flex: 0 0 @headerHeight;
+    }
+
+    .sheet-header{
       border-bottom: @borderGroove;
   
       .header-details {
@@ -290,8 +301,6 @@
           .title-font();
       }
 
-      
-  
       ul.summary {
         height: 30px;
         border-bottom: @borderGroove;
@@ -335,9 +344,9 @@
 
       img.profile-left 
       {
-        flex: 0 0 @headerHeight;
-        max-width: @headerHeight;
-        height: @headerHeight;
+        flex: 0 0 80px;
+        max-width: 80px;
+        height: 80px;
         object-fit: contain;
         border: none;
       }
@@ -368,6 +377,7 @@
   
     .sheet-navigation {
       flex: 0 0 @navHeight;
+      margin-top: 0px !important;
       margin-bottom: 5px;
       .title-font();
       text-align: center;
@@ -539,11 +549,18 @@ h4.box-title {
 
 h4.ability-name{
     min-width: 100px;
-    line-height: 35px;
-    margin: 4px 8px 2px;
+    line-height: 25px;
+    margin: 0px 8px;
     .title-font();
     font-size: 17px;
     text-align: center;
+}
+
+h4.extra-space
+{
+  line-height: 35px;
+  padding-top: 4px;
+  padding-bottom: 2px;
 }
 
 h1
@@ -589,4 +606,14 @@ textarea.text-area
   min-width: 100%;
   max-width: 100%;
   height: 175px;
+}
+
+.center-contents
+{
+  justify-content: center;
+}
+
+.center-text
+{
+  text-align: center;
 }

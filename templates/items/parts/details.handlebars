@@ -1,7 +1,7 @@
 <div>
     {{!Checkboxes, when checked grants access to below fields.}}
     <div class="form-group item-customization-section">
-        <div>
+        {{! Ability Scores}}
         <label>{{localize "fantasycraft.changesAbilityScore"}}</label>
         <input type="checkbox" name="system.changeAbility" data-dtype="Boolean" {{checked item.system.changeAbility}} />
             {{!Ability change area with fields to change 1 Ability.}}
@@ -13,12 +13,9 @@
                 {{/each}}
                 {{/select}}
             </select>
-            <input class="mediumField" type="number" name="system.ability.value" value="{{item.system.ability.value}}" />
+            <input class="narrowField minimal-flex" type="number" name="system.ability.value" value="{{item.system.ability.value}}" />
             {{/if}}
-        </div>
-    </div>
-    <div class="form-group item-customization-section">
-        <div>
+
         <label>{{localize "fantasycraft.changesSavingThrow"}}</label>
         <input type="checkbox" name="system.changeSave" data-dtype="Boolean" {{checked item.system.changeSave}} />
         
@@ -33,9 +30,9 @@
             {{/select}}
         </select>
 
-        <input class="mediumField" type="number" name="system.save.value" value="{{item.system.save.value}}" />
+        <input class="narrowField minimal-flex" type="number" name="system.save.value" value="{{item.system.save.value}}" />
         {{/if}}
-        </div>
+
     </div>
     <div class="form-group item-customization-section">
         <div>
@@ -47,7 +44,7 @@
     {{#if item.system.changeSkill}}    
     <div class="form-group item-customization-section">
         <label>{{localize "fantasycraft.skillBonus"}}:</label> 
-        <input class="mediumField" type="number" name="system.skill.value" value="{{item.system.skill.value}}" />
+        <input class="narrowField minimal-flex" type="number" name="system.skill.value" value="{{item.system.skill.value}}" placeholder="0"/>
         
         <select name="system.skill.skill1"> 
             {{#select item.system.skill.skill1}}
@@ -56,14 +53,12 @@
             {{/each}}
             {{/select}}
         </select>
-        <span style="text-align: center;"> {{localize "fantasycraft.threat"}}:
-        <input class="mediumField" type="number" name="system.skill.skill1Threat" value="{{item.system.skill.skill1Threat}}" />
+        <span style="flex: 0 0 75px;"> {{localize "fantasycraft.threat"}}:
+        <input class="narrowField minimal-flex" type="number" name="system.skill.skill1Threat" value="{{item.system.skill.skill1Threat}}"  placeholder="20"/>
         </span>
-    </div>
 
-    <div class="form-group item-customization-section">
         <label>{{localize "fantasycraft.skillBonus"}}:</label> 
-        <input class="mediumField" type="number" name="system.skill.value2" value="{{item.system.skill.value2}}" />
+        <input class="narrowField minimal-flex" type="number" name="system.skill.value2" value="{{item.system.skill.value2}}"  placeholder="0"/>
         <select name="system.skill.skill2"> 
             {{#select item.system.skill.skill2}}
             {{#each config.skills as |name type|}}
@@ -71,27 +66,33 @@
             {{/each}}
             {{/select}}
         </select>
-        <span style="text-align: center;"> {{localize "fantasycraft.threat"}}:
-        <input class="mediumField" type="number" name="system.skill.skill2Threat" value="{{item.system.skill.skill2Threat}}" />
+        <span style="flex: 0 0 75px;"> {{localize "fantasycraft.threat"}}:
+        <input class="narrowField minimal-flex" type="number" name="system.skill.skill2Threat" value="{{item.system.skill.skill2Threat}}"  placeholder="20"/>
         </span>
     </div>
     <div class="form-group item-customization-section">
-        <label>{{localize "fantasycraft.skillBonus"}}:</label> 
-        <input class="mediumField" type="number" name="system.skill.value3" value="{{item.system.skill.value3}}" />
-        <select name="system.skill.skill3"> 
-            {{#select item.system.skill.skill3}}
-            {{#each config.skills as |name type|}}
-                <option value="{{name}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
-        </select>
-        <span style="text-align: center;"> {{localize "fantasycraft.threat"}}:
-        <input class="mediumField" type="number" name="system.skill.skill3Threat" value="{{item.system.skill.skill3Threat}}" />
-        </span>
+        <div style="flex: 50%">
+            <label>{{localize "fantasycraft.skillBonus"}}:</label> 
+            <input class="narrowField minimal-flex" type="number" name="system.skill.value3" value="{{item.system.skill.value3}}"  placeholder="0"/>
+            <select name="system.skill.skill3" style="font-size: 16px"> 
+                {{#select item.system.skill.skill3}}
+                {{#each config.skills as |name type|}}
+                    <option value="{{name}}">{{localize name}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            <span style="flex: 0 0 75px;"> {{localize "fantasycraft.threat"}}:
+            <input class="narrowField minimal-flex" type="number" name="system.skill.skill3Threat" value="{{item.system.skill.skill3Threat}}"  placeholder="20"/>
+            </span>
+        </div>
+        <div style="flex: 50%">
+            
+        </div>
     </div>
     {{/if}}
 
     <div class="form-group item-customization-section">
+        {{! Movement}}
         <label>{{localize "fantasycraft.changesMovementSpeed"}}</label>
         <input type="checkbox" name="system.changeSpeed" data-dtype="Boolean" {{checked item.system.changeSpeed}} />
         {{#if item.system.changeSpeed}}
@@ -102,10 +103,10 @@
             {{/each}}
             {{/select}}
         </select>
-        <input class="mediumField" type="number" name="system.movement.value" value="{{item.system.movement.value}}" />
+        <input class="narrowField minimal-flex" type="number" name="system.movement.value" value="{{item.system.movement.value}}" />
         {{/if}}
-    </div>
-    <div class="form-group item-customization-section">
+        
+        {{! Lifestyle}}
         <label>{{localize "fantasycraft.changesLifeStyle"}}</label>            
         <input type="checkbox" name="system.changeLifestyle" data-dtype="Boolean" {{checked item.system.changeLifestyle}} />
         {{#if item.system.changeLifestyle}}
@@ -117,10 +118,12 @@
             {{/select}}
         </select>
         <span>{{localize "fantasycraft.bonus"}}: </span>
-        <input class="mediumField" type="number" name="system.lifestyle.value" value="{{item.system.lifestyle.value}}" />
+        <input class="narrowField minimal-flex" type="number" name="system.lifestyle.value" value="{{item.system.lifestyle.value}}" />
         {{/if}}
     </div>
+
     <div class="form-group item-customization-section">
+        {{! Natural Attacks}}
         <label>{{localize "fantasycraft.addsNaturalAttack"}}</label>
         <input type="checkbox" name="system.grantsNaturalAttack" data-dtype="Boolean" {{checked item.system.grantsNaturalAttack}} />
         {{#if item.system.grantsNaturalAttack}}
@@ -131,10 +134,10 @@
             {{/each}}
             {{/select}}
         </select>
-        <input class="mediumField" type="number" name="system.naturalAttack.grade" value="{{item.system.naturalAttack.grade}}" />
+        <input class="narrowField minimal-flex" type="number" name="system.naturalAttack.grade" value="{{item.system.naturalAttack.grade}}" />
         {{/if}}
-    </div>
-    <div class="form-group item-customization-section">
+        
+        {{! Resistances}}
         <label>{{localize "fantasycraft.grantsResistance"}}</label>
         <input type="checkbox" name="system.grantsResistance" data-dtype="Boolean" {{checked item.system.grantsResistance}} />
         {{#if item.system.grantsResistance}}
@@ -146,7 +149,7 @@
             {{/each}}
             {{/select}}
         </select>
-        <input class="mediumField" type="number" name="system.resistances.value1" value="{{item.system.resistances.value1}}" />
+        <input class="narrowField minimal-flex" type="number" name="system.resistances.value1" value="{{item.system.resistances.value1}}" />
         <select name="system.resistances.resistance2"> 
             {{#select item.system.resistances.resistance2}}
             <option value=""></option>
@@ -155,25 +158,24 @@
             {{/each}}
             {{/select}}
         </select>
-        <input class="mediumField" type="number" name="system.resistances.value2" value="{{item.system.resistances.value2}}" />
+        <input class="narrowField minimal-flex" type="number" name="system.resistances.value2" value="{{item.system.resistances.value2}}" />
         {{/if}}
+    </div>
+    <div class="form-group item-customization-section">
+        <label>{{localize "fantasycraft.trickOrStance"}}</label>
+        <input type="text" name="system.trick-stance1" value="{{item.system.trick-stance1}}" />
+    
+        <label>{{localize "fantasycraft.trickOrStance"}}</label>
+        <input type="text" name="system.trick-stance2" value="{{item.system.trick-stance2}}" />
     </div>
     <div class="form-group item-customization-section">
         {{!-- Item grants spells --}}
         <label>{{localize "fantasycraft.grantsSpells"}}: </label>
         <input type="checkbox" name="system.castingLevel" data-dtype="Boolean" {{checked item.system.castingLevel}}/>
-    </div>
+    
     {{!-- If the checkbox is checked set a flag based on the name of the feat --}}
-    <div class="form-group item-customization-section">
+    
         <label>{{localize "fantasycraft.featIsFlag"}}: </label>
         <input type="checkbox" name="system.containsFlag" data-dtype="Boolean" {{checked item.system.containsFlag}} />
-    </div>
-    <div class="form-group item-customization-section">
-        <label>{{localize "fantasycraft.trickOrStance"}}</label>
-        <input type="text" name="system.trick-stance1" value="{{item.system.trick-stance1}}" />
-    </div>
-    <div class="form-group item-customization-section">
-        <label>{{localize "fantasycraft.trickOrStance"}}</label>
-        <input type="text" name="system.trick-stance2" value="{{item.system.trick-stance2}}" />
     </div>
 </div>

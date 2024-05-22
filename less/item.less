@@ -4,21 +4,36 @@
 {
   .item-form
   {
-    header 
+    header
     {
       background: url(../fantasycraft/assets/ui/header2.png) repeat-x local;
       background-size: auto;
-      color: white
-    }
+      color: white;
 
+      li.flex200
+      {
+        flex: 0 0 200px;
+      }
+    }
+    
     header input
     {
-      color: white
+      color: white;
     }
-
+    
     header select
     {
-      color: white
+      color: white;
+      
+      option 
+      {
+        background: rgb(14, 14, 60);
+      }
+    }
+
+    .large-font
+    {
+      font-size: 15px;
     }
   }
 
@@ -28,7 +43,7 @@
 {
   min-width: 600px;
   max-width: 685px;
-  min-height: 525px;
+  min-height: 275px;
 
 
 
@@ -63,6 +78,21 @@
     max-height: 120px;
   }
   
+  header.trick-header
+  {
+    position: relative;
+    padding: 5px;
+    max-height: 95px;
+  }
+
+  header.path-header
+  {
+    position: relative;
+    padding: 5px;
+    max-height: 55px;
+  }
+
+
   //// Sheet Header ////
   .sheet-header
   {
@@ -141,11 +171,82 @@
         }
     }
 
+  header .header-input-field
+  {
+    background: rgba(0,0,0,0.25);
+    text-align: center;
+  }
+
+  header .footer-text
+  {
+    text-align: center;
+    font-size: x-small;
+  }
+
+  .sub-navigation
+  {
+    max-height: 20px;
+    padding-left: 30%;
+    padding-right: 30%;
+    text-align: center;
+  }
+
+  .remove-flex
+  {
+    flex: none;
+  }
+
+  .shopping-pane
+  {
+    min-height: 200px;
+    border: 1px groove grey;
+    background-color: rgba(0, 26, 100, 0.12);
+
+    .item-list-entry{
+      max-height: 18px;
+      background-image: linear-gradient(to right, lightcyan, lightblue);
+      border: 2px outset lightblue;
+      margin: 1px;
+      overflow: hidden;
+
+      .item-cost
+      {
+        flex: 0 0 60px;
+        text-align: right;
+      }
+      .item-detail
+      {
+        flex: 0 0 60px;
+        text-align: center;
+      }
+      .item-icons
+      {
+        flex: 0 0 35px;
+        text-align: right;
+      }
+    }
+  }
+
+  .item-list-header{
+    max-height: 18px;
+    
+    .item-detail
+    {
+      flex: 0 0 60px;
+      text-align: center;
+    }
+    .item-icons
+    {
+      flex: 0 0 35px;
+      text-align: right;
+    }
+  }
 
   .itemName
   {
       text-align: center;
       flex: 0 0 100%;
+      margin-bottom: 2px;
   }
   
   .item-subtitle
@@ -175,10 +276,15 @@
       margin-bottom: 3px;
     }
 
-    //TODO add font information
-    padding: 2px 16px;
+    padding: 2px 8px;
     line-height: 1.4;
+    .freebooter();
 
+    & > select
+    {
+      font-size: 16px !important;
+    }
+    
     & > div {
       display: flex;
       flex-direction: row;
@@ -191,16 +297,35 @@
         gap: 4px;
       }
 
+      & > select
+      {
+        font-size: 16px !important;
+      }
+
       & > input
       {
         text-align: right;
       }
+
     }  
   }
 
+  .minimal-flex
+  {
+    flex: 0 0 0px;
+  }
 
   .item-upgrades label.checkbox 
   {
     flex: 0 0 98px;
   } 
+
+  .capitalize 
+  {
+    text-transform: capitalize;
+  }
+  select 
+  {
+    font-size: 16px;
+  }
 }

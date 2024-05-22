@@ -1,29 +1,31 @@
 <form class="{{cssClass}} item-form flexcol" autocomplete="off">
 
     {{!-- Item Sheet Header --}}
-    <header class="sheet-header flexrow">
+    <header class="sheet-header small-header flexrow">
         <img class="profile-left" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
 
-        <div class="header-details flexcol">
-            <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
-            </h1>
+        <div>
+            <div class="header-details flexcol">
+                <h1 class="charname">
+                    <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
+                </h1>
+            </div>
 
-            <ul class="summary flexrow">
-                <li>
-                    <input type="text" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.Source' }}"/>
-                </li>
-            </ul>
-            {{!-- Item Sheet Navigation --}}
-            <nav class="sheet-navigation sheet-tabs" data-group="primary">
-                <a class="item active" data-tab="description">{{ localize "fantasycraft.description" }}</a>
-                <a class="item" data-tab="details">{{ localize "fantasycraft.details" }}</a>
-                {{#if item.system.isMagic}}
-                    <a class="item" data-tab="effects">{{ localize "fantasycraft.magic" }}</a>
-                {{/if}}
-            </nav>
+            <section>
+                <input type="text" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.source' }}"/>
+                <footer class="footer-text">{{ localize 'fantasycraft.source' }}</footer>
+            </section>
         </div>
     </header>
+
+    {{!-- Item Sheet Navigation --}}
+    <nav class="sheet-navigation sheet-tabs" data-group="primary">
+        <a class="item active" data-tab="description">{{ localize "fantasycraft.description" }}</a>
+        <a class="item" data-tab="details">{{ localize "fantasycraft.details" }}</a>
+        {{#if item.system.isMagic}}
+            <a class="item" data-tab="effects">{{ localize "fantasycraft.magic" }}</a>
+        {{/if}}
+    </nav>
 
     <section>
         <section class="sheet-body">
@@ -402,7 +404,7 @@
                     <div>
                         <label>{{ localize "fantasycraft.era" }}</label>
                         <div>
-                            <select style="width: 100px;" name="system.era">
+                            <select name="system.era">
                                 {{#select item.system.era}}
                                     {{#each config.eras as |name type|}}
                                         <option value="{{name}}">{{localize name}}</option>

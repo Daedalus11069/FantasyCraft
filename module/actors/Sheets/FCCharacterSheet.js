@@ -321,6 +321,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		if ( !dontAdd ) super._onDropItemCreate(itemData);
 	}
 
+
 	//Add or remove an ancestry from the character
 	async _alterAncestry(itemData, act, add)
 	{

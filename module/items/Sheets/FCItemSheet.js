@@ -1,5 +1,6 @@
 import TraitSelector from "../../apps/trait-selector.js";
 import ArmourResistance from "../../apps/armour-resistances.js";
+import { returnPlusOrMinusString } from "../../Utils.js";
 
 export default class FCItemSheet extends ItemSheet {
 
@@ -13,13 +14,23 @@ export default class FCItemSheet extends ItemSheet {
       tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}],
       classes: ["fantasycraft", "sheet", "item"],
       width: 600,
-      height: 700, 
+      height: 375, 
+      dragDrop: [{dragSelector: null, dropSelector: null}]
     });
   }
 
   // @override base getData
   async	getData(options)
 	{
+    if (this.item.type == "class" || this.item.type == "store")
+    {
+      this.position.height = 875;
+      this.position.width = 685;
+    }
+    else if (this.item.type == "trick" || this.item.type == "stance")
+    {
+      this.position.height = 300;
+    }
     const data = super.getData(options);
 
     const itemData = data;
@@ -30,6 +41,7 @@ export default class FCItemSheet extends ItemSheet {
 
     data.item = itemData.item;
     data.data = itemData.item.system;
+    data.isGM = game.user.isGM;
 
     if (data.item.type == "spell")
     {
@@ -90,6 +102,24 @@ export default class FCItemSheet extends ItemSheet {
       }
     }
 
+    if (data.item.type == "store")
+    {
+      let cart = this.item.system.shoppingCart;
+      let store = this.item.system.storeArray;
+
+      store.forEach(item => item.system.newCost = Math.round(item.system.cost * this.item.system.pricePercent));
+      cart.forEach(item => item.system.newCost = Math.round(item.system.cost * this.item.system.pricePercent));
+
+      let total = 0;
+      let repTotal = 0;
+      cart.forEach(function(item){
+        if (item.system.currency == "Silver") total += (item.system.newCost * item.system.quantity); 
+        if (item.system.currency == "Reputation") repTotal += (item.system.newCost * item.system.quantity); 
+      })
+      data.silverTotal = total;
+      data.reputationTotal = repTotal;
+    }
+
     return data;
 	}
 	
@@ -104,9 +134,17 @@ export default class FCItemSheet extends ItemSheet {
     }
 
     html.find('.charmSelecter').change(this._magicItemInformation.bind(this));
-    
     html.find('.essenceSelecter').change(this._magicItemInformation.bind(this));
 
+    html.find('.buy').click(this._purchaseItems.bind(this));
+    html.find('.haggle').click(this._haggleShop.bind(this));
+    html.find('.resetHaggle').click(this._resetHaggle.bind(this));
+    html.find('.freeBuy').change(this._changeShopType.bind(this));
+
+    html.find('.increase').click(this._increaseItem.bind(this));
+    html.find('.decrease').click(this._decreaseItem.bind(this));
+    html.find('.moveItem').click(this._move.bind(this));
+    html.find('.deleteItem').click(this._delete.bind(this));
 
 
     // Handle default listeners last so system listeners are triggered first
@@ -177,6 +215,49 @@ export default class FCItemSheet extends ItemSheet {
       
       option.cssClass = !isEmpty(option.selected) ? "" : "inactive";
     }
+  }
+
+  _canDragDrop(selector)
+  {
+    return true;
+  }
+
+  async _onDrop(itemData)
+  {
+
+    //get the item from the drag event
+    itemData = TextEditor.getDragEventData(itemData);
+    const itemFromID = await fromUuid(itemData.uuid)
+    let droppedItem = {... itemFromID};
+    const item = this.item;
+    
+    //if the dropped item does not have a cost or if this is not a store, return
+    if(droppedItem.system?.cost == undefined || item.type != "store")
+      return
+    
+    droppedItem.referenceId = itemData.uuid;
+
+    //figure out if this is going in the shopping cart directly or into a store inventory
+    let targetArray = (item.system.freeBuy) ? item.system.shoppingCart : item.system.storeArray;
+    let arrayString = (item.system.freeBuy) ? "system.shoppingCart" : "system.storeArray";
+
+    //only the GM can drop into store inventories, return if a player is trying to add an item to a store inventory
+    if (!game.user.isGM && !item.system.freeBuy)
+      return;
+
+    //if the item already exists in the store, increase the quantity, otherwise add it to the list
+    if (targetArray.find(a => (a.name == droppedItem.name && a.system?.itemType != "service")))
+    {
+      let _item = targetArray.find(a => a.name == droppedItem.name);
+      _item.system.quantity += 1;
+    }
+    else
+      targetArray.push(droppedItem);
+
+    //update the item and rerender the sheet
+    await item.update({[arrayString]: targetArray});
+
+    this.render(true);
   }
 
   _magicItemInformation(event)
@@ -271,5 +352,246 @@ export default class FCItemSheet extends ItemSheet {
     const choices = CONFIG.fantasycraft[element.dataset.options];
     const options = { name: element.dataset.target, title: label.innerText, choices };
     new ArmourResistance(this.item, options).render(true)
+  }
+
+  _purchaseItems(event)
+  {
+    const character = game.user.character; //Get the players character
+    const store = this.item.system;
+    let silverPrice = 0;
+    let repPrice = 0;
+    store.shoppingCart.forEach(function(item){
+      if (item.system.currency == "Silver") silverPrice += (item.system.newCost * item.system.quantity);
+      if (item.system.currency == "Reputation") repPrice += (item.system.newCost * item.system.quantity); 
+    })
+
+    //Make sure the player hasn't set any currency to null
+    if (character.system.coin.stake == null) character.system.coin.stake = 0;
+    if (character.system.coin.inHand == null) character.system.coin.inHand = 0;
+    if (character.system.reputationAndRenown.reputation == null) character.system.reputationAndRenown.reputation = 0
+
+    //Check to see if the player can afford their purchase
+    if (character.system.coin.inHand + character.system.coin.stake < silverPrice || character.system.reputationAndRenown.reputation < repPrice)
+    {
+      ui.notifications.warn(game.i18n.localize('fantasycraft.Dialog.youCantAffordThat'));
+      return;
+    }
+
+    ////// Take the money //////
+    //subtract from the coin in hand first, then from the stake if there was not enough in coin in hand
+    if (silverPrice > 0)
+      character.system.coin.inHand -= silverPrice;
+    if (character.system.coin.inHand < 0)
+    {
+      character.system.coin.stake += character.system.coin.inHand;
+      character.system.coin.inHand = 0;
+    }
+
+    if (repPrice > 0)
+    {
+      character.system.reputationAndRenown.reputation -= repPrice; 
+    }
+
+    character.update({"system.coin.stake": character.system.coin.stake});
+    character.update({"system.coin.inHand": character.system.coin.inHand});
+    character.update({"system.reputationAndRenown.reputation": character.system.reputationAndRenown.reputation});
+
+    ////// Give the items //////
+    store.shoppingCart.forEach(function(item){
+      if (item.system?.itemType != "service") character.onCreateItemFromStore(item);
+    })
+
+    store.shoppingCart = [];
+
+    this.item.update({"system.shoppingCart": store.shoppingCart});
+
+  }
+
+  async _haggleShop(event)
+  {
+    if(game.user.isGM)
+    {
+      console.log("GM cannot currently haggle in shops");
+      return;
+    }
+    const character = game.user.character; //Get the players character
+    const level = character.system.careerLevel.value; //get the players level
+    const merchantHaggleSkill = CONFIG.fantasycraft.npcSignatureSkills['X'][(level-1)] //get the merchants haggle skill (look at the Haggle table for skill grade X at the players level)
+    const store = this.item.system;
+    let rollFormula = "1d20 + " + merchantHaggleSkill; // roll a haggle roll for the merchant
+    let merchantRoll = new Roll(rollFormula);
+    merchantRoll.evaluate({async: false});
+  
+    let playerRoll = await character.rollSkillCheck("haggle").total;
+    let merchantTotal = merchantRoll.total;
+
+    store.hasBeenHaggled = true;
+
+    await this.item.update({"system.hasBeenHaggled": true});
+
+    if (playerRoll == merchantTotal)
+      return;
+
+    let difference = playerRoll - merchantTotal;
+    let newPrice;
+
+    if (difference >= 10)
+      newPrice = 0.5;
+    else if (difference >= 7)
+      newPrice = 0.6;
+    else if (difference >= 4)
+      newPrice = 0.8;
+    else if (difference >= 1)
+      newPrice = 0.9;
+    else if (difference >= -3)
+      newPrice = 1.1;
+    else if (difference >= -6)
+      newPrice = 1.2;  
+    else if (difference >= -9)
+      newPrice = 1.4;
+    else
+      newPrice = 1.5;
+
+    await this.item.update({"system.pricePercent": newPrice});
+
+    console.log("Merchant Roll: " + merchantTotal)
+    this.render(true);
+  }
+
+  _resetHaggle(event)
+  {
+    event.preventDefault();
+    this.item.update({"system.hasBeenHaggled": false});
+
+    this.render(true)
+  }
+
+  _increaseItem(event)
+  {
+    event.preventDefault();
+    this._changeQuantity(event, "up");
+  }
+
+  _decreaseItem(event)
+  {
+    event.preventDefault();
+    this._changeQuantity(event, "down");
+
+  }
+
+  _changeQuantity(event, direction)
+  {
+    const element = event.currentTarget;
+    const list = element.parentElement.parentElement.parentElement.parentElement.querySelector("label").innerText;
+    const array = (list == "Store") ? this.item.system.storeArray : this.item.system.shoppingCart;
+    const itemName = element.parentElement.parentElement.id;
+    let string = (list == "Store") ? "system.storeArray" : "system.shoppingCart";
+    let quantity = 0;
+
+    //you can't increase the number of mail delivery they own.
+    if (direction == "up" && array.find(a => a.name == itemName).system?.itemType == "service")
+      return;
+
+    //holding shift increases by 5, ctrl by 10, alt by 20 and ctrl+shift by 100
+    if (!event?.ctrlKey && event?.shiftKey)
+      quantity += 5
+    else if (event?.ctrlKey && !event?.shiftKey)
+      quantity += 10
+    else if (event?.altKey)
+      quantity += 20
+    else if (event?.ctrlKey && event?.shiftKey)
+      quantity += 100
+    else
+      quantity += 1
+
+    if (direction == "down")
+      {
+      //if there is exactly 1 of an item when you decrease, just delete the item  
+      if (array.find(a => a.name == itemName).system.quantity == 1)
+      {
+        this._delete(event);
+        return;
+      }
+      //otherwise convert the change value to a negative number
+      quantity *= -1;
+    }
+
+    //increase or decrease the quantity of the item based on the change value
+    array.find(a => a.name == itemName).system.quantity += quantity;
+    
+    //if this causes a negative number change it to 1. This does not delete to allow the functionality of decreasing something from 87 to 1 if you want it to still be on the list but not go through the trouble of several different key modifiers to get to the right number. 
+    if (array.find(a => a.name == itemName).system.quantity < 1)
+      array.find(a => a.name == itemName).system.quantity = 1;
+
+
+    this.item.update({[string]: array});
+  }
+
+  _changeShopType(event)
+  {
+    event.preventDefault();
+    const element = event.currentTarget;
+    element.checked = true;
+    let freeBuy = (element.value == "false") ? false : true;
+    this.item.update({"system.freeBuy": freeBuy});
+  }
+
+  async _move(event)
+  {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const list = element.parentElement.parentElement.parentElement.parentElement.querySelector("label").innerText;
+    
+    //establish our source and destination arrays
+    const sourceArray = (list == "Store") ? this.item.system.storeArray : this.item.system.shoppingCart;
+    const destinationArray = (list == "Store") ? this.item.system.shoppingCart : this.item.system.storeArray;
+    const itemName = element.parentElement.parentElement.id;
+    
+    //source and destination strings for update later
+    const sourceString = (list == "Store") ? "system.storeArray" : "system.shoppingCart";
+    const destinationString = (list == "Store") ? "system.shoppingCart" : "system.storeArray";
+    
+    let newArray = sourceArray;
+    //get the item we're moving from the source list.
+    let listEntry = sourceArray.filter(a => a.name == itemName)
+    if ((listEntry[0].system.quantity == 1 || event?.shiftKey) && listEntry[0].system?.itemType != "service")
+    {
+      newArray = sourceArray.filter(a => a.name != itemName)
+    }
+    
+    //check and see if the receiving list has the same item on it
+    let destinationItem = destinationArray.find(a => a.name == itemName)
+    if(destinationItem)
+    {
+      if (destinationItem.system?.itemType != "service")
+        destinationItem.system.quantity += (event?.shiftKey) ? listEntry[0].system.quantity : 1;
+    }
+    else
+    {
+      destinationArray.push(listEntry[0])
+    }
+
+    if (!event?.shiftKey && listEntry[0].system?.itemType != "service")
+      listEntry[0].system.quantity -= 1;
+
+    await this.item.update({[sourceString]: newArray})
+
+    if(destinationItem == undefined)
+      destinationArray.find(a => a.name == itemName).system.quantity = 1;
+
+    await this.item.update({[destinationString]: destinationArray})
+  }
+
+
+  _delete(event)
+  {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const list = element.parentElement.parentElement.parentElement.parentElement.querySelector("label").innerText;
+    let array = (list == "Store") ? this.item.system.storeArray : this.item.system.shoppingCart;
+    const itemName = element.parentElement.parentElement.id;
+    let string = (list == "Store") ? "system.storeArray" : "system.shoppingCart";
+    let newArray = array.filter(a => a.name != itemName)
+    this.item.update({[string]: newArray})
   }
 }

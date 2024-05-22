@@ -1,38 +1,34 @@
-<form class="{{cssClass}}" autocomplete="off">
+<form class="{{cssClass}} item-form flexcol" autocomplete="off">
     {{!-- Weapon Sheet Header --}}
-    <header class="sheet-header flexrow">
-        <img class="profile-small" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+    <header class="sheet-header small-header flexrow">
+        <img class="profile-left" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
 
         <div class="header-details flexrow">
-            <h1 class="charname">
+            <h1 class="charname" style="flex: 4">
                 <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
             </h1>
 
-            <div class="item-subtitle">
-                <h4 class="item-type">{{itemType}}</h4>
-                <span class="item-status">{{localize itemStatus}}</span>
-            </div>
-
-            <div style="flex-basis: 100%; height: 0;"> </div>
-
-            <ul class="summary flexrow">
-                <li class="flex1">
+            <div class="flex1">
+                <div class="capitalize center-text">
                     {{localize item.system.weaponProficiency }}
-                </li>
-                <li class="flex1">
-                    <select name="system.weaponCategory">
-                        {{#select item.system.weaponCategory}}
-                            {{#each (lookup config item.system.weaponProficiency) as |v k|}}
-                            <option value="{{k}}">{{localize v}}</option>
-                            {{/each}}
-                        {{/select}}
-                    </select>
-                </li>
-                <li class="flex2">
-                    <input type="text" name="system.description.source" value="{{item.system.description.source}}" placeholder="{{ localize 'fantasycraft.source' }}" />
-                </li>
-            </ul>
+                </div>
+                <select name="system.weaponCategory">
+                    {{#select item.system.weaponCategory}}
+                        {{#each (lookup config item.system.weaponProficiency) as |v k|}}
+                        <option value="{{k}}">{{localize v}}</option>
+                        {{/each}}
+                    {{/select}}
+                </select>
+            </div>
         </div>
+
+        <div style="flex-basis: 100%; height: 0;"> </div>
+
+        <ul class="flexrow">
+            <li>
+                <input class="large-font" type="text" name="system.description.source" value="{{item.system.description.source}}" placeholder="{{ localize 'fantasycraft.source' }}" />
+            </li>
+        </ul>
     </header>
 
     {{!-- Weapon Navigation Bar --}}
