@@ -11,7 +11,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 			],
 			classes: ["fantasycraft", "sheet", "actor"],
 			width: 756,
-			height: 950	  
+			height: 960	  
 		});
 	}
 
@@ -551,7 +551,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		let shouldSwitch;
 		let dir;
 		let switchcount = 0;
-		table = event.currentTarget.parentElement.closest(".item-table");
+		table = event.currentTarget.parentElement.closest(".item-list");
 		let col = event.target.attributes.value.value;
 		switching = true;
 		// Set the sorting direction to ascending:
@@ -560,17 +560,17 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		while (switching) 
 		{
 			switching = false;
-			rows = table.rows;
+			rows = table.children;
 			/* Loop through all table rows (except the first, which contains table headers): */
 			for (i = startPosition; i < (rows.length - 1); i++) 
 			{
 				// Start by saying there should be no switching:
 				shouldSwitch = false;
-				/* Get the two elements you want to compare, one from current row and one from the next: */
-				x = (col == 1 ) ? rows[i].getElementsByTagName("td")[col].children[0].children[0] : rows[i].getElementsByTagName("td")[col];
-				let xPin = (pinnedList == null) ? true : pinnedList.filter(item => item.name == rows[i].getElementsByTagName("td")[1].children[0].children[0].children[0].innerHTML)[0]?.system.pinned;
-				y = (col == 1 ) ? rows[i+1].getElementsByTagName("td")[col].children[0].children[0] : rows[i+1].getElementsByTagName("td")[col];
-				let yPin = (pinnedList == null) ? true : pinnedList.filter(item => item.name == rows[i+1].getElementsByTagName("td")[1].children[0].children[0].children[0].innerHTML)[0]?.system.pinned;
+				/* Get the two elements you want to compare, one from current row and one from the next: */				
+				x = (col == 1 ) ? rows[i].getElementsByTagName("text")[col].children[0].children[0] : rows[i].getElementsByTagName("text")[col];
+				let xPin = (pinnedList == null) ? true : pinnedList.filter(item => item.name == rows[i].getElementsByTagName("text")[1].children[0].children[0].dataset.itemName)[0]?.system.pinned;
+				y = (col == 1 ) ? rows[i+1].getElementsByTagName("text")[col].children[0].children[0] : rows[i+1].getElementsByTagName("text")[col];
+				let yPin = (pinnedList == null) ? true : pinnedList.filter(item => item.name == rows[i+1].getElementsByTagName("text")[1].children[0].children[0].dataset.itemName)[0]?.system.pinned;
 
 				/* Check if the two rows should switch place, based on the direction, asc or desc: */
 				/* Also, if checking pinned items only, switch if y is a pinned item */

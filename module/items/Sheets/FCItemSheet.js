@@ -22,7 +22,7 @@ export default class FCItemSheet extends ItemSheet {
   // @override base getData
   async	getData(options)
 	{
-    if (this.item.type == "class" || this.item.type == "store")
+    if (this.item.type == "class" || (this.item.type == "store" && !this.item.system?.freeBuy))
     {
       this.position.height = 875;
       this.position.width = 685;
@@ -30,6 +30,10 @@ export default class FCItemSheet extends ItemSheet {
     else if (this.item.type == "trick" || this.item.type == "stance")
     {
       this.position.height = 300;
+    }
+    else if ((this.item.type == "store" && this.item.system?.freeBuy))
+    {
+      this.position.height = 475;
     }
     const data = super.getData(options);
 
@@ -66,7 +70,7 @@ export default class FCItemSheet extends ItemSheet {
 
     if(data.item.type == "feature")
     {
-      data.xpChoices = {none: game.i18n.localize("fantasycraft.none"), points: game.i18n.localize("fantasycraft.point"), grades: game.i18n.localize("fantasycraft.grade"), entries: game.i18n.localize("fantasycraft.entries"), damageType: game.i18n.localize("fantasycraft.damageType")}
+      data.xpChoices = {none: game.i18n.localize("fantasycraft.noEntry"), points: game.i18n.localize("fantasycraft.point"), grades: game.i18n.localize("fantasycraft.grade"), entries: game.i18n.localize("fantasycraft.entries"), damageType: game.i18n.localize("fantasycraft.damageType")}
       data.grades = {"": "", I: "I", II: "II", III: "III", IV: "IV", V: "V", VI: "VI", VII: "VII", VIII: "VIII", IX: "IX", X: "X"}
     }
 
@@ -411,7 +415,7 @@ export default class FCItemSheet extends ItemSheet {
   {
     if(game.user.isGM)
     {
-      console.log("GM cannot currently haggle in shops");
+      ui.notifications.warn(game.i18n.localize("GMs cannot, currently, haggle in shops"));
       return;
     }
     const character = game.user.character; //Get the players character
@@ -462,6 +466,7 @@ export default class FCItemSheet extends ItemSheet {
   {
     event.preventDefault();
     this.item.update({"system.hasBeenHaggled": false});
+    this.item.update({"system.pricePercent": 1});
 
     this.render(true)
   }
@@ -492,17 +497,7 @@ export default class FCItemSheet extends ItemSheet {
     if (direction == "up" && array.find(a => a.name == itemName).system?.itemType == "service")
       return;
 
-    //holding shift increases by 5, ctrl by 10, alt by 20 and ctrl+shift by 100
-    if (!event?.ctrlKey && event?.shiftKey)
-      quantity += 5
-    else if (event?.ctrlKey && !event?.shiftKey)
-      quantity += 10
-    else if (event?.altKey)
-      quantity += 20
-    else if (event?.ctrlKey && event?.shiftKey)
-      quantity += 100
-    else
-      quantity += 1
+    quantity = this._quantity(event, quantity);
 
     if (direction == "down")
       {
@@ -533,7 +528,25 @@ export default class FCItemSheet extends ItemSheet {
     const element = event.currentTarget;
     element.checked = true;
     let freeBuy = (element.value == "false") ? false : true;
+    this.position.height = (freeBuy) ? 475 : 875;
     this.item.update({"system.freeBuy": freeBuy});
+  }
+
+  _quantity(event, quantity)
+  {
+    //holding shift increases by 5, ctrl by 10, alt by 20 and ctrl+shift by 100
+    if (!event?.ctrlKey && event?.shiftKey)
+      quantity += 5
+    else if (event?.ctrlKey && !event?.shiftKey)
+      quantity += 10
+    else if (event?.altKey)
+      quantity += 20
+    else if (event?.ctrlKey && event?.shiftKey)
+      quantity += 100
+    else
+      quantity += 1
+
+      return quantity
   }
 
   async _move(event)
@@ -552,9 +565,18 @@ export default class FCItemSheet extends ItemSheet {
     const destinationString = (list == "Store") ? "system.shoppingCart" : "system.storeArray";
     
     let newArray = sourceArray;
+    let moveQuantity = 0;
+
+    
     //get the item we're moving from the source list.
-    let listEntry = sourceArray.filter(a => a.name == itemName)
-    if ((listEntry[0].system.quantity == 1 || event?.shiftKey) && listEntry[0].system?.itemType != "service")
+    let listEntry = sourceArray.find(a => a.name == itemName)
+    
+    //get the number that we're moving, if that number is greater than the number in the supplying stack, change the move number to to total quantity. 
+    moveQuantity = this._quantity(event, moveQuantity);
+    if (listEntry.system.quantity < moveQuantity)
+      moveQuantity = listEntry.system.quantity
+
+    if ((listEntry.system.quantity == moveQuantity) && (listEntry.system?.itemType != "service" || destinationString == "system.storeArray"))
     {
       newArray = sourceArray.filter(a => a.name != itemName)
     }
@@ -564,20 +586,20 @@ export default class FCItemSheet extends ItemSheet {
     if(destinationItem)
     {
       if (destinationItem.system?.itemType != "service")
-        destinationItem.system.quantity += (event?.shiftKey) ? listEntry[0].system.quantity : 1;
+        destinationItem.system.quantity += moveQuantity;
     }
     else
     {
-      destinationArray.push(listEntry[0])
+      destinationArray.push(listEntry)
     }
 
-    if (!event?.shiftKey && listEntry[0].system?.itemType != "service")
-      listEntry[0].system.quantity -= 1;
+    if (listEntry.system?.itemType != "service")
+      listEntry.system.quantity -= moveQuantity;
 
     await this.item.update({[sourceString]: newArray})
 
     if(destinationItem == undefined)
-      destinationArray.find(a => a.name == itemName).system.quantity = 1;
+      destinationArray.find(a => a.name == itemName).system.quantity = moveQuantity;
 
     await this.item.update({[destinationString]: destinationArray})
   }

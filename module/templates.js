@@ -26,6 +26,7 @@ export const preloadHandlebarsTemplates = async function() {
       "systems/fantasycraft/templates/partials/weapon-part.hbs",
       "systems/fantasycraft/templates/partials/attack-part.hbs",
       "systems/fantasycraft/templates/partials/spell-table.hbs",
+      "systems/fantasycraft/templates/partials/spell-part.hbs",
       "systems/fantasycraft/templates/chat/weapon-chat.hbs",
       "systems/fantasycraft/templates/chat/natural-chat.hbs",
       "systems/fantasycraft/templates/chat/damage-chat.hbs",

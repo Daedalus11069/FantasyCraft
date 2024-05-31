@@ -168,7 +168,15 @@ export function onHealingRoll(diceRoll, actor, healingType)
 
 export function onAttack(attackRoll, attacker, item, trick=null, trick2=null, additionalInfo, ammo)
 {
-    const threat = (trick?.system.effect.additionalEffect == "replaceAttackRoll") ? attacker.system.skills[trick.system.effect.secondaryCheck].threat : item.system.threatRange;
+    let threat = (trick?.system.effect.additionalEffect == "replaceAttackRoll") ? attacker.system.skills[trick.system.effect.secondaryCheck].threat : item.system.threatRange;
+    let magicItems = _checkForThreatRangeMagicItems(attacker);
+
+    if (trick?.system.effect.additionalEffect != "replaceAttackRoll")
+    {
+        let threatItem = magicItems.find(mi => mi.target == item.system.attackType)
+        if (threatItem != undefined)
+            threat -= (threat.greater) ? 2 : 1;
+    }
 
     const attackInfo = setUpAttackData(attackRoll, attacker, item, threat, item.system.weaponProperties, ammo);
  
@@ -180,10 +188,103 @@ export function onAttack(attackRoll, attacker, item, trick=null, trick2=null, ad
     setRenderTemplate(attackRoll, 'systems/fantasycraft/templates/chat/weapon-chat.hbs', attackInfo, chatData);
 }
 
+function _checkForThreatRangeMagicItems(actor)
+{
+    let magicItems = []
+
+    actor.items.forEach (function(item)
+    {
+        if (item.system?.isMagic)
+        {
+            if ((item.type == "armour" && !item.system.equipped) || (item.type == "weapons" && !item.system.readied))
+                return;
+
+            for (let i = 1; i <= item.system.essences.essenceNumber; i++)
+            {
+                let essence = item.system.essences[Object.keys(item.system.essences)[i]];
+                if(essence.ability == "threatRange")
+                {
+                    (essence.attackType == "skill") ? magicItems.push({"target": essence.target, "greater": essence.greater}) 
+                                                    : magicItems.push({"target": essence.attackType, "greater": essence.greater})
+                }
+            }
+        }
+    });
+
+    return magicItems;
+}
+
+function _combatActionThreatRanges(actor, combatAction)
+{
+    let threat = 20;
+    let threatChange = 0
+    
+    //Get all of the actors magic items and see if any of them affect threat ranges.
+    let magicItems = _checkForThreatRangeMagicItems(actor);
+
+    //get the base threat associated with the skill or attack, then check for a magic reduction
+    //checking for magic currently only enabled on pummel and disarm since players will likely bake the magic bonus to skills right into their skills list.
+    switch(combatAction)
+    {
+        case "anticipate":
+            threat = actor.system.skills.senseMotive.threat;
+            //threatChange = (magicItems.find(item => item.target == "senseMotive").greater) ? 2 : 1;
+            break;
+        case "bullRush":
+            threat = actor.system.skills.athletics.threat;
+            //threatChange = (magicItems.find(item => item.target == "athletics").greater) ? 2 : 1;
+            break;
+        case "distract":
+            threat = actor.system.skills.bluff.threat;
+            //threatChange = (magicItems.find(item => item.target == "bluff").greater) ? 2 : 1;
+            break;
+        case "feint":
+            threat = actor.system.skills.prestidigitation.threat;
+            //threatChange = (magicItems.find(item => item.target == "prestidigitation").greater) ? 2 : 1;
+            break;
+        case "grapple":
+            threat = actor.system.skills.athletics.threat;
+            //threatChange = (magicItems.find(item => item.target == "athletics").greater) ? 2 : 1;
+            break;
+        case "pummel":
+            if (actor.martialArts) threat = (actor.mastersArt) ? 18 : 19;
+            threatChange = (magicItems.find(item => item.target == "unarmed").greater) ? 2 : 1;
+            break;
+        case "taunt":
+            threat = actor.system.skills.senseMotive.threat;
+            //threatChange = (magicItems.find(item => item.target == "senseMotive").greater) ? 2 : 1;
+            break;
+        case "tire":
+            threat = actor.system.skills.resolve.threat;
+            //threatChange = (magicItems.find(item => item.target == "resolve").greater) ? 2 : 1;
+            break;
+        case "threaten":
+            threat = actor.system.skills.intimidate.threat;
+            //threatChange = (magicItems.find(item => item.target == "intimidate").greater) ? 2 : 1;
+            break;
+        case "trip":
+            threat = actor.system.skills.acrobatics.threat;
+            //threatChange = (magicItems.find(item => item.target == "acrobatics").greater) ? 2 : 1;
+            break;
+        default:
+            console.log("No Threat Range Associated with this skill");
+    }
+
+    threat -= threatChange;
+
+
+    return threat;
+}
+
 export function onCombatAction(actionRoll, actor, combatAction, trick=null)
 {
-    //TODO get threatrange for each skill/attack for combat actions
-    let threat = 20;
+
+    if (combatAction == "disarm")
+    {
+        ui.notifications.warn("Please roll from the weapon instead for better results");
+    }
+
+    let threat = _combatActionThreatRanges(actor, combatAction)
     let damage;
 
     const actionInfo = 

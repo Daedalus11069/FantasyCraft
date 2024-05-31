@@ -7,7 +7,7 @@ import { preloadHandlebarsTemplates } from "./module/templates.js";
 import { registerSystemSettings } from "./module/SystemSettings.js";
 import {  _getInitiativeFormula } from "./module/InitRules.js";
 
-import { resetAbilityUsage } from "./module/Utils.js";
+import { resetAbilityUsage, createMacro } from "./module/Utils.js";
 import FCItemSheet from "./module/items/Sheets/FCItemSheet.js";
 import FCCharacterSheet from "./module/actors/Sheets/FCCharacterSheet.js";
 import FCNPCSheet from "./module/actors/Sheets/FCNPCSheet.js";
@@ -201,7 +201,7 @@ Hooks.once ('setup', function(){
 Hooks.on('createActiveEffect', async activeEffect => {
 	const statusId = activeEffect.flags?.core?.statusId
 	const _parent = activeEffect?.parent
-	if (statusId && _parent) {
+	if (statusId && _parent && game.user.isGM) {
 		await _parent.setFlag('fantasycraft', statusId, true)
 	
 		// If asleep, also add prone and uncoscious
@@ -267,5 +267,11 @@ Hooks.on('combatRound', async (combat) =>
 	
 	resetAbilityUsage(combatant, "round");
 })
+
+Hooks.on('hotbarDrop', (_bar, data, slot) => {
+	let dataType = data.type
+	delete data.type
+	createMacro(data, dataType, slot);
+});  
 
 Hooks.on("renderChatLog", (app, html, data) => Chat.addChatListeners(html));

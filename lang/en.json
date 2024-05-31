@@ -75,7 +75,8 @@
 		"haste": "Haste",
 		"sprawled": "Sprawled",
 		"stunned": "Stunned",
-		"none": "",
+		"none": "None",
+		"noEntry": "",
 		"adjust": "Adjust",
 		"score": "Score",
 		"mod": "Mod",
@@ -264,6 +265,7 @@
 		"incubation": "Incubation",
 		"information": "Information",
 		"challenges": "Challenges",
+		"craftsmanship": "Craftsmanship",
 		"customization": "Customization",
 		"materials": "Materials",
 		"fittings": "Fittings",
@@ -963,6 +965,7 @@
 		"shoppingCart": "Shopping Cart",
 		"canBeHaggled": "Can Be Haggled",
 		"resetHaggle": "Reset Haggling",
+		"priceMultiplier": "Price Multiplier",
 		"Dialog":
 		{
 			"requiresTargetWarningMessage": "You require a target for the selected Trick.",
@@ -990,7 +993,7 @@
 			"actionDiceUses": "ACTION DIE USES",
 			"noReadiedWeapon": "You do not have a weapon readied",
 			"noUsesRemainingForChosenTrick": "You have no uses remaining for the chosen Trick.",
-			"changeValueTooltipText": "Hold Shift to increase the value by 5, Ctrl by 10, alt by 20, and ctrl + shift to increase by 100.",
+			"changeValueTooltipText": "Hold Shift to increase the value by 5, Ctrl by 10, Alt by 20, and Ctrl + Shift to increase by 100.",
 			"youCantAffordThat": "You Can't Afford That!"
 		},
 				

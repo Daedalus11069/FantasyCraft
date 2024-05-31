@@ -2047,6 +2047,7 @@ export default class ActorFC extends Actor {
         id: "",
         name: "Unarmed Attack",
         system: {
+          attackType: "unarmed",
           threatRange: threatRange,
           errorRange: errorRange,
           weaponProperties: 

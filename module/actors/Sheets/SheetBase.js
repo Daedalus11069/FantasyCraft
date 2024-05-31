@@ -594,7 +594,19 @@ export default class ActorSheetFC extends ActorSheet
       let element = event.currentTarget;
       const act = this.actor;
       const item = act.items.find(c => c.name == element.closest(".item").dataset.itemName);
-      let newValue = event?.shiftKey ? item.system.quantity += 5 : item.system.quantity += 1;
+      let newValue = item.system.quantity;
+
+      //holding shift decreases by 5, ctrl by 10, alt by 20 and ctrl+shift by 100
+      if (!event?.ctrlKey && event?.shiftKey)
+        newValue += 5
+      else if (event?.ctrlKey && !event?.shiftKey)
+        newValue += 10
+      else if (event?.altKey)
+        newValue += 20
+      else if (event?.ctrlKey && event?.shiftKey)
+        newValue += 100
+      else
+        newValue += 1
 
       await item.update({"system.quantity": newValue});
     }
@@ -606,7 +618,19 @@ export default class ActorSheetFC extends ActorSheet
       let element = event.currentTarget;
       const act = this.actor;
       const item = act.items.find(c => c.name == element.closest(".item").dataset.itemName);
-      let newValue = event?.shiftKey ? item.system.quantity -= 5 : item.system.quantity -= 1;
+      let newValue = item.system.quantity;
+
+        //holding shift decreases by 5, ctrl by 10, alt by 20 and ctrl+shift by 100
+      if (!event?.ctrlKey && event?.shiftKey)
+        newValue -= 5
+      else if (event?.ctrlKey && !event?.shiftKey)
+        newValue -= 10
+      else if (event?.altKey)
+        newValue -= 20
+      else if (event?.ctrlKey && event?.shiftKey)
+        newValue -= 100
+      else
+        newValue -= 1
 
       await item.update({"system.quantity": newValue});
 
@@ -951,11 +975,11 @@ export default class ActorSheetFC extends ActorSheet
   
       new Roll(rollFormula, rollData).toMessage(messageData);    }
 
-    _spellCard(event)
+    _spellCard(event, spellName = null, macro = false)
     {
       event.preventDefault();
-      const li = event.currentTarget.closest("[data-spell]");
-      const spell = this.actor.items.get(li.dataset.spell);
+      const li = (macro) ? null : event.currentTarget.closest("[data-item-id]");
+      const spell = (macro) ? this.actor.items.get(spellName) : this.actor.items.get(li.dataset.itemId);
 
       Chat.spellCard(spell, this.actor);
     }

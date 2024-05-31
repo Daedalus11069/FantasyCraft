@@ -260,22 +260,23 @@
                         <li class="filter-level" data-filter="level9"> 9</li>
                     </ul>
                 </div>
-                <table class="item-table">
-                    <tr>
-                        <th> <a class="sortTable" value="0">{{localize "fantasycraft.pin"}}</a></th>
-                        <th> <a class="sortTable" value="1">{{localize "fantasycraft.spellName"}}</a></th>
-                        <th> <a class="sortTable" value="2">{{localize "fantasycraft.spellLevel"}}</a></th>
-                        <th> <a class="sortTable" value="3">{{localize "fantasycraft.castingTime"}}</a></th>
-                        <th> <a class="sortTable" value="4">{{localize "fantasycraft.distance"}}</a></th>
-                        <th> <a class="sortTable" value="5">{{localize "fantasycraft.area"}}</a></th>
-                        <th> <a class="sortTable" value="6">{{localize "fantasycraft.spellDuration"}}</a></th>
-                        <th> <a class="sortTable" value="7">{{localize "fantasycraft.savingThrow"}}</a></th>
-                        <th> <a class="sortTable" value="8">{{localize "fantasycraft.prepCost"}}</a></th>
-                    </tr>
+                <ul class="center-text item-list">
+                    <li class="flexrow">
+                        <div class="flex1"> <a class="sortTable" value="0">{{localize "fantasycraft.pin"}}</a></div>
+                        <div class="flex3" style="min-width: 125px"> <a class="sortTable" value="1">{{localize "fantasycraft.spellName"}}</a></div>
+                        <div class="flex1"> <a class="sortTable" value="2">{{localize "fantasycraft.level"}}</a></div>
+                        <div class="flex2"> <a class="sortTable" value="3">{{localize "fantasycraft.castingTime"}}</a></div>
+                        <div class="flex2"> <a class="sortTable" value="4">{{localize "fantasycraft.distance"}}</a></div>
+                        <div class="flex3"> <a class="sortTable" value="5">{{localize "fantasycraft.area"}}</a></div>
+                        <div class="flex3"> <a class="sortTable" value="6">{{localize "fantasycraft.spellDuration"}}</a></div>
+                        <div class="flex2" style="font-size:12.5px"> <a class="sortTable" value="7">{{localize "fantasycraft.savingThrow"}}</a></div>
+                        <div class="flex1"> <a class="sortTable" value="8">{{localize "fantasycraft.cost"}}</a></div>
+                        <div class="flex1"> {{localize "fantasycraft.edit"}}</div>
+                    </li>
                     {{#each spells as |spell id|}}
-                        {{> "systems/fantasycraft/templates/partials/spell-table.hbs" spell id=spell._id}}
+                        {{> "systems/fantasycraft/templates/partials/spell-part.hbs" spell id=spell._id}}
                     {{/each}}
-                </table>
+                </ul>
             </div>
         </div>
     </div>

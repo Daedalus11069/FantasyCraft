@@ -1,0 +1,185 @@
+<li class="flexrow item ownedItem" data-item-id={{id}}>
+        
+    <text class="flex1">
+        <div data-item-id="{{id}}" data-item-name="{{name}}">
+            <a class="pin-spell">
+                {{#if system.pinned}}                
+                <i class="fas fa-thumb-tack"></i>
+                {{else}}
+                <i class="fa-light fa-thumb-tack"></i>
+                {{/if}}
+            </a>
+        </div>
+    </text>
+    <text class="flex3">
+        <div class="tooltip" style="width: 125px; background: inherit; border: none">
+            <div class="left-align-text" data-item-id="{{id}}" data-item-name="{{name}}">
+                <a class="spellCard">{{name}}</a>
+            </div>
+            {{!TOOL TIP}}
+            <div class="tooltiptext relative-position" style="width: 350px; text-align: left;">
+                <b style="text-align:center">{{name}}</b>
+                
+                <div>
+                    <strong><label>{{ localize "fantasycraft.castingTime"}}: </label></strong>
+                    <span> {{system.castingTime.value}} {{localize system.castingTime.increment}}</span>
+                </div>
+                <div>
+                    <strong><label>{{ localize "fantasycraft.distance"}}: </label></strong>
+                    <span> {{localize system.distance.description}} {{#if system.distance.rangedAttack}}{{localize "fantasycraft.rangedAttack"}} {{/if}}</span>
+                </div>
+                {{#if system.area.value}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.area"}}: </label></strong>
+                    <span> {{system.area.value}} 
+                        {{#if system.area.customShape}}{{else}}{{localize "fantasycraft.ft"}}{{/if}} 
+                        {{#if system.area.perLevel}}{{localize "fantasycraft.perCastingLevel"}}{{/if}} 
+                        {{#if system.area.penetrating}}{{localize "fantasycraft.penetrating"}}{{/if}} 
+                        {{#if system.area.customShape}}{{else}}{{localize system.area.shape}}{{/if}}
+                    </span>
+                </div>
+                {{/if}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.spellDuration"}}: </label></strong>
+                    <span> 
+                        {{#if system.duration.isNotInstantOrPermanent}}
+                            {{> "systems/fantasycraft/templates/items/parts/durationInformation.handlebars"}}
+                        {{else}}
+                            {{localize system.duration.durationText}}
+                        {{/if}}
+
+                        {{#if system.duration.durationKeyword}} ({{~/if}}
+                        {{~#if system.duration.dismissable}}
+                            {{~localize "fantasycraft.dismissable"~}}                    
+                        {{/if}}
+                        {{#if system.duration.enduring~}}
+                            {{~localize "fantasycraft.enduring"~}}
+                        {{/if~}}
+                        {{#if system.duration.durationKeyword~}}){{/if}}
+                    </span>
+                </div>
+                {{#if system.save.hasSave}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.savingThrow"}}: </label></strong>
+                    {{system.save.saveType}} {{system.save.saveEffect}} (
+                    {{#each system.save.saveKeywords as |v k|}}
+                        {{v}}
+                    {{/each}}
+                    )
+                {{#if system.save2.hasSave}}
+                    , {{system.save2.saveType}} {{system.save2.saveEffect}} (
+                    {{#each system.save2.saveKeywords as |v k|}}
+                        {{v}}
+                    {{/each}}
+                    )
+                {{/if}}
+                </div>
+                {{/if}}
+                {{#if system.preparationCost}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.preparationCost"}}: </label></strong>
+                    <span> {{system.preparationCost}}</span>
+                </div>
+                {{/if}}
+                <div>
+                    <strong><label>{{ localize "fantasycraft.spellEffect"}}: </strong></label>
+                    <span>{{{system.description.value}}}</span>
+                </div>
+            </div>
+            {{!TOOL TIP}}
+        </div>
+    </text>
+    <text class="small-font">{{system.level}}</text>
+    <text class="small-font flex2">{{system.castingTime.value}} {{localize system.castingTime.increment}}</text>
+    <text class="small-font flex2">{{localize system.distance.description}} 
+        {{#if system.distance.rangedAttack}} <span class="shorthand-icon">R</span>{{/if}}
+    </text>
+    {{! Spell Area }}
+    <text class="small-font flex3">
+        {{#compare system.area.value "0" operator="!="}}
+            {{#compare system.area.shape "custom" operator="=="}}
+                <span class="tooltip" style="border-radius: 50%;"> ?
+                    <div class="tooltiptext relative-position" style="position:relative; width:300px;">
+                        {{system.area.value}} 
+                        {{localize "fantasycraft.ft"}}
+                        {{#if system.area.perLevel}}{{localize "fantasycraft.perCastingLevel"}}{{/if}} 
+                        {{#if system.area.penetrating}}{{localize "fantasycraft.penetrating"}}{{/if}} 
+                    </div>
+                </span>
+            {{/compare}}
+                {{#compare system.area.shape "custom" operator="!="}}
+                {{system.area.value~}} 
+                {{~localize "fantasycraft.ft"}}
+                {{#if system.area.perLevel}}{{~localize "fantasycraft.perCastingLevelAB"}}{{/if}} 
+                {{#if system.area.penetrating}}{{localize "fantasycraft.penetrating"}}{{/if}} 
+                {{localize system.area.shape}}
+            {{/compare}}
+        {{/compare}}
+        {{#compare system.area.value "0" operator="=="}}
+        -
+        {{/compare}}
+    </text>
+    {{! Spell Duration }}
+    <text class="small-font flex3">
+        {{#if system.duration.isNotInstantOrPermanent}}
+            {{system.duration.number}}    {{localize system.duration.increment~}} 
+            {{#if system.duration.perCastingLevel}}
+                {{~localize "fantasycraft.perCastingLevelAB"}}
+            {{/if}}
+        {{else}}
+            {{system.duration.value}}
+        {{/if}}
+        {{#if system.duration.durationKeyword}} ({{~/if~}}
+        {{~#if system.duration.dismissable~}}
+            {{~localize "fantasycraft.dismissableAB"~}}
+        {{~/if~}}
+        {{~#if system.duration.enduring~}}
+            {{~#if system.duration.dismissable~}}
+            , 
+            {{/if}}
+            {{~localize "fantasycraft.enduringAB"~}}
+        {{~/if~}}
+        {{~#if system.duration.durationKeyword~}}){{/if}}
+    </text>
+    {{! Spell Saves }}
+    <text class="small-font flex2">
+    {{#if system.save.hasSave}}
+        {{system.save.saveType}}
+        {{#if system.save.saveKeywords}}
+            {{~#each system.save.saveKeywords as |v k|~}}
+                {{#compare v "terminal" operator="=="}}
+                    <span class="shorthand-icon">T</span>
+                {{/compare}}
+                {{#compare v "repeatable" operator="=="}}
+                    <span class="shorthand-icon">R</span>
+                {{/compare}}
+            {{~/each~}}
+        {{/if}}
+        {{#if system.save2.hasSave}}, {{system.save2.saveType}}
+        {{#if system.save2.saveKeywords}}
+            {{~#each system.save2.saveKeywords as |v k|~}}
+                {{#compare v "terminal" operator="=="}}
+                    <span class="shorthand-icon">T</span>
+                {{/compare}}
+                {{#compare v "repeatable" operator="=="}}
+                    <span class="shorthand-icon">R</span>
+                {{/compare}}
+            {{~/each~}}
+        {{/if}}
+        {{/if}}
+        {{else}}
+        {{localize "fantasycraft.noEntry"}}
+    {{/if}}
+    </text>
+    <text class="small-font">{{system.preparationCost}}</text>
+    <div>                
+        <div class="item" data-item-id="{{id}}" data-item-name="{{name}}">
+            <a class="editItem">
+                <i class="fas fa-edit"></i>
+            </a>
+            <a class="deleteItem">
+                <i class="fas fa-trash"></i>
+            </a>
+        </div>
+    </div>
+</li>

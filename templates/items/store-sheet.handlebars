@@ -5,9 +5,8 @@
         <h1 class="itemName flexrow">
             <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
         </h1>
-        {{!-- TODO: need to add code here to make it so that this is only visible to GMs --}}
     </header>
-    <nav class="sheet-navigation sheet-tabs" {{#unless isGM}} style="visibility: hidden; max-height: 0px" {{/unless}}data-group="primary">
+    <nav class="sheet-navigation sheet-tabs{{#unless isGM}} hide {{/unless}}" data-group="primary">
         <a class="item active" data-tab="store">{{ localize "fantasycraft.store" }}</a>
         {{!--<a class="item" data-tab="gm-control-panel">{{ localize "fantasycraft.controlPanel" }}</a> --}}
     </nav>
@@ -39,7 +38,7 @@
                     <div class="item-detail">{{localize "fantasycraft.cost"}}</div>
                     <div class="item-detail {{#if isGM}}tooltip{{/if}}">{{localize "fantasycraft.quantity"}}
                       {{#if isGM}}
-                        <div class="tooltiptext" style="width: 150px; font-family: signika">
+                        <div class="tooltiptext relative-position" style="width: 270px;">
                           {{localize "fantasycraft.Dialog.changeValueTooltipText"}}
                         </div>
                       {{/if}}
@@ -51,26 +50,25 @@
                       <div class="flexrow item-list-entry" id="{{name}}">
                         <div>{{name}}</div>
                         <div class="item-detail">
-                          {{#compare type "general" opperator="=="}}
-                          {{system.itemType}}
-                          {{/compare}}
-                          {{#compare type "general" opperator="!="}}
-                          {{type}}
-                          {{/compare}}
+                          {{#if (eq type "general")}}
+                              {{system.itemType}}
+                              {{else}}
+                              {{type}}
+                          {{/if}}
                         </div>
                         <div class="item-cost">
                           {{system.newCost}}
                           {{#compare system.currency "Silver" opperator="=="}}
-                            <span class="tooltip" style="background-color: initial; border: none"><i class="fas fa-coins">
-                              <div class="tooltiptext" style="font-family: signika">
+                            <span class="tooltip remove-background"><i class="fas fa-coins">
+                              <div class="tooltiptext relative-position" >
                                 {{localize "fantasycraft.silver"}}
                               </div>
                             </i>
                             </span>
                           {{/compare}}
                           {{#compare system.currency "Reputation" opperator="=="}}
-                            <span class="tooltip" style="background-color: initial; border: none"><i class="fas fa-star">
-                              <div class="tooltiptext" style="font-family: signika">
+                            <span class="tooltip remove-background"><i class="fas fa-star">
+                              <div class="tooltiptext relative-position" >
                                 {{localize "fantasycraft.reputation"}}
                               </div>
                             </i>
@@ -116,7 +114,7 @@
                     <div class="item-detail">{{localize "fantasycraft.cost"}}</div>
                     <div class="item-detail {{#if item.system.freeBuy}}tooltip{{/if}}">{{localize "fantasycraft.quantity"}}
                       {{#if item.system.freeBuy}}
-                        <div class="tooltiptext" style="width: 150px; font-family: signika">
+                        <div class="tooltiptext relative-position" style="width: 270px">
                           {{localize "fantasycraft.Dialog.changeValueTooltipText"}}
                         </div>
                       {{/if}}
@@ -128,25 +126,25 @@
                       <div class="flexrow item-list-entry" id="{{name}}">
                         <div>{{name}}</div>
                           <div class="item-detail">
-                        {{#if (eq type "general")}}
-                            {{system.itemType}}
-                            {{else}}
-                            {{type}}
-                        {{/if}}
+                          {{#if (eq type "general")}}
+                              {{system.itemType}}
+                              {{else}}
+                              {{type}}
+                          {{/if}}
                           </div>
                         <div class="item-cost">
                           {{system.newCost}}
                           {{#compare system.currency "Silver" opperator="=="}}
-                            <span class="tooltip" style="background-color: initial; border: none"><i class="fas fa-coins">
-                              <div class="tooltiptext" style="font-family: signika">
+                            <span class="tooltip remove-background"><i class="fas fa-coins">
+                              <div class="tooltiptext relative-position" >
                                 {{localize "fantasycraft.silver"}}
                               </div>
                             </i>
                             </span>
                           {{/compare}}
                           {{#compare system.currency "Reputation" opperator="=="}}
-                            <span class="tooltip" style="background-color: initial; border: none"><i class="fas fa-star">
-                              <div class="tooltiptext" style="font-family: signika">
+                            <span class="tooltip remove-background"><i class="fas fa-star">
+                              <div class="tooltiptext relative-position" >
                                 {{localize "fantasycraft.reputation"}}
                               </div>
                             </i>
@@ -199,9 +197,19 @@
               </div>
               <div class="flex2">
                   {{!-- at the bottom there will be a "purchase" button --}}
-                <div class="itemName">
-                    <input class="itemName" name="system.silverOnHand" value="{{item.system.silverOnHand}}" disabled="true"></input>
-                    <footer>{{localize "fantasycraft.silver"}}</footer>
+                <div class="flexrow">
+                  <div class="flexrow">
+                    <div class="itemName">
+                        <input class="itemName" name="system.silverOnHand" value="{{item.system.silverOnHand}}" disabled="true">
+                        <footer>{{localize "fantasycraft.silver"}}</footer>
+                    </div>
+                    {{#if item.system.canBeHaggled}}
+                      <div class="itemName">
+                          <input class="itemName" name="system.pricePercent" value="{{item.system.pricePercent}}" disabled="true">
+                          <footer>{{localize "fantasycraft.priceMultiplier"}}</footer>
+                      </div>
+                    {{/if}}
+                  </div>
                 </div>
                 {{#if item.system.canBeHaggled}}
                   {{#if item.system.hasBeenHaggled}}
