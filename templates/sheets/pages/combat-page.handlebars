@@ -3,8 +3,8 @@
     <ul class="flexrow attributes">
         <li>
             <h4 class="category-label"> {{localize "fantasycraft.weapons"}} </h4>
-            <section class="weapons flexcol item-list category-body right-border" style="min-height: 50px">
-                <div class="item ownedItem flexrow" data-item-name="unarmedStrike">
+            <ul class="weapons flexcol item-list category-body right-border" style="min-height: 50px">
+                <li class="item ownedItem flexrow" data-item-name="unarmedStrike">
                     <div class="flex2">
                         <a class="roll-unarmed">
                             <i class="fas fa-dice-d20"></i>
@@ -20,7 +20,7 @@
                         {{/if}}
                     </div>
                     <div class="flex4">-</div>
-                </div>
+                </li>
                 {{#each attacks as |attack id|}}
                     {{> "systems/fantasycraft/templates/partials/attack-part.hbs" attack id=_id name=name inSheet=true}}
                 {{/each}}
@@ -31,7 +31,7 @@
                     {{/compare}}
                 {{/compare}}
                 {{/each}}
-            </section>
+            </ul>
         </li>
     </ul>
     

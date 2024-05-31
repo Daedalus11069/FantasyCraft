@@ -1,5 +1,5 @@
 .fantasycraft.sheet.actor {
-  min-width: 756px;
+  min-width: 761px;
   min-height: 680px;
 }
 .fantasycraft.sheet.actor .sheet-header .attributes {
@@ -260,6 +260,12 @@
   font-weight: 200;
   font-size: 12px;
 }
+.fantasycraft.sheet.actor .shorthand-icon {
+  padding: 0.5px 4px;
+  border: 1px groove black;
+  border-radius: 50%;
+  background-color: white;
+}
 .fantasycraft.sheet.actor li.centreItems {
   height: 50px;
   line-height: 20px;
@@ -424,6 +430,13 @@
   font-weight: normal;
   display: inline-block;
 }
+.fantasycraft .tooltip.remove-background {
+  background-color: initial;
+  border: none;
+}
+.fantasycraft .tooltip.circular-border {
+  border-radius: 50%;
+}
 .fantasycraft .tooltip .tooltiptext {
   visibility: hidden;
   background-color: floralwhite;
@@ -432,9 +445,15 @@
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
+  font-family: signika;
+  width: fit-content;
   z-index: 1;
+}
+.fantasycraft .tooltip .tooltiptext.absolute-position {
+  position: absolute;
+}
+.fantasycraft .tooltip .tooltiptext.relative-position {
+  position: relative;
 }
 .fantasycraft .tooltip:hover .tooltiptext {
   visibility: visible;
@@ -474,6 +493,10 @@
   height: 100%;
   overflow-y: auto;
   align-content: flex-start;
+}
+.sheet table th {
+  padding: 0 0.25em 0.35em;
+  text-align: center;
 }
 .sheet details {
   max-width: 15px;
@@ -657,6 +680,10 @@
   font-weight: 700;
   text-align: center;
 }
+.sheet .sheet-navigation.hide {
+  visibility: hidden;
+  max-height: 0px;
+}
 .sheet .sheet-navigation .item {
   height: 30px;
   line-height: 32px;
@@ -790,7 +817,7 @@ h4.ability-name {
   text-align: center;
 }
 h4.extra-space {
-  line-height: 35px;
+  line-height: 23px;
   padding-top: 4px;
   padding-bottom: 2px;
 }
@@ -826,8 +853,21 @@ textarea.text-area {
 .center-contents {
   justify-content: center;
 }
+.left-align-text {
+  text-align: left;
+}
+.right-align-text {
+  text-align: right;
+}
 .center-text {
   text-align: center;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.small-font {
+  font-size: 9.5px;
+  white-space: nowrap;
 }
 .fantasycraft.item .item-form header {
   background: url(../fantasycraft/assets/ui/header2.png) repeat-x local;
@@ -948,6 +988,7 @@ textarea.text-area {
 .fantasycraft.sheet.item header .footer-text {
   text-align: center;
   font-size: x-small;
+  font-family: 'Signika';
 }
 .fantasycraft.sheet.item .sub-navigation {
   max-height: 20px;
@@ -1049,11 +1090,11 @@ textarea.text-area {
 .fantasycraft.sheet.item .item-upgrades label.checkbox {
   flex: 0 0 98px;
 }
-.fantasycraft.sheet.item .capitalize {
-  text-transform: capitalize;
-}
 .fantasycraft.sheet.item select {
   font-size: 16px;
+}
+.fantasycraft.sheet.item .top-padding {
+  padding-top: 3px;
 }
 .body {
   font-family: 'ariel';

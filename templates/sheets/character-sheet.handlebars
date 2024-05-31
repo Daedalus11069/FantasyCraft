@@ -166,19 +166,19 @@
                             <h4 class="ability-name extra-space flexcol">{{localize ability.label}}</h4>
                         </li>
                         <li class="ability flex1 flexrow" data-ability={{name}}>
-                            <div style="text-align: center">
+                            <div class="center-text">
                                 <input class="mod" name="system.abilityScores.{{name}}.adjustment" type="number" value="{{numberFormat ability.adjustment decimals=0}}" placeholder="0" />
                                 <footer class="footer-text">
                                     <span>{{localize "fantasycraft.adjust"}}</span>
                                 </footer>
                             </div>
-                            <div style="text-align: center">
+                            <div class="center-text">
                             <input class="score" name="system.abilityScores.{{name}}.value" type="number" value="{{ability.value}}" placeholder="10"/>
                                 <footer class="footer-text">
                                     <span>{{localize "fantasycraft.score"}}</span>
                                 </footer>
                             </div>
-                            <div style="text-align: center">
+                            <div class="center-text">
                             <input class="mod" name="modifier" type="text" value="{{numberFormat ability.mod decimals=0 sign=true}}" placeholder="0" disabled=true />
                                 <footer class="footer-text">
                                     <span>{{localize "fantasycraft.mod"}}</span>
@@ -215,11 +215,11 @@
                                         <input class="checkbox remove-space" style="padding: 0px;" type="checkbox" name="system.skills.{{name}}.originSkill" {{checked skill.originSkill}}/>
                                     </td>
                                     <td><h4 class="skill-name"><a class="roll-skill" data-roll-info={{name}}>{{localize skill.label}}</a></h4>
-                                    <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.value" type="text" value="{{numberFormat skill.total decimals=0 sign=true}}" placeholder="0" disabled=true /></td>
-                                    <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.ability" type="text" value="{{numberFormat skill.abModifier decimals=0}}" placeholder="0" disabled=true/></td>
-                                    <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.ranks" type="number" value="{{skill.ranks}}" placeholder="0"/></td>
-                                    <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.misc" type="number" value="{{skill.misc}}" placeholder="0"/></td>
-                                    <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.threat" type="number" value="{{skill.threat}}" placeholder="20"/></td>
+                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.value" type="text" value="{{numberFormat skill.total decimals=0 sign=true}}" placeholder="0" disabled=true /></td>
+                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.ability" type="text" value="{{numberFormat skill.abModifier decimals=0}}" placeholder="0" disabled=true/></td>
+                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.ranks" type="number" value="{{skill.ranks}}" placeholder="0"/></td>
+                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.misc" type="number" value="{{skill.misc}}" placeholder="0"/></td>
+                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.threat" type="number" value="{{skill.threat}}" placeholder="20"/></td>
                                     {{/compare}}
                                 </tr>
                             {{/each}}
@@ -249,11 +249,11 @@
                                             <input class="checkbox remove-space" style="padding: 0px;" type="checkbox" name="system.skills.{{name}}.originSkill" {{checked skill.originSkill}}/>
                                         </td>
                                         <td><h4 class="skill-name"><a class="roll-skill" data-roll-info={{name}}>{{localize skill.label}}</a></h4>
-                                        <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.value" type="text" value="{{numberFormat skill.total decimals=0 sign=true}}" placeholder="0" disabled=true /></td>
-                                        <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.ability" type="text" value="{{numberFormat skill.abModifier decimals=0}}" placeholder="0" disabled=true/></td>
-                                        <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.ranks" type="number" value="{{skill.ranks}}" placeholder="0"/></td>
-                                        <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.misc" type="number" value="{{skill.misc}}" placeholder="0"/></td>
-                                        <td><input class="skill-input" style="text-align: center" name="system.skills.{{name}}.threat" type="number" value="{{skill.threat}}" placeholder="20"/></td>
+                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.value" type="text" value="{{numberFormat skill.total decimals=0 sign=true}}" placeholder="0" disabled=true /></td>
+                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.ability" type="text" value="{{numberFormat skill.abModifier decimals=0}}" placeholder="0" disabled=true/></td>
+                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.ranks" type="number" value="{{skill.ranks}}" placeholder="0"/></td>
+                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.misc" type="number" value="{{skill.misc}}" placeholder="0"/></td>
+                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.threat" type="number" value="{{skill.threat}}" placeholder="20"/></td>
                                         {{/if}}
                                     {{/compare}}
                                 </tr>

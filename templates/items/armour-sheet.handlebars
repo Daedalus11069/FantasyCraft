@@ -8,12 +8,14 @@
                 <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
             </h1>
 
-            <ul class="summary flexrow">
-                <li>
-                    <span>{{item.system.armourCoverage}} {{item.type}}</span>          
+            <ul class="flexrow remove-space">
+                <li class="center-text top-padding">
+                    <span class="capitalize">{{item.system.armourCoverage}} {{item.type}}</span>
+                    <footer class="footer-text">{{ localize 'fantasycraft.armour' }}</footer>     
                 </li>
                 <li>
                     <input type="text" name="system.source" value="{{item.system.source}}" placeholder="{{ localize 'fantasycraft.Source' }}"/>
+                    <footer class="footer-text">{{ localize 'fantasycraft.source' }}</footer>
                 </li>
             </ul>
         </div>
@@ -72,19 +74,30 @@
               </tr>
             </table>
             
-            <table class="flexrow">
+            <table class="item-table flexrow">
               <tr>
-                  <th> {{ localize 'fantasycraft.upgrades'}} </th>
+                <th> {{ localize 'fantasycraft.fittings'}} </th>
+                <th> {{ localize 'fantasycraft.craftsmanship'}} </th>
+                <th> {{ localize 'fantasycraft.materials'}} </th>
+                <th> {{ localize 'fantasycraft.customization'}} </th>
               </tr>
               <tr>
-                {{#each config.armourCustomizations as |name id|}}
-                  {{#if  (lookup ../data.upgrades id)}}
-                    <td><span>{{localize name}} {{lookup ../data.upgrades id}}</span></td>
-                  {{/if}}
-                {{/each}}
+                <td class="table-item">
+                    {{#if item.system.fittings}}
+                        {{localize item.system.upgrades.fittings}}
+                    {{else}}
+                        {{localize "fantasycraft.none"}}
+                    {{/if}}
+                </td>
+                <td class="table-item">
+                    {{localize item.system.upgrades.craftsmanship}}
+                </td>
+                <td class="table-item">
+                    {{localize item.system.upgrades.materials}}
+                </td>
                 {{#each config.armourUpgrades as |name id|}}
                   {{#if  (lookup ../data.upgrades id)}}
-                    <td><span>{{localize name}}</span></td>
+                    <td class="table-item"><span>{{localize name}} </span></td>
                   {{/if}}
                 {{/each}}
               </tr>
@@ -114,10 +127,10 @@
                 <div class="form-group item-customization-section">
                     <div>
                         <label>{{ localize "fantasycraft.armourStatus" }}</label>
-                        <label class="checkbox">
+                        <label class="large-font checkbox">
                             <input type="checkbox" name="system.equipped" {{checked item.system.equipped}}/> {{ localize "fantasycraft.equipped" }}
                         </label>
-                        <label class="checkbox">
+                        <label class="large-font checkbox">
                             <input type="checkbox" name="system.identified" {{checked item.system.identified}}/> {{ localize "fantasycraft.identified" }}
                         </label>
                     </div>
@@ -257,7 +270,7 @@
                     <div>
                         <select name="system.upgrades.craftsmanship">
                             {{#select item.system.upgrades.craftsmanship}}
-                                <option value="none">{{localize "fantasycraft.none"}}</option>
+                                <option value="none">{{localize "fantasycraft.noEntry"}}</option>
                                 {{#each config.customizations as |name type|}}
                                     <option value="{{name}}">{{localize type}}</option>
                                 {{/each}}
@@ -272,7 +285,7 @@
                     <div>
                         <select name="system.upgrades.materials">
                             {{#select item.system.upgrades.materials}}
-                                <option value="none">{{localize "fantasycraft.none"}}</option>
+                                <option value="none">{{localize "fantasycraft.noEntry"}}</option>
                                 {{#each config.materials as |name type|}}
                                     <option value="{{name}}">{{localize type}}</option>
                                 {{/each}}

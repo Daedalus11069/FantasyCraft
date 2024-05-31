@@ -24,17 +24,17 @@
                 <span>
                     <span><b>{{localize actor.system.traits.initiative.label}}: </b></span>
                     <span>{{actor.system.traits.initiative.total}} =</span> 
-                    <span class="tooltip" style="text-align: center;"> <div>{{actor.system.traits.initiative.value}}</div><div class="tooltiptext">{{localize "fantasycraft.grade"}}</div></span>
+                    <span class="tooltip" style="text-align: center;"> <div>{{actor.system.traits.initiative.value}}</div><div class="tooltiptext relative-position">{{localize "fantasycraft.grade"}}</div></span>
                     {{#if actor.system.mastersArt}}
                         <span style="text-align:center;">{{#if actor.system.defense.attributePositive}}+{{else}}-{{/if}}</span>
                         <span class="tooltip" style="text-align: center;"> 
                             <div>{{actor.system.defense.attributeNormalized}}</div>
-                            <div class="tooltiptext">{{localize (lookup config.abilityScores actor.system.defense.defenseAttribute)}}</div>
+                            <div class="tooltiptext relative-position">{{localize (lookup config.abilityScores actor.system.defense.defenseAttribute)}}</div>
                         {{else}}
                         <span style="text-align:center;">{{#if actor.system.defense.dexPositive}}+{{else}}-{{/if}}</span>
                         <span class="tooltip" style="text-align: center;"> 
                             <div>{{actor.system.defense.dexNormalized}}</div>
-                            <div class="tooltiptext">{{localize "fantasycraft.dexterity"}}</div>
+                            <div class="tooltiptext relative-position">{{localize "fantasycraft.dexterity"}}</div>
                     {{/if}}
                     </span>
                 </span>
@@ -48,15 +48,15 @@
                     <span class="flex2">{{actor.system.traits.defense.total}} = </span>
                     <span>10</span>
                     <span>+</span>
-                    <div class="tooltip" style="text-align:center;"> <div>{{actor.system.traits.defense.value}}</div><div class="tooltiptext">{{localize "fantasycraft.grade"}}</div></div>
+                    <div class="tooltip" style="text-align:center;"> <div>{{actor.system.traits.defense.value}}</div><div class="tooltiptext relative-position">{{localize "fantasycraft.grade"}}</div></div>
                     <div style="text-align:center;">{{#if actor.system.defense.attributePositive}}+{{else}}-{{/if}}</div>
-                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.attributeNormalized}}</span> <div class="tooltiptext">{{localize (lookup config.abilityScores actor.system.defense.defenseAttribute)}}</div></div>
+                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.attributeNormalized}}</span> <div class="tooltiptext relative-position">{{localize (lookup config.abilityScores actor.system.defense.defenseAttribute)}}</div></div>
                     <div style="text-align:center;">+</div>
-                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.size}}</span> <div class="tooltiptext">{{localize "fantasycraft.size"}}</div></div>
+                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.size}}</span> <div class="tooltiptext relative-position">{{localize "fantasycraft.size"}}</div></div>
                     <div style="text-align:center;">+</div>
-                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.guard}}</span><div class="tooltiptext">{{localize "fantasycraft.guard"}}</div></div>
+                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.guard}}</span><div class="tooltiptext relative-position">{{localize "fantasycraft.guard"}}</div></div>
                     <div style="text-align:center;">-</div>
-                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.penalty}}</span><div class="tooltiptext">{{localize "fantasycraft.defensePenalty"}}</div></div>
+                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.penalty}}</span><div class="tooltiptext relative-position">{{localize "fantasycraft.defensePenalty"}}</div></div>
                     <span> </span>
                 </span>
             </div>

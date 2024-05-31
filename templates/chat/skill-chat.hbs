@@ -7,9 +7,9 @@
         {{else}}
         <div class="boxline">
         {{/if}}
-            <div class="headertext">
-                <b>{{localize "fantasycraft.action"}}: {{rollDescription}}</b>
-            </div>
+        <h2 class="boxline chat-window-header headertext" style="margin: 0px">
+          <span>{{localize "fantasycraft.skill"}} - {{rollDescription}}</span>
+        </h2>
             {{#if data.dc}}
                 <div style="text-align: end"><b>{{localize "fantasycraft.dc"}}: </b>{{data.dc}}</div>
             {{/if}}

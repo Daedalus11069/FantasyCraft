@@ -109,3 +109,79 @@ export function resetAbilityUsage(combatant, duration)
     }
   }
 }
+
+export async function createMacro(data, type, slot)
+{
+  let newData = {};
+  let icon;
+  console.log("test")
+  if (type == "Item")
+  {
+    if (game.user.isGM)
+      return;
+
+    newData = await fromUuid(data.uuid);
+  }
+  else if (type == undefined)
+  {
+    newData.name = "Unarmed Strike";
+  }
+
+  const name = newData.name;
+  const id = newData.id;
+  let command;
+
+  if (type == undefined || newData.type == "weapon" || newData.type == "attack")
+    command = attackMacro(name);
+  if (newData.type == "spell")
+    command = spellMacro(name, id);
+
+  let macro = game.macros.find(
+    (macro) => macro.name === name && macro.command === command
+  );
+
+  if (newData.type == "weapon")
+    icon = newData.img;
+  else if (newData.type == "attack")
+    icon = "icons/svg/pawprint.svg";
+  else if (newData.type == "spell")
+    icon = "icons/svg/fire.svg";
+  else 
+    icon = "icons/svg/dice-target.svg";
+
+  if (!macro) {
+    macro = await Macro.create({
+      name: name,
+      type: 'script',
+      img: icon,
+      command: command,
+    });
+  }
+
+  game.user.assignHotbarMacro(macro, slot);
+
+  return false;
+}
+
+function attackMacro(name)
+{
+  return ` let weapon = game.user.character.items.find(i => i.name == "${name}")
+
+  if ("${name}" == "Unarmed Strike")
+    game.user.character.rollUnarmedAttack(weapon, event.shiftKey)
+  else if (weapon.type == "weapon" && weapon.system.readied)
+    game.user.character.rollWeaponAttack(weapon, event.shiftKey)
+  else if (weapon.type == "weapon" && !weapon.system.readied)
+    ui.notifications.warn("This Weapon is not Readied")
+  else if (weapon.type == "attack")
+    game.user.character.rollNaturalAttack(weapon, event.shiftKey)
+  `
+}
+
+function spellMacro(name, id)
+{
+  return `let spell = game.user.character.items.find(i => i.name == "${name}")
+
+  game.user.character.sheet._spellCard(event, "${id}", true)
+  `
+}

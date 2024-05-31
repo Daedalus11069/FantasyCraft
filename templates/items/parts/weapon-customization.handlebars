@@ -19,7 +19,7 @@
                 <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.sizeHand'}} </span>
                     <div class="item-customization-section">
-                        <div>
+                        <div style="display: inline-flex">
                             <select class="minimal-flex" name="system.size.size"> 
                             {{#select item.system.size.size}}
                                 {{#each config.sizeLetter as |v k|}}
@@ -112,7 +112,7 @@
             <div>
                 <select name="system.upgrades.customization">
                     {{#select item.system.upgrades.customization}}
-                        <option value="none">{{localize "fantasycraft.none"}}</option>
+                        <option value="none">{{localize "fantasycraft.noEntry"}}</option>
                         {{#each config.customizations as |name type|}}
                             <option value="{{name}}">{{localize type}}</option>
                         {{/each}}
@@ -127,7 +127,7 @@
             <div>
                 <select name="system.upgrades.materials">
                     {{#select item.system.upgrades.materials}}
-                        <option value="none">{{localize "fantasycraft.none"}}</option>
+                        <option value="none">{{localize "fantasycraft.noEntry"}}</option>
                         {{#each config.materials as |name type|}}
                             <option value="{{name}}">{{localize type}}</option>
                         {{/each}}
