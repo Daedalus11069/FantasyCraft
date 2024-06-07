@@ -45,6 +45,7 @@
 		"fatigue": "Fatigue",
 		"stress": "Stress",
 		"shaken": "Shaken",
+		"tainted": "Tainted",
 		"usersChoice": "User's choice",
 		"dead": "Dead",
 		"unconscious": "Unconscious",
@@ -994,6 +995,7 @@
 			"noReadiedWeapon": "You do not have a weapon readied",
 			"noUsesRemainingForChosenTrick": "You have no uses remaining for the chosen Trick.",
 			"changeValueTooltipText": "Hold Shift to increase the value by 5, Ctrl by 10, Alt by 20, and Ctrl + Shift to increase by 100.",
+			"noCharacterAssigned": "You do not have a character assigned.",
 			"youCantAffordThat": "You Can't Afford That!"
 		},
 				
@@ -1001,30 +1003,300 @@
 		{
 			"campaignQualities":
 			{
+				"autoRoll":
+				{
+					"name": "Auto Roll for NPCs",
+					"label": "Automatically roll damage saves for NPC when damage is applied"
+				},
+				"adventureInsurance":
+				{
+					"name": "Adventure Insurance",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) People respect the stout of heart, even when fate doesn’t."
+				},
+				"beefyHeroes":
+				{
+					"name": "Beefy Heroes",
+					"label": "A ripped physique is all the armor a real hero needs!"
+				},
+				"bleakHeroes":{
+					"name": "Bleak Heroes",
+					"label": "These are dark times and the odds are stacked high against heroes."
+				},
+				"boldHeroes":{
+					"name": "Bold Heroes",
+					"label": "Heroes are larger than life and rely on luck as much as skill."
+				},
+				"codeOfHonor":{
+					"name": "Code of Honor",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) The world observes one or more strict social codes or taboos of the GM’s creation (e.g. “never strike an unarmed foe,” “don’t enter the sacred faerie glades,” etc.)."
+				},
+				"complexHeroes":{
+					"name": "Complex Heroes",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Heroes are forged not only in fierce battles to save the world but also in intimate struggles of a most personal nature."
+				},
+				"deadMeansDead":{
+					"name": "Dead Means Dead",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Life is fleeting and once you check out, you don’t come back."
+				},
+				"deadlyCombat":{
+					"name": "Deadly Combat",
+					"label":  "Combat is a life-or-death affair, with death being a very real possibility."
+				},
+				"dominantHeroes":
+				{
+					"name": "Dominant Heroes",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Carnage abounds as true heroes carve their way through lesser foes."
+				},
+				"doomedHeroes":
+				{
+					"name": "Doomed Heroes",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Threats against heroes automatically become critical hits."
+				},
+				"dramaticPacing":
+				{
+					"name": "Dramatic Pacing",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Time bends to meet the needs of the story."
+				},
+				"fastAttributes":{
+					"name": "Fast Attributes",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Each player character gains 1 bonus attribute point at Career Level 3 and every 3 levels thereafter. This replaces the bonus attribute points on Table 1.4: Career Level (see page 27)."
+				},
+				"fastFeats":{
+					"name": "Fast Feats",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Each player character gains 1 extra feat at Career Level 2 and every 2 levels thereafter. This replaces the extra feats on Table 1.4: Career Level (see page 27)."
+				},
+				"fastInterests":{
+					"name": "Fast Interests",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Each player character gains 1 bonus Interest at Career Level 2 and every 2 levels thereafter. This replaces the extra bonus Interests on Table 1.4: Career Level (see page 27)."
+				},
+				"fastLevels":{
+					"name": "Fast Levels",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) The XP required to gain each level decreases to 1/2 normal (rounded up), and player characters may gain up to 2 levels between adventures."
+				},
+				"fastProficiencies":{
+					"name": "Fast Proficiencies",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Each player character gains 1 bonus proficiency at Career Level 1 and at every Career Level thereafter. This replaces the bonus proficiencies on Table 1.4: Career Level (see page 27)."
+				},
+				"featExchange":{
+					"name": "Feat Exchange",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Whenever a hero gains a specific feat, or a feat from a specific tree, he may instead gain a feat from a specific tree chosen by the GM."
+				},
+				"flexibleMagicItems":
+				{
+					"name": "Flexible Magic Items",
+					"label":  "(NO CURRENT MECHANICAL EFFECT)Magic items are diverse and may have Charms and Essences in any combination."
+				},
+				"fragileHeroes":
+				{
+					"name": "Fragile Heroes",
+					"label":  "(NO CURRENT MECHANICAL EFFECT) Heroes can fall as easily as lesser men. "
+				},
+				"fragileMonsters":
+				{
+					"name": "Fragile Monsters",
+					"label": "Special NPCs have half vitality"
+				},
+				"greaterMagicItems":
+				{
+					"name": "Greater Magic Items",
+					"label": "(NO CURRENT MECHANICAL EFFECT)Magic items are especially powerful and may have up to 2 Charms and 2 Essences."
+				},
+				"heartyHeroes":
+				{
+					"name": "Hearty Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT)Heroes are exceptionally resilient and bounce back quickly from injury."
+				},
+				"hewnLimbs":
+				{
+					"name": "Hewn Limbs",
+					"label": "(NO CURRENT MECHANICAL EFFECT) The world is a brutal place where no injury is trivial."
+				},
+				"ironHeroes":
+				{
+					"name": "Iron Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Heroes scoff at the threat of permanent injury."
+				},
+				"jacksOfAllTrades":
+				{
+					"name": "Jacks Of All Trades",
+					"label": "Heroes never suffer untrained skill check penalties, even when they have 0 ranks or lack a required kit. "
+				},
+				"largerThanLifeHeroes":
+				{
+					"name": "Larger Than Life Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Heroes stand head and shoulders above their peers."
+				},
+				"lesserHeroes":
+				{
+					"name": "Lesser Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT) AtHeroes are everyday men and women with more courage than raw ability."
+				},
+				"luckAbounds":
+				{
+					"name": "Luck Abounds",
+					"label": "Luck plays a significant role in the world."
+				},
 				"miracles": 
 				{
 					"name": "Miracles",
 					"label": "Alignments grant fantastic powers — perhaps controlled, perhaps not."
+				},
+					"beneficentUniverse": 
+					{
+						"name": "Beneficent Universe",
+						"label": "(NO CURRENT MECHANICAL EFFECT) The universe rewards the pious."	
+					},
+					"fickleUniverse": 
+					{
+						"name": "Fickle Universe",
+						"label": "(NO CURRENT MECHANICAL EFFECT) The universe is temperamental, shaping the daily lives of the devoted."	
+					},
+					"generousUniverse": 
+					{
+						"name": "Generous Universe",
+						"label": "(NO CURRENT MECHANICAL EFFECT) The universe rewards success."	
+					},
+					"indifferentUniverse": 
+					{
+						"name": "Indifferent Universe",
+						"label": "(NO CURRENT MECHANICAL EFFECT) The universe ignores the faithful."	
+					},
+					"strictUniverse": 
+					{
+						"name": "Strict Universe",
+						"label": "(NO CURRENT MECHANICAL EFFECT) Characters are aligned by birth or cosmic arrangement."	
+					},
+					"warringUniverse": 
+					{
+						"name": "Warring Universe",
+						"label": "(NO CURRENT MECHANICAL EFFECT) The universe is in turmoil and this conflict extends to the mortal realm."	
+					},
+					"wrathfulUniverse": 
+					{
+						"name": "Wrathful Universe",
+						"label": "(NO CURRENT MECHANICAL EFFECT) The universe does not abide defiance."	
+					},
+				"montyHaul":
+				{
+					"name": "Monty Haul",
+					"label": "Real heroes never leave valuable treasure behind."
+				},
+				"nonScalingNPCs":
+				{
+					"name": "Non-Scaling NPCs",
+					"label": "The world has a set pecking order and if the heroes survive long enough, they’ll eventually reach the top."
+				},
+				"paranoia":
+				{
+					"name": "Paranoia",
+					"label": "(NO CURRENT MECHANICAL EFFECT) NPCs are exceptionally cautious, perhaps even suspicious."
+				},
+				"plentifulMagicItems":
+				{
+					"name": "Plentiful Magic Items",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Magic items are especially common and impressive."
+				},
+				"rampantCorruption":
+				{
+					"name": "Rampant Corruption",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Everyone has their price."
+				},
+				"rareMagicItems":
+				{
+					"name": "Rare Magic Items",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Magic items are especially uncommon (though no less desired)."
+				},
+				"reputableHeroes":
+				{
+					"name": "Reputable Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Heroes are paragons in the eyes of the people and always given the benefit of the doubt."
+				},
+				"reviledHeroes":
+				{
+					"name": "Reviled Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Heroes are scorned by the people as trouble-makers, outlaws, or worse."
+				},
+				"savageWilds":
+				{
+					"name": "Savage Wilds",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Vile creatures stalk the wilds, always on the lookout for a fresh meal."
 				},
 				"sorcery": 
 				{
 					"name": "Sorcery",
 					"label": "Magic is real and may be harnessed and controlled in the form of spells."
 				},
-				"wildMagic": 
+					"corruptingMagic": 
+					{
+						"name": "Corrupting Magic",
+						"label": "Magic is a vile force that twists the caster’s body and mind."
+					},
+					"cyclicalMagic": 
+					{
+						"name": "Cyclical Magic",
+						"label": "Magic ebbs and flows like the tides (e.g. according to lunar cycles or calendar periods, or as a finite source is depleted)."
+					},
+					"difficultMagic": 
+					{
+						"name": "Difficult Magic",
+						"label": "Magic is a rare and exotic art, exceedingly difficult and time-consuming to perform."
+					},
+					"easyMagic": 
+					{
+						"name": "Easy Magic",
+						"label": "Magic is easily mastered and may be performed with a literal flick of the wrist."
+					},
+					"lostMagic": 
+					{
+						"name": "Lost Magic",
+						"label": "One or more Schools or Disciplines have been lost, though a fledging black market exists for the knowledge."
+					},
+					"potentMagic": 
+					{
+						"name": "Potent Magic",
+						"label": "Magic is particularly powerful and difficult to resist."
+					},
+					"randomMagic": 
+					{
+						"name": "Random Magic",
+						"label": "Magic is an unpredictable talent."
+					},
+					"ubiquitousMagic": 
+					{
+						"name": "Ubiquitous Magic",
+						"label": "Magic is a common or innate talent available to virtually everyone."
+					},
+					"wildMagic": 
+					{
+						"name": "Wild Magic",
+						"label": "Magic is unpredictable or difficult to control, leading to… exciting critical successes and failures."
+					},
+				
+				"tense":
 				{
-					"name": "Wild Magic",
-					"label": "Magic is unpredictable or difficult to control, leading to… exciting critical successes and failures."
+					"name": "Tense",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Fear and tension grip the world."
 				},
-				"autoRoll":
+				"thriftyHeroes":
 				{
-					"name": "Auto Roll for NPCs",
-					"label": "Automatically roll damage saves for NPC when damage is applied"
+					"name": "Thrifty Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Heroes manage their coin well."
 				},
-				"fragileMonsters":
+				
+				"triumphantHeroes":
 				{
-					"name": "Fragile Monsters",
-					"label": "Special NPCs have half vitality"
+					"name": "Triumphant Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Tales of heroes’ outrageous exploits spread quickly."
+				},
+				"versatileHeroes":
+				{
+					"name": "Versatile Heroes",
+					"label": "(NO CURRENT MECHANICAL EFFECT) Heroes are world-wise veterans with diverse skill sets."
+				},
+				"wireFu":
+				{
+					"name": "Wire Fu",
+					"label": "(NO CURRENT MECHANICAL EFFECT) The world sees high-flying action… literally."
 				}
 			}
 		}

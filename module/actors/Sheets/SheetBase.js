@@ -638,58 +638,42 @@ export default class ActorSheetFC extends ActorSheet
         this._onItemDelete(event);
     }
 
+    async _updateGradedCondition(conditionName, element)
+    {
+      conditionName = (conditionName.includes("shaken")) ? element.name.slice(7, -8) : element.name.slice(7, -9);
+      const act = this.actor.system[conditionName];
+      let updateString;
+      let conditionGrade = parseInt(element.name.slice(-1));
+      let direction = (!element.checked) ? 1 : -1;
+
+      //dynamically adjusted for loop
+      for (let i = conditionGrade; (direction == 1) ? i <= 4 : i > 0; i += direction)
+      {
+        updateString = "system." + conditionName;
+        updateString += "." + Object.keys(act)[i-1];
+
+        (element.checked == false) ? await this.actor.update({[updateString]: false}) : await this.actor.update({[updateString]: true});
+      }
+
+      if (!element.checked)
+        conditionGrade--;
+
+      updateString = "system.conditions.";
+      updateString += (element.name.includes("fatigue")) ? "fatigued" : conditionName;
+      await this.actor.update({[updateString]: conditionGrade});
+
+      if (conditionName == "fatigue") conditionName = "fatigued";
+
+      if (this.actor.system.conditions[conditionName] > 0)
+        this.actor.applyCondition(conditionName);
+      else 
+        this.actor.removeCondition(conditionName);
+    }
+
     async _fatigueShaken(event)
     {
       let element = event.currentTarget;
-      const act = (element.name.includes("fatigue")) ? this.actor.system.fatigue : this.actor.system.shaken;
-      if (element.checked == false)
-      {  
-        for (let i = parseInt(element.name.slice(-1)); i <= 4; i++)
-        {
-          let updateString = (element.name.includes("fatigue")) ? "system.fatigue" : "system.shaken";
-          updateString += "." + Object.keys(act)[i-1];
-          await this.actor.update({[updateString]: false});
-        }
-      }
-      else if (element.checked == true)
-      {  
-        for (let i = parseInt(element.name.slice(-1)); i > 0; i--)
-        {
-          let updateString = (element.name.includes("fatigue")) ? "system.fatigue" : "system.shaken";
-          updateString += "." + Object.keys(act)[i-1];
-          await this.actor.update({[updateString]: true});
-        }
-      }
-      
-      let newValue = parseInt(element.name.slice(-1));
-      if (element.checked)
-      {
-        let updateString = "system.conditions."
-        updateString += (element.name.includes("fatigue")) ? "fatigued" : "shaken";
-        await this.actor.update({[updateString]: newValue});
-      }
-      else 
-      {
-        newValue--
-        let updateString = "system.conditions."
-        updateString += (element.name.includes("fatigue")) ? "fatigued" : "shaken";
-        await this.actor.update({[updateString]: newValue});
-      }
-
-      if (element.name.includes("fatigue"))
-      {
-        if (this.actor.system.conditions.fatigued > 0)
-          this.actor.applyCondition("fatigued");
-        else 
-          this.actor.removeCondition("fatigued");
-      }
-      else if (element.name.includes("shaken"))
-      {
-        if(this.actor.system.conditions.shaken > 0)
-          this.actor.applyCondition("shaken");
-        else 
-          this.actor.removeCondition("shaken");
-      }
+      this._updateGradedCondition(element.name, element);
     }
 
     async _readyWeapon(event)

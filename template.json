@@ -229,6 +229,13 @@
 					"shaken2": false,
 					"shaken3": false,
 					"shaken4": false
+				},
+				"tainted":
+				{
+					"tainted1": false,
+					"tainted2": false,
+					"tainted3": false,
+					"tainted4": false
 				}
 			},
 			"spell-casting":
@@ -339,7 +346,8 @@
 					"sprawled": false,
 					"stunned": false,
 					"dead": false,
-					"soulDrain": 0
+					"soulDrain": 0,
+					"tainted": 0
 				},
 				"conditionBonuses":
 				{
