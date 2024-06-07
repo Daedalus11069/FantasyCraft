@@ -176,6 +176,13 @@ export class Conditions {
         
         conditionsList.push(_createCondition('drainingSoul', 'icons/svg/sun.svg'));
 
+        conditionsList.push(_createCondition('tainted', 'systems/fantasycraft/assets/icons/evil-heart.svg',
+            [
+                _addEffect('system.conditionBonuses.will', -2),
+                _addEffect('system.conditionBonuses.charismaSkills', -2)
+            ]
+        ));
+
         return conditionsList;
     }
 }

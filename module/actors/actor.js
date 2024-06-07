@@ -415,7 +415,16 @@ export default class ActorFC extends Actor {
       actorData.system.startingActionDice = 3 + Math.floor((careerLevel-1)/5);
       if (moreThanLuck != null)
         actorData.system.startingActionDice += 1;
-      actorData.system.actionDiceSize = 4 + (Math.floor((careerLevel-1)/5)*2);
+
+      if (game.settings.get('fantasycraft', 'bleakHeroes'))
+        actorData.system.startingActionDice -= 2;
+      if (game.settings.get('fantasycraft', 'boldHeroes'))
+        actorData.system.startingActionDice += 2;
+
+      let actionDiceBaseSize = (game.settings.get('fantasycraft', 'luckAbounds')) ? 6 : 4
+
+      actorData.system.actionDiceSize = actionDiceBaseSize + (Math.floor((careerLevel-1)/5)*2);
+      if (actorData.system.actionDiceSize > 12) actorData.system.actionDiceSize = 12;
       actorData.system.careerLevel.value = careerLevel;
       actorData.system.castingLevel = castingLevel;
     }
@@ -901,8 +910,13 @@ export default class ActorFC extends Actor {
           }
         }
 
+        
         char.arcane.spellPointMax = (this.getFlag("fantasycraft", "Spell Power")) ? classSpellPoints + char.startingActionDice + magicBonus : classSpellPoints + magicBonus
-
+        
+        if (this.getFlag("fantasycraft", "Spell Power") && game.settings.get('fantasycraft', 'bleakHeroes'))
+          char.arcane.spellPointMax += 2;
+        else if (this.getFlag("fantasycraft", "Spell Power") && game.settings.get('fantasycraft', 'boldHeroes'))
+          char.arcane.spellPointMax -= 2;
       }
     }
     
@@ -1170,6 +1184,9 @@ export default class ActorFC extends Actor {
       if (features.filter(item => item.name == game.i18n.localize("fantasycraft.chargingBasics")).length > 0)
         movement.ground.value += 5;
 
+      if (this.effects.find(e => e.flags?.core?.statusId === "fatigued"))
+        movement.ground.value -= (5 * this.system.conditions.fatigued)
+
       let paths = this.items.filter(function(item) {return item.type == "path"})
       for (let [key, path] of Object.entries(paths))
       {
@@ -1183,6 +1200,9 @@ export default class ActorFC extends Actor {
 
       let multipler = (armourCheck[0]?.system.armourCoverage == "full") ? 3 : 4;
 
+      if (this.effects.find(e => e.flags?.core?.statusId === "fatigued"))
+        multipler = 0;
+      
       movement.ground.run = movement.ground.value * multipler;
       movement.ground.travel = Math.ceil(movement.ground.value/10);
 
@@ -1254,6 +1274,17 @@ export default class ActorFC extends Actor {
           }
         }
       }
+
+      //get resistances from Campaign Qualities
+      if (game.settings.get('fantasycraft', 'beefyHeroes'))
+      {
+        let str = actor.system.abilityScores.strength.mod
+        if (str > 0 && (actor.type == "character" || actor.system?.isSpecial))
+        {
+          this.addOrImproveResistance(actor.system.resistances, {name: "lethal", value: str});
+          this.addOrImproveResistance(actor.system.resistances, {name: "subdual", value: str});
+        }
+      }
     }
       
     _getTrickUses(actor)
@@ -1279,6 +1310,11 @@ export default class ActorFC extends Actor {
           else if (trick.system.uses.counter == "actionDie")
           {
             trick.system.uses.maxUses = actor.system.startingActionDice;
+
+            if (game.settings.get('fantasycraft', 'bleakHeroes'))
+              trick.system.uses.maxUses += 2;
+            if (game.settings.get('fantasycraft', 'boldHeroes'))
+              trick.system.uses.maxUses -= 2;
           }
 
           if (trick.system.uses.usesRemaining == null || trick.system.uses.usesRemaining == undefined)
@@ -1411,6 +1447,18 @@ export default class ActorFC extends Actor {
           save.value
         ]
       }
+
+      if (this.effects.find(e => e.flags?.core?.statusId === "sickened"))
+        saveInfo.push(-2);
+
+      if (this.effects.find(e => e.flags?.core?.statusId === "hasted") && saveName == "reflex")
+        saveInfo.push(-1);
+      
+      if (this.effects.find(e => e.flags?.core?.statusId === "slowed") && saveName == "reflex")
+        saveInfo.push(1);
+      
+      if (this.effects.find(e => e.flags?.core?.statusId === "tainted") && saveName == "will")
+        saveInfo.push(this.system.conditions.tainted * -2);
     
       let rollFormula = ["1d20"];
       for (let bonus of saveInfo)
@@ -1445,12 +1493,13 @@ export default class ActorFC extends Actor {
     {
       const actor = this.system;
       let skill = this.type == "character" ? actor.skills[skillName] : actor.signatureSkills[skillName];
-
+      
       if (skillName == "spellcasting") 
         skill = this.type == "character" ? actor.arcane[skillName] : actor[skillName];
 
       const flawless = this.items.filter(item => item.type == "feature" && item.system.flawless.isFlawless && (item.system.flawless.skill1 == skillName || item.system.flawless.skill2 == skillName ));
       let flawlessResult = 0;
+
       if (flawless.length > 0)
       {
         if (this.type == "character")
@@ -1469,8 +1518,8 @@ export default class ActorFC extends Actor {
           flawlessResult = this.system.threat + 20;
       }
 
+      let untrained = false;
       let skillModifiers = []
-
       let magicItems = Utils.getMagicItems(this);
       let magicBonus = 0;
 
@@ -1478,6 +1527,20 @@ export default class ActorFC extends Actor {
       if (this.type == "character")
       {
         if (!skill.ranks) skill.ranks = 0;
+        //Untrained exceptions: trained skill magic item, jacks of all trades quality
+        let magicItem = this.items.filter(function(item)
+        {
+          if (!item.system.isMagic)
+            return;
+
+          let result = Utils.searchEssences(item, "trainedSkill")
+          if (result?.target == skillName)
+            return item;
+        });
+
+        if (skill.ranks == 0 && !game.settings.get('fantasycraft', 'jacksOfAllTrades') && magicItem.length == 0)
+          untrained = true;
+
         skillModifiers =
         [
           actor.abilityScores[skill.ability].mod,
@@ -1496,8 +1559,8 @@ export default class ActorFC extends Actor {
         else
           skillModifiers = 
           [
-            actor.signatureSkills[skillName].attributeBonus,
-            actor.signatureSkills[skillName].skillBonus
+            skill.attributeBonus,
+            skill.skillBonus
           ]
       }
 
@@ -1511,11 +1574,31 @@ export default class ActorFC extends Actor {
         }
       }
 
+
+      if (actor.conditions.baffled > 0)
+        skillModifiers.push(actor.conditions.baffled * -2);
+
+      if (this.effects.find(e => e.flags?.core?.statusId === "sickened"))
+        skillModifiers.push(-2);
+      
+      if (this.effects.find(e => e.flags?.core?.statusId === "entangled") && skill.ability == "dexterity") 
+        skillModifiers.push(-4);
+
       if (skill.ability == "strength" || skill.ability == "dexterity" || skill.ability == "constitution")
         skillModifiers.push(-actor.acp);
 
+      if ((skill.ability == "strength" || skill.ability == "dexterity") && this.effects.find(e => e.flags?.core?.statusId === "fatigued"))
+        skillModifiers.push(-actor.conditions.fatigued);
+
+      if (skill.ability == "wisdom")
+        skillModifiers.push(actor.conditions.shaken * -2);
+
       if (skill.ability == "charisma")
+      {
         skillModifiers.push(actor.appearance);
+        skillModifiers.push(actor.conditions.shaken * -2);
+        skillModifiers.push(actor.conditions.tainted * -2);
+      }
 
       if (magicBonus > 0)
         skillModifiers.push(magicBonus);
@@ -1532,10 +1615,11 @@ export default class ActorFC extends Actor {
       if (skillRoll.terms[0].results[0].result == 1)
         flawlessResult = 0;
 
-      Chat.onSkillCheck(skillRoll, this, skillName, flawlessResult);
+      Chat.onSkillCheck(skillRoll, this, skillName, flawlessResult, null, untrained);
 
       return skillRoll;
     }
+
     async rollCompetence()
     {
       let formula = "d20";

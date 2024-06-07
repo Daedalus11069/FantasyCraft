@@ -76,7 +76,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 
 		data.spells = this._filterItems(data.spells, this._filters.spellList, "school");
 		data.spells = this._filterItems(data.spells, this._filters.spellLevels, "level");
-
+		data.corrupting = game.settings.get('fantasycraft', 'corruptingMagic');
 		data["classNames"] = this.actor.itemTypes.class.map(c => c.name).join(", ");
 		
 		return data;

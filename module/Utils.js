@@ -163,6 +163,27 @@ export async function createMacro(data, type, slot)
   return false;
 }
 
+export function searchEssences(item, essence)
+{
+  //magic armour or weapons must be equipped to function, only look at readied weapons and worn armour
+  if ((item.type == "armour" && !item.system.equipped) || (item.type == "weapons" && !item.system.readied))
+    return null;
+
+  for (let i = 1; i <= item.system.essences.essenceNumber; i++)
+    {
+        let itemEssence = item.system.essences[Object.keys(item.system.essences)[i]];
+        if(itemEssence.ability == essence)
+        {
+          return {
+            target: itemEssence.target,
+            greater: itemEssence.greater,
+          }
+        }
+    }
+
+  return null
+}
+
 function attackMacro(name)
 {
   return ` let weapon = game.user.character.items.find(i => i.name == "${name}")

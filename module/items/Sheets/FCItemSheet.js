@@ -361,6 +361,12 @@ export default class FCItemSheet extends ItemSheet {
   _purchaseItems(event)
   {
     const character = game.user.character; //Get the players character
+    if (character == undefined)
+    {
+      ui.notifications.warn(game.i18n.localize('fantasycraft.Dialog.noCharacterAssigned'));
+      return;
+    }
+
     const store = this.item.system;
     let silverPrice = 0;
     let repPrice = 0;

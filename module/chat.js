@@ -102,10 +102,12 @@ export function onSavingThrow(diceRoll, actor, savingThrow, dc=0)
     setRenderTemplate(diceRoll, 'systems/fantasycraft/templates/chat/skill-chat.hbs', rollInfo, chatData);
 }
 
-export function onSkillCheck(diceRoll, actor, skillName, flawless, trick = null)
+export function onSkillCheck(diceRoll, actor, skillName, flawless, trick = null, untrained)
 {
     let skill = actor.type == "character" ? actor.system.skills[skillName] : actor.system.signatureSkills[skillName];
-    
+    let error = false;
+    const naturalResult = diceRoll.dice[0].total;
+
     if (skillName == "competence")
         skill = { threat: 20, error: 1 };
 
@@ -122,6 +124,9 @@ export function onSkillCheck(diceRoll, actor, skillName, flawless, trick = null)
         if (!!mPouch && mPouch.system.itemUpgrades.masterwork)
             skill.error --;
     }
+
+    if (skill.error == undefined || skill.error == NaN)
+        skill.error = 1;
     
     if (actor.type == "npc" && skillName != "spellcasting" && skillName != "competence") 
         skillName = actor.system.signatureSkills[skillName].skillName;
@@ -134,12 +139,28 @@ export function onSkillCheck(diceRoll, actor, skillName, flawless, trick = null)
         data: {}
     }
 
+    //If the skill is untrained cap the result at 15
+    let rollResult = diceRoll.total;
+    if (untrained)
+    {
+        if (rollResult > 15)
+            rollResult = 15;
+
+        if (naturalResult <= skill.error +2)
+            error = true;
+    }
+    else 
+    {
+        if (naturalResult <= skill.error || naturalResult < 0)
+            error = true;
+    }
+
     const d = rollInfo.data
-    d['roll'] = (flawless > diceRoll.total) ? flawless : diceRoll.total;
+    d['roll'] = (flawless > rollResult) ? "Flawless " + flawless : rollResult;
     d['formula'] = diceRoll.formula;
-    d['diceRoll'] = diceRoll.terms[0].results[0].result;
-    d['threat'] = (diceRoll.dice[0].results[0].result >= skill.threat) ? true : false;
-    d['error'] = (diceRoll.dice[0].results[0].result <= skill.error || diceRoll.total < 0) ? true : false;
+    d['diceRoll'] = naturalResult;
+    d['threat'] = (naturalResult >= skill.threat) ? true : false;
+    d['error'] = error
     if (trick) d['trick'] = trick;
 
     const chatData = getChatBaseData(actor);
@@ -169,6 +190,10 @@ export function onHealingRoll(diceRoll, actor, healingType)
 export function onAttack(attackRoll, attacker, item, trick=null, trick2=null, additionalInfo, ammo)
 {
     let threat = (trick?.system.effect.additionalEffect == "replaceAttackRoll") ? attacker.system.skills[trick.system.effect.secondaryCheck].threat : item.system.threatRange;
+
+    if (game.settings.get('fantasycraft','deadlyCombat'))
+        threat -= 2;
+
     let magicItems = _checkForThreatRangeMagicItems(attacker);
 
     if (trick?.system.effect.additionalEffect != "replaceAttackRoll")
@@ -411,6 +436,8 @@ function setUpAttackData(attackRoll, attacker, item, threat, qualities, ammo=nul
         item: {id: item.id, data: item, name: item.name},
         data: {}
     }
+    if (threat != null && game.settings.get('fantasycraft', 'deadlyCombat'))
+        threat -= 2
 
     threat = (threat == null) ? 21 : threat;
 
@@ -791,7 +818,7 @@ async function spellCasting(event)
     const skillRoll = new Roll(rollFormula)
     skillRoll.evaluate({async: false})
 
-    onSkillCheck(skillRoll, act, skillName, null, trick);
+    onSkillCheck(skillRoll, act, skillName, null, trick, false);
 
     if (act.type =="character")
     {

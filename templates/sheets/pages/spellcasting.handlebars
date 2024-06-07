@@ -35,9 +35,22 @@
                 </li> 
             </ul>
             {{! Casting Level}}
-            <div class="category-body" style="text-align:center; min-height: 50px">
-                <input type="number" class="largeBox calcBox" name="system.castingLevel" value="{{numberFormat actor.system.castingLevel}}" disabled=true />
-                <footer> {{localize "fantasycraft.castingLevel"}}</footer>
+            <div class="flexcol category-body" style="text-align:center; min-height: 50px">
+                <div>
+                    <input type="number" class="largeBox calcBox" name="system.castingLevel" value="{{numberFormat actor.system.castingLevel}}" disabled=true />
+                    <footer> {{localize "fantasycraft.castingLevel"}}</footer>
+                </div>
+                {{#if corrupting}}
+                <div>
+                    <footer class="footer-text">
+                        <span>{{localize "fantasycraft.tainted"}}: </span>
+                        <input class="checkbox fatigueShaken" type="checkbox" name="system.tainted.tainted1" {{checked actor.system.tainted.tainted1}} />
+                        <input class="checkbox fatigueShaken" type="checkbox" name="system.tainted.tainted2" {{checked actor.system.tainted.tainted2}} />
+                        <input class="checkbox fatigueShaken" type="checkbox" name="system.tainted.tainted3" {{checked actor.system.tainted.tainted3}} />
+                        <input class="checkbox fatigueShaken" type="checkbox" name="system.tainted.tainted4" {{checked actor.system.tainted.tainted4}} />
+                    </footer>
+                </div>
+                {{/if}}
             </div>
             <div class="category-body" style="text-align:center; min-height: 50px">
                 {{#if actor.system.isDivine}}
