@@ -486,12 +486,21 @@ export default class ActorFC extends Actor {
           }
         }
 
+        //penalty from encumberance
+        const weight = actorData.system.totalWeight;
+        const carryingCapacity = actorData.system.carryingCapacity;
+        let weightPenalty = 0;
+        if (actorData.type == "character" && weight > carryingCapacity.light)
+          weightPenalty = 2;
+        if (actorData.type == "character" && weight > carryingCapacity.heavy)
+          weightPenalty = 5;
+
         actorData.system.defense.size = size;
         actorData.system.defense.guard = guard;
         magic = this._calculateCharmBonus("defenseBonus");
         
-        actorData.system.flatFootedDefense = (def.ability.value > 0) ? 10 + def.class + size - penalty : 10 + def.ability.value + def.class + size - penalty ;
-        def.value = 10 + def.ability.value + def.class + size + guard + misc + magic - penalty;
+        actorData.system.flatFootedDefense = (def.ability.value > 0) ? 10 + def.class + size - penalty - weightPenalty : 10 + def.ability.value + def.class + size - penalty - weightPenalty;
+        def.value = 10 + def.ability.value + def.class + size + guard + misc + magic - penalty - weightPenalty;
     }
 
     _getArmourPenalty(item)
@@ -531,9 +540,9 @@ export default class ActorFC extends Actor {
         //{
         //    dr += armour.system.damageReduction;
         //}
-//
+        //
         //console.log(`DR is now ${dr}`);
-//
+        //
         //let magic = this._calculateEssenceBonus("damageReduction");
         //dr += magic;
         //this.system.dr = dr;
@@ -1152,10 +1161,19 @@ export default class ActorFC extends Actor {
 
     _calculateMovementSpeed()
     {
-      let movement = this.system.movement;
+      const movement = this.system.movement;
+      const features = this.items.filter(item => item.type == "feat" || item.type == "feature");
+      const armourCheck = this.items.filter(function(item) {return (item.type == "armour" && item.system.equipped)});
+      const weight = this.system.totalWeight;
+      const carryingCapacity = this.system.carryingCapacity;
       let ancestry = this.items.filter(item => item.type == "ancestry");
-      let features = this.items.filter(item => item.type == "feat" || item.type == "feature");
-      let armourCheck = this.items.filter(function(item) {return (item.type == "armour" && item.system.equipped)});
+
+      //if overloaded, speed is 0 and return;
+      if (weight > carryingCapacity.heavy)
+      {
+        movement.ground.value = 0;
+        return;
+      }  
 
       if (ancestry.length == 0 || (ancestry.length == 1 && ancestry[0].name == game.i18n.localize("fantasycraft.human"))) return;
 
@@ -1197,6 +1215,15 @@ export default class ActorFC extends Actor {
         movement.ground.value += this.pathStepSpeedCheck(path, steps);
       }
 
+      //if carrying a heavy load reduce speed to half normal
+      if (weight > carryingCapacity.light)
+      {
+        movement.ground.value = movement.ground.value / 2;
+        
+        //rounded up to the next multiple of 5.
+        if (movement.ground.value % 5 != 0)
+          movement.ground.value = Math.ceil(movement.ground.value / 5) * 5;
+      }
 
       let multipler = (armourCheck[0]?.system.armourCoverage == "full") ? 3 : 4;
 
@@ -1221,8 +1248,12 @@ export default class ActorFC extends Actor {
     {
       actor.system.resistances = {};
 
+      const feats = actor.items.filter(item => item.type == "feat")
+      const stance = actor.items.filter(item => item.type == "stance" && item.system.inStance);
+      const paths = actor.items.filter(function(item) {return item.type == "path"})
+      const items = actor.items.filter(function(item) {return (item.type == "armour" && item.system.equipped) || item.type == "general" || (item.type == "weapon" && item.system.readied) })
+
       //get resistances from feats
-      let feats = actor.items.filter(function(item) {return item.type == "feat"})
       for (let [key, feat] of Object.entries(feats))
       {
         let res = feat.system.resistances;
@@ -1234,11 +1265,18 @@ export default class ActorFC extends Actor {
           if (res.value2 > 0)
             this.addOrImproveResistance(actor.system.resistances, {name: res.resistance2, value: res.value2});
         }
+      }
 
+      //get resistances from stance
+      for (let [key, s] of Object.entries(stance))
+      {
+        if (s.system.effect1.effect == "damageResistance")
+          this.addOrImproveResistance(actor.system.resistances, {name: s.system.effect1.bonusTarget, value: s.system.effect1.bonus});
+        if (s.system.effect2.effect == "damageResistance")
+          this.addOrImproveResistance(actor.system.resistances, {name: s.system.effect2.bonusTarget, value: s.system.effect2.bonus});
       }
 
       //get resistances from path steps
-      let paths = actor.items.filter(function(item) {return item.type == "path"})
       for (let [key, path] of Object.entries(paths))
       {
         //get number of steps of the path
@@ -1249,7 +1287,6 @@ export default class ActorFC extends Actor {
       }
 
       //get resistances from items(armour and magic items)
-      let items = actor.items.filter(function(item) {return (item.type == "armour" && item.system.equipped) || item.type == "general" || (item.type == "weapon" && item.system.readied) })
       for (let [key, item] of Object.entries(items))
       {
         if (item.type == "armour")
@@ -1470,11 +1507,11 @@ export default class ActorFC extends Actor {
 
       let trick;
       if (iaction == "parry")
-        trick = this.items.filter(item => item.name == game.i18n.localize("fantasycraft.parry"));
+        trick = this.items.filter(item => item.type == "trick" && item.name == game.i18n.localize("fantasycraft.parry"));
       if (iaction == "shield block")
-        trick = this.items.filter(item => item.name == game.i18n.localize("fantasycraft.shieldBlock"));
+        trick = this.items.filter(item => item.type == "trick" && item.name == game.i18n.localize("fantasycraft.shieldBlock"));
       if (iaction == "arrow cutting")
-        trick = this.items.filter(item => item.name == game.i18n.localize("fantasycraft.arrowCutting"));
+        trick = this.items.filter(item => item.type == "trick" && item.name == game.i18n.localize("fantasycraft.arrowCutting"));
 
       if (trick != null && trick[0].system.uses.usesRemaining <= 0)
       {
@@ -1585,7 +1622,11 @@ export default class ActorFC extends Actor {
         skillModifiers.push(-4);
 
       if (skill.ability == "strength" || skill.ability == "dexterity" || skill.ability == "constitution")
-        skillModifiers.push(-actor.acp);
+        {
+          skillModifiers.push(-actor.acp);
+          if (actor.totalWeight > actor.carryingCapacity.light)
+            (actor.totalWeight <= actor.carryingCapacity.heavy) ? skillModifiers.push(-2) : skillModifiers.push(-5);
+        }
 
       if ((skill.ability == "strength" || skill.ability == "dexterity") && this.effects.find(e => e.flags?.core?.statusId === "fatigued"))
         skillModifiers.push(-actor.conditions.fatigued);
@@ -1708,6 +1749,7 @@ export default class ActorFC extends Actor {
         item.system.trickType.keyword == weapon.system.weaponProficiency || item.system.trickType.keyword == weapon.system.weaponCategory) || 
       (item.system.trickType.keyword2 == weapon.system.attackType || item.system.trickType.keyword2 == weapon.system.weaponProficiency || 
         item.system.trickType.keyword2 == weapon.system.weaponCategory || item.system.trickType.keyword == "any" || item.system.trickType.keyword2 == "any"
+        || item.system.trickType.keyword == "ritualWeapon" || item.system.trickType.keyword2 == "ritualWeapon"
         || (item.system.trickType.keyword == "bowHurled" && (weapon.system.weaponCategory == "bow" || weapon.system.weaponCategory == "hurled"))
         || (item.system.trickType.keyword2 == "bowHurled" && (weapon.system.weaponCategory == "bow" || weapon.system.weaponCategory == "hurled"))) 
       )});

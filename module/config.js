@@ -1236,7 +1236,8 @@ fantasycraft.attackTrickEffects =
 	saveBonus: "fantasycraft.saveBonus",
 	healVitality: "fantasycraft.healVitality",
 	minimumDamage: "fantasycraft.minimumDamage",
-	ignoreAP: "fantasycraft.ignoreAP"
+	ignoreAP: "fantasycraft.ignoreAP",
+	changeDamageType: "fantasycraft.changeDamageType"
 }
 
 fantasycraft.trickConditions = 
@@ -1289,6 +1290,7 @@ fantasycraft.stanceEffects =
 	variableBonus: "fantasycraft.variableBonus",
 	maxDamage: "fantasycraft.maxWeaponDamage",
 	dr: "fantasycraft.dr",
+	damageResistance: "fantasycraft.damageResistance",
 	reduceHandRequirement: "fantasycraft.reduceHandRequirement",
 	increaseAttributes: "fantasycraft.increaseAttribute",
 	skillBonus: "fantasycraft.skillBonus",

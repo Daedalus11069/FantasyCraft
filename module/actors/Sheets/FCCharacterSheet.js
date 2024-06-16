@@ -79,6 +79,10 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		data.corrupting = game.settings.get('fantasycraft', 'corruptingMagic');
 		data["classNames"] = this.actor.itemTypes.class.map(c => c.name).join(", ");
 		
+		data.encumbered = "unencumbered"
+		if (this.actor.system.totalWeight > this.actor.system.carryingCapacity.light)
+			data.encumbered = (this.actor.system.totalWeight > this.actor.system.carryingCapacity.heavy) ? "overencumbered" : "encumbered";
+
 		return data;
 	}
 

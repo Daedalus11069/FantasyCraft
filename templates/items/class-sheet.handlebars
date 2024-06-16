@@ -160,7 +160,7 @@
                     </div>
                     {{!-- Class Skills --}}
                     <div class="flexrow">
-                        <div class="form-group {{item.system.cssClass}} flexrow">
+                        <div class="form-group flexrow">
                             <label style="flex: 0 0 10%">{{localize "fantasycraft.skills"}}</label>
                             <a class="trait-selector" data-options="skills" data-target="system.classSkills" style="flex: 0 0 5%">
                                 <i class="fas fa-edit"></i>
@@ -174,6 +174,21 @@
                             </ul>
                         </div>
                     </div>
+                    {{!-- E Slot Information --}}
+                    <div class="flexrow"> 
+                        <div class="form-group flexrow">
+                            <label>{{localize "fantasycraft.eSlot"}}</label>
+                            <input type="checkbox" name="system.eSlot.hasESlot" {{checked item.system.eSlot.hasESlot}}>
+                        </div>
+                    </div>
+                    {{#if item.system.eSlot.hasESlot}}
+                    <div class="flexrow">
+                        <span>{{localize "fantasycraft.firstLevel"}}</span>
+                        <input type="number" name="system.eSlot.firstLevel" value="{{item.system.eSlot.firstLevel}}">
+                        <span>{{localize "fantasycraft.frequency"}}</span>
+                        <input type="number" name="system.eSlot.frequency" value="{{item.system.eSlot.frequency}}">
+                    </div>
+                    {{/if}}
                     <div>
                         {{!-- Set the class as a caster or not --}}
                         {{localize "fantasycraft.casting"}}:

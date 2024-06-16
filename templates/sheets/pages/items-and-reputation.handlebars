@@ -110,16 +110,34 @@
                 {{#each ownedItems as |item id|}}
                     {{> "systems/fantasycraft/templates/partials/item-part.hbs" item id=_id inSheet=true}}
                 {{/each}}
+                </section>
+            </div>
+            
+            <h3 class="category-label flexrow">
+                <span style="flex: 0 0 88%">{{localize "fantasycraft.weapons"}}</span>
+            </h3>
+            <div class="category-body right-border" style="padding: 0px; min-height: 50px">
+                <section class="two-column item-list">
                 {{#each weapons as |item id|}}
                     {{> "systems/fantasycraft/templates/partials/item-part.hbs" item id=_id inSheet=true}}
                 {{/each}}
+                </section>
+            </div>
+            
+            <h3 class="category-label flexrow">
+                <span style="flex: 0 0 88%">{{localize "fantasycraft.armour"}}</span>
+            </h3>
+            <div class="category-body right-border" style="padding: 0px; min-height: 50px">
+                <section class="two-column item-list">
                 {{#each armour as |item id|}}
                     {{> "systems/fantasycraft/templates/partials/item-part.hbs" item id=_id inSheet=true}}
                 {{/each}}
                 </section>
             </div>
             <div class="flexrow right-border" style="align-contents: center; justify-contents: space-between; border-left: 1px groove lightgray">
-                <div>{{localize "fantasycraft.Dialog.totalWeight"}}: {{actor.system.totalWeight}} {{localize "fantasycraft.lbs"}}</div>
+                <div>{{localize "fantasycraft.Dialog.totalWeight"}}: 
+                    <span style="{{#compare encumbered "encumbered" operator="=="}} color: darkorange{{/compare}}{{#compare encumbered "overencumbered" operator="=="}} color: red{{/compare}}">{{actor.system.totalWeight}} {{localize "fantasycraft.lbs"}}</span>
+                </div>
                 <div><b>{{localize "fantasycraft.carryingCapacity"}}</b> <i>{{localize "fantasycraft.light"}}:</i> {{actor.system.carryingCapacity.light}} <i>{{localize "fantasycraft.heavy"}}: </i>{{actor.system.carryingCapacity.heavy}}  <i>{{localize "fantasycraft.overloaded"}}: </i>{{actor.system.carryingCapacity.overloaded}}+</div>
             </div>
         </li>

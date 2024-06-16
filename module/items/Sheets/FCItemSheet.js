@@ -93,13 +93,13 @@ export default class FCItemSheet extends ItemSheet {
       let effect1 = this.item.system.effect1.effect;
       let effect2 = this.item.system.effect2.effect;
 
-      if (effect1 == "accuracyBonus" || effect1  == "damageBonus" || effect1 == "dodgeBonusToDefense" || effect1 == "dr" || effect1 == "increasesAttributes" || effect1 == "skillBonus" || 
+      if (effect1 == "accuracyBonus" || effect1  == "damageBonus" || effect1 == "dodgeBonusToDefense" || effect1 == "dr" || effect1 == "damageResistance" || effect1 == "increasesAttributes" || effect1 == "skillBonus" || 
       effect1 == "reduceThreat" || effect1 == "saveBonus")
       {
         data.effect1IsNumeric = true;
       }
 
-      if (effect2 == "accuracyBonus" || effect2  == "damageBonus" || effect2 == "dodgeBonusToDefense" || effect2 == "dr" || effect2 == "increasesAttributes" || effect2 == "skillBonus" || 
+      if (effect2 == "accuracyBonus" || effect2  == "damageBonus" || effect2 == "dodgeBonusToDefense" || effect2 == "dr" || effect2 == "damageResistance" || effect2 == "increasesAttributes" || effect2 == "skillBonus" || 
       effect2 == "reduceThreat" || effect2 == "saveBonus")
       {
         data.effect2IsNumeric = true;

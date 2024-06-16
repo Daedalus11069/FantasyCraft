@@ -548,20 +548,29 @@ export default class ActorSheetFC extends ActorSheet
         let features = await ActorSheetFC.getClassFeatures({className: clss.name, level: clss.system.levels, priorLevel: priorLevel, actor: act});
         let clsConfig = await ActorSheetFC.findAndReturnConfigInfo({name: clss.name, type: CONFIG.fantasycraft.classFeatures})
 
-        if (clsConfig.hasESlotChoice) 
+        if (clss.system.eSlot.hasESlot) 
         {
-          if ((next != 3 && next % 3 == 0 && (clss.name != "Keeper" || clss.name != "Deadeye") ) || (clss.name == "Keeper" && ((next-1) % 4 == 0)) || (clss.name == "Deadeye" && (next == 4 || next == 6 || next == 8)))
+          if (next == clss.system.eSlot.firstLevel || ((next - clss.system.eSlot.firstLevel > 0) && (next - clss.system.eSlot.firstLevel) % clss.system.eSlot.frequency == 0))
           {
-            let eSlotFeature = await this.getESlotFeature(clsConfig);
-            let newFeature = await Promise.all(eSlotFeature.map(id => fromUuid(id)));
-            features = features.concat(newFeature);
+            //Expert classes do not get their eSlot on their final level
+            if (clss.system.classType == "base" || (clss.system.classType == "expert" && next != 10))
+            {
+              let eSlotFeature = await this.getESlotFeature(clsConfig);
+              let newFeature = await Promise.all(eSlotFeature.map(id => fromUuid(id)));
+              features = features.concat(newFeature);
+            }
           }
         }
 
         features = this.checkFeaturesForDoubles(features);
 
-        if(features.length != 0)
-          await act.createEmbeddedDocuments("Item", [features[0]]);
+        for (let i = 0; i < features.length; i++)
+        {
+          await act.createEmbeddedDocuments("Item", [features[i]]);
+        }
+
+        //if any of the owned class features has a number of 0, set it to 1;
+        act.items.filter(item => item.type == "feature" && item.system.number == 0).forEach(item => item.system.number = 1);
       }
     }
 

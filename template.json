@@ -1140,6 +1140,12 @@
 				"value": 0,
 				"misc": 0
 			},
+			"eSlot": 
+			{
+				"hasESlot": false,
+				"firstLevel": 6,
+				"frequency": 3	
+			},
 			"baseAttack": [],
 			"initiative": [],
 			"fortitude": [],
@@ -1158,7 +1164,7 @@
 			"featureType": "class",
 			"containsFlag": false,
 			"flag": "",
-			"number": 0,
+			"number": 1,
 			"xpMultiplier": "none",
 			"damageTypes": 
 			{

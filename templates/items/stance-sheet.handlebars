@@ -59,8 +59,17 @@
                             {{/each}}
                             {{/select}}
                         </select>
-
                         {{/compare}}
+
+                        {{#if (eq item.system.effect1.effect "damageResistance")}}
+                        <select name="system.effect1.bonusTarget">
+                            {{#select item.system.effect1.bonusTarget}}
+                            {{#each config.damageTypes as |name type|}}
+                                <option value="{{type}}">{{localize name}}</option>
+                            {{/each}}
+                            {{/select}}
+                        </select>
+                        {{/if}}
 
                         {{! target skill}}
                         {{#compare item.system.effect1.effect "skillBonus" operator="=="}}
@@ -122,8 +131,17 @@
                             {{/each}}
                             {{/select}}
                         </select>
-
                         {{/compare}}
+
+                        {{#if (eq item.system.effect2.effect "damageResistance")}}
+                        <select name="system.effect1.bonusTarget">
+                            {{#select item.system.effect2.bonusTarget}}
+                            {{#each config.damageTypes as |name type|}}
+                                <option value="{{type}}">{{localize name}}</option>
+                            {{/each}}
+                            {{/select}}
+                        </select>
+                        {{/if}}
 
                         {{! target skill}}
                         {{#compare item.system.effect2.effect "skillBonus" operator="=="}}

@@ -625,6 +625,10 @@ async function onDamage(event)
         rollFormula += " + " + sneakAttack + "d6";
     }
 
+    //Check tricks for changes to damage type or amount
+    if ((trick1?.system.effect.additionalEffect == "changeDamageType" && Tricks.checkConditions(trick1, target)) || (trick2?.system.effect.additionalEffect == "changeDamageType" && Tricks.checkConditions(trick2, target)))
+        damageType = trick1?.system.effect.secondaryCheck;
+
     if ((trick1?.system.effect.additionalEffect == "bonusDamage" && Tricks.checkConditions(trick1, target)) || (trick2?.system.effect.additionalEffect == "bonusDamage" && Tricks.checkConditions(trick2, target)))
         rollFormula = rollFormula + " + " + li.dataset.bonusDamage;
 

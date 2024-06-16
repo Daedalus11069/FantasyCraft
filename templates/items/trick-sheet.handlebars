@@ -186,6 +186,15 @@
                 </select>
                 {{/compare}}
 
+                {{#if (eq item.system.effect.additionalEffect "changeDamageType")}}
+                <select name="system.effect.secondaryCheck">
+                    {{#select item.system.effect.secondaryCheck}}
+                        {{#each config.damageTypes as |v k|}}
+                            <option value="{{k}}"> {{localize v}}</option>
+                        {{/each}}
+                    {{/select}}
+                </select>
+                {{/if}}
                 
                 {{#compare item.system.effect.additionalEffect "replaceAttribute" operator="=="}}
                 <select name="system.effect.secondaryCheck">

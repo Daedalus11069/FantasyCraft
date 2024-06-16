@@ -1,8 +1,8 @@
 <div class="item ownedItem flexrow item-card" data-item-id="{{id}}" data-item-name="{{name}}">
     <div class="flexrow">
-        <span class="flex6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{name}}{{#if system.numerals}} I {{#convertToNumeral system.number}} {{/convertToNumeral}}
+        <span class="flex6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{name}}{{#if (eq system.xpMultiplier "grades")}} I {{#convertToNumeral system.number}} {{/convertToNumeral}}
             {{else}} 
-                {{#timesOverOne system.number}} <i class="fas fa-times fa-xs"></i> {{/timesOverOne}}
+                {{#timesOverOne system.number}} <i class="fas fa-times fa-circle"></i> {{/timesOverOne}}
             {{/if}}
         </span>
         {{#if system.weight}}

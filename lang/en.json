@@ -967,6 +967,11 @@
 		"canBeHaggled": "Can Be Haggled",
 		"resetHaggle": "Reset Haggling",
 		"priceMultiplier": "Price Multiplier",
+		"points": "Points",
+		"changeDamageType": "Change Damage Type",
+		"eSlot": "Has Selection Feature",
+		"firstLevel": "First Level",
+		"frequency": "Frequency",
 		"Dialog":
 		{
 			"requiresTargetWarningMessage": "You require a target for the selected Trick.",
@@ -976,7 +981,7 @@
 			"gradeDifference": "Are additional grades worth a different amount of XP?",
 			"gainClassAbility": "Gain the following Class Ability: ",
 			"unlessBy": "unless by the following alignment",
-			"totalWeight": "Equipment weight (including weapons and armour)",
+			"totalWeight": "Equipment weight",
 			"boostRoll": "Boost a die roll (Explodes): Spend & roll 1 die to boost attack, damage, save, skill, or knowledge. Can’t use when taking 10 or 20.",
 			"boostDefense": "Boost defense (Explodes): At start of round, spend 1 die for +2 Def for rounds equal to result rolled. A new roll replaces the old one.",
 			"activateThreat": "Activate a threat or error: When you roll a threat, spend 1-4 dice to activate critical hit/success. Likewise, when opponent you can see rolls error, spend 1-4 dice to activate critical failure.",

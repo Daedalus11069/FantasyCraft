@@ -2,7 +2,7 @@
   "id": "fantasycraft",
   "title": "Fantasy Craft",
   "description": "A system for playing the Mastercraft system Fantasy Craft in the Foundry Virtual Tabletop environment.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "authors": [
     {
       "name": "Nuaurpy",
@@ -11,7 +11,7 @@
   ],
   "url": "https://github.com/nuaurpy/FantasyCraft",
   "manifest": "https://raw.githubusercontent.com/nuaurpy/FantasyCraft/main/system.json",
-  "download": "https://github.com/nuaurpy/FantasyCraft/archive/refs/tags/v1.2.2.zip",
+  "download": "https://github.com/nuaurpy/FantasyCraft/archive/refs/tags/v1.2.3.zip",
   "esmodules": [
     "fantasycraft.js"
   ],

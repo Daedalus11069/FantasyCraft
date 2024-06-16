@@ -253,7 +253,7 @@
             <div class="category-body">
                 <ul class="flexcol" style="margin: 0px; padding: 0px;">
                     {{#each actor.system.movement as |name id|}} 
-                    {{#if name.value}}
+                    {{#if @first}}
                     <ul class="flexrow" style="margin: 0px; padding: 0px;">
                         <li class="centreItems">
                             <input type="number" class="smallBox calcBox" name="{{name.value}}" value="{{name.value}}"disabled=true />
@@ -268,6 +268,23 @@
                             <footer>{{localize "fantasycraft.travel"}}</footer>
                         </li>
                     </ul>
+                    {{else}}
+                        {{#if name.value}}
+                        <ul class="flexrow" style="margin: 0px; padding: 0px;">
+                            <li class="centreItems">
+                                <input type="number" class="smallBox calcBox" name="{{name.value}}" value="{{name.value}}"disabled=true />
+                                <footer>{{localize name.label}}</footer>
+                            </li>
+                            <li class="centreItems">
+                                <input type="number" class="wideBox calcBox" name="{{name.run}}" value="{{name.run}}"disabled=true />
+                                <footer>{{localize "fantasycraft.run"}}</footer>
+                            </li>
+                            <li class="centreItems">
+                                <input type="number" class="smallBox calcBox" name="{{name.travel}}" value="{{name.travel}}"disabled=true />
+                                <footer>{{localize "fantasycraft.travel"}}</footer>
+                            </li>
+                        </ul>
+                        {{/if}}
                     {{/if}}
                     {{/each}}
                 </ul>
@@ -302,7 +319,7 @@
             <h3 class="category-label">
                 {{localize "fantasycraft.proficiencies"}}
             </h3>
-            <div class="flexrow category-body right-border">
+            <div class="flexrow category-body right-border" style="padding: 3px 6px 0px 0px">
                 <section class="two-column">
                     {{#each actor.system.proficency as |prof id|}}
                         <section class="push">
