@@ -38,6 +38,10 @@ fantasycraft.bonusType =
 	magic: "fantasycraft.magic",
 	insight: "fantasycraft.insight"
 }
+fantasycraft.experience =
+{
+	xpNeeded: [0, 1000, 2500, 5000, 10000, 15000, 25000, 40000, 60000, 80000, 100000, 125000, 150000, 200000, 250000, 300000, 375000, 450000, 525000, 600000]
+}
 fantasycraft.classVitality = 
 {
 	Low: 6,

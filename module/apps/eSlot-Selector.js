@@ -11,7 +11,7 @@ export default class FeatureSelector extends FormApplication {
         return mergeObject(super.defaultOptions, {
         id: "feature-selector",
         classes: ["fantasycraft"],
-        title: "Feature Selector",
+        title: "Choose Class Ability",
         template: "systems/fantasycraft/templates/apps/trait-selector.hbs",
         width: 320,
         height: "auto",

@@ -379,6 +379,11 @@
 		"character":
 		{
 			"templates": ["vitality", "wounds", "attributes", "non-lethal", "spell-casting", "prizes", "gear", "combatActions", "conditions"],
+			"experience": 
+			{
+				"current": 0,
+				"nextLevel": 1000
+			},
 			"ancestry": "Human",
 			"careerLevel": { "value": 1 },
 			"actionDice": 3,

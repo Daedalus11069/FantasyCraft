@@ -60,6 +60,6 @@ export default class TextField extends FormApplication {
         // Update the object
         this.object.update(updateData);
     }
-
+    
   }
   

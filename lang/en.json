@@ -972,6 +972,12 @@
 		"eSlot": "Has Selection Feature",
 		"firstLevel": "First Level",
 		"frequency": "Frequency",
+		"experience": "Experience",
+		"nextLevel": "Next Level",
+		"levelUp": "Level Up",
+		"previous": "Previous",
+		"next": "Next",
+		"page": "Page",
 		"Dialog":
 		{
 			"requiresTargetWarningMessage": "You require a target for the selected Trick.",
@@ -1008,6 +1014,11 @@
 		{
 			"campaignQualities":
 			{
+				"milestoneLeveling":
+				{
+					"name": "Milestone Leveling",
+					"label": "Removes Experience tracking and experience requirements to use the 'Level Up' button."
+				},
 				"autoRoll":
 				{
 					"name": "Auto Roll for NPCs",

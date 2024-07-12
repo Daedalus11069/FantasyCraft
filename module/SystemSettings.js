@@ -612,6 +612,14 @@ export const registerSystemSettings = async function() {
 
 	//////////////////////////////////
 
+	game.settings.register("fantasycraft", "milestoneLeveling", {
+		config: true,
+		scope: "world",
+		name: "fantasycraft.SETTINGS.campaignQualities.milestoneLeveling.name",
+		hint: "fantasycraft.SETTINGS.campaignQualities.milestoneLeveling.label",
+		type: Boolean,
+		default: true
+	});
 
     game.settings.register("fantasycraft", "autoRollForNPCs", {
 		config: true,

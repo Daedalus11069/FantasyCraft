@@ -1,5 +1,6 @@
 import TraitSelector from "../../apps/trait-selector.js";
 import Resistances from "../../apps/resistances.js";
+import LevelUp from "../../apps/level-up.js";
 import MoveSelector from "../../apps/npc-apps/movement-selector.js";
 import SkillSelector from "../../apps/npc-apps/npc-skill-selection.js";
 import GearDialog from "../../apps/npc-apps/gear-selection.js";
@@ -101,6 +102,7 @@ export default class ActorSheetFC extends ActorSheet
         html.find('.action-dice-info').click(this._actionDiceInfo.bind(this));
         html.find('.trait-selector').click(this._onTraitSelector.bind(this));
         html.find('.resistance').click(this._onResistances.bind(this));
+        html.find('.nextLevel').click(this._onNextLevel.bind(this));
 
         html.find('.movement-selector').click(this._onMovementSelector.bind(this));
         html.find('.npc-templates').click(this._onTemplateSelector.bind(this));
@@ -521,6 +523,14 @@ export default class ActorSheetFC extends ActorSheet
           await act.deleteEmbeddedDocuments("Item", [feature._id]);
         }
       }
+    }
+
+    async _onNextLevel(event)
+    {
+      event.preventDefault();
+      const element = event.currentTarget;
+      const options = { title: "Level Up" };
+      new LevelUp(this.actor, options).render(true);
     }
 
     //if level is 20, do nothing, otherwise, level up

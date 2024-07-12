@@ -128,10 +128,19 @@
                     </div>
                 </li>
                 <li class="attribute">
-                    <h4 class="box-title">{{ localize "fantasycraft.initiative" }}</h4>
                     <div class="attribute-value">
-                        <input name="system.initiative.value" type="number" value="{{actor.system.initiative.value}}" placeholder="0"/>
+                        <input style="font-size: 18px" name="system.experience.current" type="number" value="{{actor.system.experience.current}}" placeholder="0"/>
+                        <input style="font-size: 18px" name="system.experience.nextLevel" type="number" value="{{actor.system.experience.nextLevel}}" placeholder="600000" disabled="true"/>
                     </div>
+                    <footer class="footer-text flexrow" style="font-size: 10px; line-height: 14px">
+                        <span>{{localize "fantasycraft.experience"}}</span>
+                        <span>{{localize "fantasycraft.nextLevel"}}</span>
+                    </footer>
+                    <footer class="footer-text">
+                        <div class="button">
+                            <a class="nextLevel" data-options="level-up" disabled="true">{{ localize "fantasycraft.levelUp" }}</a>
+                        </div>
+                    </footer>
                 </li>
             </ul>
         </section>
@@ -191,99 +200,8 @@
 
                 {{!-- Skills --}}
                 <div class="flexcol flex5">
-                    <h3 class="category-label" style="max-height: 20px;"> {{localize "fantasycraft.skills"}}</h3>    
-                    <div class="flexrow">
-                        <div class="flex3">
-                            <table class="flexrow">
-                                <tr class="flexrow"> 
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.c/o"}}</th>
-                                    <th class="skill-title" style="min-width: 100px; padding: 3px">{{localize "fantasycraft.skillName"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.total"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.mod"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.rank"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.misc"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.threat"}}</th>
-                                </tr>
-                            <ul class="skills">
-                                
-                            {{! go through each skill and create }}
-                            {{#each actor.system.skills as |skill name|}}
-                                <tr class="skill flex1 flexrow" data-skill={{name}}>
-                                    {{#compare @index 10 operator="<"}}
-                                    <td class="remove-space" style="min-width: 23px;">
-                                        <input class="checkbox remove-space" style="padding: 0px;" type="checkbox" name="system.skills.{{name}}.classSkill" {{checked skill.classSkill}}/>
-                                        <input class="checkbox remove-space" style="padding: 0px;" type="checkbox" name="system.skills.{{name}}.originSkill" {{checked skill.originSkill}}/>
-                                    </td>
-                                    <td><h4 class="skill-name"><a class="roll-skill" data-roll-info={{name}}>{{localize skill.label}}</a></h4>
-                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.value" type="text" value="{{numberFormat skill.total decimals=0 sign=true}}" placeholder="0" disabled=true /></td>
-                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.ability" type="text" value="{{numberFormat skill.abModifier decimals=0}}" placeholder="0" disabled=true/></td>
-                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.ranks" type="number" value="{{skill.ranks}}" placeholder="0"/></td>
-                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.misc" type="number" value="{{skill.misc}}" placeholder="0"/></td>
-                                    <td><input class="skill-input center-text" name="system.skills.{{name}}.threat" type="number" value="{{skill.threat}}" placeholder="20"/></td>
-                                    {{/compare}}
-                                </tr>
-                            {{/each}}
-                            </ul>
-                            </table>
-                        </div>
-                        <div class="flex3">
-                            <table class="flexrow">
-                                <tr class="flexrow"> 
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.c/o"}}</th>
-                                    <th class="skill-title" style="min-width: 100px; padding: 3px">{{localize "fantasycraft.skillName"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.total"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.mod"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.rank"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.misc"}}</th>
-                                    <th class="skill-title" style="padding: 3px">{{localize "fantasycraft.threat"}}</th>
-                                </tr>
-                            <ul class="skills">
-                                
-                            {{! go through each skill and create }}
-                            {{#each actor.system.skills as |skill name|}}
-                                <tr class="skill flex1 flexrow" data-skill={{name}}>
-                                    {{#compare @index 10 operator=">="}}
-                                        {{#if skill.total includeZero=true}}
-                                        <td class="remove-space" style="min-width: 23px;">
-                                            <input class="checkbox remove-space" style="padding: 0px;" type="checkbox" name="system.skills.{{name}}.classSkill" {{checked skill.classSkill}}/>
-                                            <input class="checkbox remove-space" style="padding: 0px;" type="checkbox" name="system.skills.{{name}}.originSkill" {{checked skill.originSkill}}/>
-                                        </td>
-                                        <td><h4 class="skill-name"><a class="roll-skill" data-roll-info={{name}}>{{localize skill.label}}</a></h4>
-                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.value" type="text" value="{{numberFormat skill.total decimals=0 sign=true}}" placeholder="0" disabled=true /></td>
-                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.ability" type="text" value="{{numberFormat skill.abModifier decimals=0}}" placeholder="0" disabled=true/></td>
-                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.ranks" type="number" value="{{skill.ranks}}" placeholder="0"/></td>
-                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.misc" type="number" value="{{skill.misc}}" placeholder="0"/></td>
-                                        <td><input class="skill-input center-text" name="system.skills.{{name}}.threat" type="number" value="{{skill.threat}}" placeholder="20"/></td>
-                                        {{/if}}
-                                    {{/compare}}
-                                </tr>
-                            {{/each}}
-                            </ul>
-                            </table>
-                        </div>
-                    </div>
-                        {{! max ranks, total ranks, ACP and appearance}}
-                        <div>
-                            <div class="flexrow flex5">
-                                <ul class="flexrow">
-                                    <li>
-                                        {{localize "fantasycraft.maxRanks"}}
-                                        <input type="number" class="smallBox calcBox" name="{{actor.system.maxSkillRanks}}" value="{{actor.system.maxSkillRanks}}" disabled=true />
-                                    </li>
-                                    <li>
-                                        {{localize "fantasycraft.totalRanks"}}
-                                        <input type="number" class="smallBox calcBox" name="{{actor.system.totalSkillRanks}}" value="{{actor.system.totalSkillRanks}}" disabled=true />
-                                    </li>
-                                    <li>
-                                        {{localize "fantasycraft.acp"}}
-                                        <input type="number" class="smallBox calcBox" name="{{actor.system.acp}}" value="{{actor.system.acp}}" disabled=true />
-                                    </li>
-                                    <li>
-                                        {{localize "fantasycraft.appearance"}}
-                                        <input type="number" class="smallBox calcBox" name="{{actor.system.appearance}}" value="{{actor.system.appearance}}" disabled=true />
-                                    </li>
-                                </ul>
-                            </div>
+                    {{! Skill Table}}
+                    {{> "systems/fantasycraft/templates/partials/skill-table-part.hbs"}}
                             {{! knowledge}}
                             <h4 class="category-label"> {{localize "fantasycraft.knowledge"}} </h4>
                             <div class="flexrow">

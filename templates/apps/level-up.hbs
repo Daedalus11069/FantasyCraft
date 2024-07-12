@@ -1,0 +1,72 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+    {{!Page 1 - Class}}
+        {{! Drop down with class choices}}
+        {{! Shows what that class provides at this level}}
+        {{> "systems/fantasycraft/templates/partials/class-choice.hbs"}}
+
+    {{!Page 2}}
+        {{! choice of E slot if required}}
+    {{!Page 3}}
+        {{! Skill points}}
+        {{> "systems/fantasycraft/templates/partials/skill-table-part.hbs"}}
+    {{!Page 4}}
+        {{!Attribute Bonus if level x4, or x3 if fast attributes is on}}
+        {{#if pages.attributes}}
+        <div>
+            <div>
+                attribute points remaining
+                <input type="number" name="attributePoints" value="1" disabled=true>
+            </div>
+            <div>
+                <input type="number" name="strength" value="{{actor.system.abilityScores.strength.value}}" disabled=true>
+                <input type="number" name="dexterity" value="{{actor.system.abilityScores.dexterity.value}}" disabled=true>
+                <input type="number" name="constitution" value="{{actor.system.abilityScores.constitution.value}}" disabled=true>
+                <input type="number" name="intelligence" value="{{actor.system.abilityScores.intelligence.value}}" disabled=true>
+                <input type="number" name="wisdom" value="{{actor.system.abilityScores.wisdom.value}}" disabled=true>
+                <input type="number" name="charisma" value="{{actor.system.abilityScores.charisma.value}}" disabled=true>
+            </div>
+        </div>
+        {{/if}}
+    {{!Page 5}}
+        {{!Proficiency choice if level odd level (other than 1), every level if fast proficiencies is on}}
+        {{#if pages.proficiencies}}
+        {{/if}}
+    {{!Page 6}}
+        {{!Interest if level 2+4x, or every even level if fast interests is on}}
+        {{#if pages.interests}}
+         <div>
+            <h4 class="category-label"> {{localize "fantasycraft.interests"}} </h4>
+            {{#each actor.system.interests as |name id|}}
+            <div class="form-group">
+                <section style="flex: 0 0 100%;">
+                    <label>{{localize id}}</label>
+                    <a class="addInterest" data-type="{{id}}" data-target="system.interests.{{id}}">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </section>
+                <ul class="traits-list">
+                {{#each name.array as |item iid|}}
+                    <li class="tag {{iid}} bordered-text">{{item}}</li>
+                {{/each}}
+                </ul>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+    {{!Page 7}}
+        {{!feat choice if level x3, or every even level if fast feats is on}}
+        {{#if pages.feats}}
+
+        {{/if}}
+    {{!Page number}}
+
+    {{!Next/Previous Buttons}}
+    <nav class="sheet-navigation sheet-tabs" data-group="primary">
+        <span>{{localize "fantasycraft.page"}} {{pageNum}}</span>
+        <div>
+            {{#if (eq this.pageNum 1)}} <a class="item" disabled="true">{{ localize "fantasycraft.previous" }}</a> {{else}}<a class="item" data-tab="characterInformation">{{ localize "fantasycraft.previous" }}</a> {{/if}}
+            <a class="item" data-tab="characterInformation">{{ localize "fantasycraft.next" }}</a>
+        </div>
+    </nav>
+
+</form>

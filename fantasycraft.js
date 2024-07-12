@@ -13,6 +13,7 @@ import FCCharacterSheet from "./module/actors/Sheets/FCCharacterSheet.js";
 import FCNPCSheet from "./module/actors/Sheets/FCNPCSheet.js";
 import TraitSelector from "./module/apps/trait-selector.js";
 import Resistances from "./module/apps/resistances.js";
+import LevelUp from "./module/apps/level-up.js";
 
 import * as Chat from "./module/chat.js";
 import { Conditions, onCombatEnd } from "./module/StatusEffectsManager.js";
@@ -41,7 +42,8 @@ Hooks.once("init", function () {
 		applications:
 		{
 			TraitSelector,
-			Resistances
+			Resistances,
+			LevelUp
 		},
 		config: fantasycraft,
 		chat: Chat,
@@ -197,6 +199,18 @@ Hooks.once ('setup', function(){
 
 	CONFIG.statusEffects = effects;
 });
+
+Hooks.once ('init', function()
+{
+	CONFIG.Item.compendiumIndexFields = ["system.classType", "system.baseAttack", "system.fortitude", "system.reflex", "system.will", "system.defense", "system.initiative", "system.lifeStyle", "system.legend"];
+});
+
+Hooks.once("ready", async () => 
+{
+	for (const pack of game.packs.filter(p => p.documentName === "Item")) {
+	  await pack.getIndex()
+	}
+});  
 
 Hooks.on('createActiveEffect', async activeEffect => {
 	const statusId = activeEffect.flags?.core?.statusId

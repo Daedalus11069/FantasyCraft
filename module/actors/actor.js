@@ -62,6 +62,12 @@ export default class ActorFC extends Actor {
         this.system.unarmedDamage = (this.system.proficency.unarmed.proficient) ? "1d4" : "1d3";
         if (this.system.proficency.unarmed.proficient)
           this.system.attackTypes.unarmed.damageType = "lethal"
+
+        if (!game.settings.get('fantasycraft', 'milestoneLeveling'))
+        {
+          this.system.experience.nextLevel = CONFIG.fantasycraft.xpNeeded[this.system.careerLevel.value];
+        }
+
       }
       
       this._prepareInitiative(actorData);   
