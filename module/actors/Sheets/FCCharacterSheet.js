@@ -257,7 +257,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 					}
 				}
 				
-				if (features[0] == null){
+				if (features[0] != null){
 					await act.createEmbeddedDocuments("Item", [features[0]]);
 				if (features.length > 1)
 					await act.createEmbeddedDocuments("Item", [features[1]]);
