@@ -1,20 +1,54 @@
-<div class="inventory-filters flexrow">
-    <div class="init attribute" style="flex: 0 0 50%; max-width: 50%"> 
-        <h3 class="category-label">{{localize "fantasycraft.appearance"}}</h3>
-        <textarea class="text-area" name="system.details.appearance">{{actor.system.details.appearance}}</textarea>
+<div class="inventory-filters">
+    <div>
+        {{!-- Age Gender Height, Weight--}}
+        <div class="flexrow">
+            <div>
+                <span>{{localize "fantasycraft.age"}}</span> 
+                <input class="appearance" type="text" name="system.details.age" value="{{actor.system.details.age}}">
+            </div>
+            <div>
+                <span>{{localize "fantasycraft.pronouns"}}</span> 
+                <input class="appearance" type="text" name="system.details.pronouns" value="{{actor.system.details.pronouns}}">
+            </div>
+            <div>
+                <span>{{localize "fantasycraft.height"}}</span> 
+                <input class="appearance" type="text" name="system.details.height" value="{{actor.system.details.height}}">
+            </div>
+        </div>
+        <div class="flexrow">
+            <div>
+                <span>{{localize "fantasycraft.weight"}}</span> 
+                <input class="appearance" type="text" name="system.details.weight" value="{{actor.system.details.weight}}">
+            </div>
+            <div>
+                <span>{{localize "fantasycraft.eyes"}}</span> 
+                <input class="appearance" type="text" name="system.details.eyes" value="{{actor.system.details.eyes}}">
+            </div>
+            <div>
+                <span>{{localize "fantasycraft.hair"}}</span> 
+                <input class="appearance" type="text" name="system.details.hair" value="{{actor.system.details.hair}}">
+            </div>
+        </div>
+        {{!-- Eyes, Hair --}}
     </div>
-    <div class="init flex4 attribute" style="flex: 0 0 50%; max-width: 50%"> 
-        <h3 class="category-label"> {{localize "fantasycraft.featuresandTraits"}}</h3>
-        <textarea class="text-area" name="system.details.traits">{{actor.system.details.traits}}</textarea>
+    <div class="inventory-filters flexrow">
+        <div class="init attribute" style="flex: 0 0 50%; max-width: 50%"> 
+            <h3>{{localize "fantasycraft.appearance"}}</h3>
+            <textarea class="text-area" name="system.details.appearance">{{actor.system.details.appearance}}</textarea>
+        </div>
+        <div class="init flex4 attribute" style="flex: 0 0 50%; max-width: 50%"> 
+            <h3> {{localize "fantasycraft.featuresandTraits"}}</h3>
+            <textarea class="text-area" name="system.details.traits">{{actor.system.details.traits}}</textarea>
+        </div>
     </div>
-</div>
-<div class="inventory-filters flexrow">
-    <div class="init attribute" style="flex: 0 0 50%; max-width: 50%">
-        <h3 class="category-label"> {{localize "fantasycraft.background"}} </h3>
-        <textarea class="text-area" name="system.details.background">{{actor.system.details.background}}</textarea>
-    </div>
-    <div style="flex: 0 0 50%; max-width: 50%"> 
-        <h3 class="category-label"> {{localize "fantasycraft.notes"}}</h3>
-        <textarea class="text-area" name="system.details.notes">{{actor.system.details.notes}}</textarea>
+    <div class="inventory-filters flexrow">
+        <div class="init attribute" style="flex: 0 0 50%; max-width: 50%">
+            <h3> {{localize "fantasycraft.background"}} </h3>
+            <textarea class="text-area" name="system.details.background">{{actor.system.details.background}}</textarea>
+        </div>
+        <div style="flex: 0 0 50%; max-width: 50%"> 
+            <h3> {{localize "fantasycraft.notes"}}</h3>
+            <textarea class="text-area" name="system.details.notes">{{actor.system.details.notes}}</textarea>
+        </div>
     </div>
 </div>

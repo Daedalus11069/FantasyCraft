@@ -7,7 +7,7 @@ export default class TextField extends FormApplication {
     /** @override */
     static get defaultOptions() 
     {
-      return mergeObject(super.defaultOptions, 
+      return foundry.utils.mergeObject(super.defaultOptions, 
       {
           id: "text-field",
           classes: ["fantasycraft"],
@@ -32,10 +32,10 @@ export default class TextField extends FormApplication {
     /* -------------------------------------------- */
   
     /** @override */
-    getData() {
-  
+    getData() 
+    {
       // Get current values
-      let attr = getProperty(this.object, this.attribute) || {};
+      let attr = foundry.utils.getProperty(this.object, this.attribute) || {};
       attr.value = attr.value || [];
   
       // Return data
@@ -57,8 +57,11 @@ export default class TextField extends FormApplication {
           if ( (k !== "custom") && v ) chosen.push(k);
         }        updateData[`${this.attribute}.custom`] = formData.custom;
 
-        // Update the object
-        this.object.update(updateData);
+        if (this.options.test)
+          return formData.custom
+        else
+        this.object.update(updateData);         // Update the object
+
     }
     
   }

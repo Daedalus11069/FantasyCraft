@@ -1,0 +1,161 @@
+
+<div class="flexcol">
+
+    {{!-- Class --}}
+    <div class="flexcol">
+        <h3>{{localize "fantasycraft.class"}}</h3>
+        <div class="flexrow">
+            <span class="flex6 left-indent capitalize">{{nextLevel.class.name}}</span>
+            
+            <span class="center-text">{{nextLevel.currentLevel}}</span>
+            <i class="fa-solid fa-arrow-right center-text"></i>
+            <span class="center-text">{{nextLevel.level}}</span>
+        </div>
+    </div>
+
+    {{!-- Attributes --}}
+    {{#each pages as |page key|}}
+        <div class="flexcol" style="{{#if (eq page.page "attributes")}} {{else}} display: none {{/if}}">
+            <label class="flexrow page-header">
+                <h3 class="flex3">{{localize "fantasycraft.attributes"}}</h3>
+                {{#if ../options.attributePoints}}
+                <h3 class="flex6 right-align-text">{{localize "fantasycraft.attributePointsRemaining"}}</h3>
+                <input type="number" class="center-text pointHoldier" name="attributePoints" value="{{../options.attributePoints}}" disabled=true>
+                {{/if}}
+            </label>
+            {{#each ../nextLevel.abilityBonus as |attribute key|}}
+                <div class="flexrow">
+                    <h4 class="flex6 left-indent capitalize">{{localize (lookup (lookup ../../baseActor.abilityScores key) "label")}}</h4>
+                    <span class="center-text">{{lookup (lookup ../../baseActor.abilityScores key) "value"}}</span>
+                    <i class="fa-solid fa-arrow-right center-text"></i>
+                    <span class="center-text">{{attribute}}</span>
+                </div>
+            {{/each}}
+        </div>
+
+        {{!-- Origins --}}
+        <div class="flexcol" style="{{#if (eq page.page "origin")}} {{else}} display: none {{/if}}">
+            <h3>{{localize "fantasycraft.origins"}}</h3>
+            <div class="flexrow">
+                <div><i class="fa fa-plus center-text left-indent"></i>{{#if ../nextLevel.careerAncestry.name}}{{../nextLevel.careerAncestry.name}}{{else}}{{localize "fantasycraft.missingAncestry"}}{{/if}}</div>
+                {{#if ../nextLevel.careerTalent.name}}<div><i class="fa fa-plus center-text left-indent"></i>{{../nextLevel.careerTalent.name}}</div>{{/if}}
+                <div><i class="fa fa-plus center-text left-indent"></i>{{#if ../nextLevel.careerSpecialty.name}}{{../nextLevel.careerSpecialty.name}}{{else}}{{localize "fantasycraft.missingSpecialty"}}{{/if}}</div>
+            </div>
+        </div>
+    {{/each}}
+
+    {{!-- Skills --}}
+    <div class="flexcol">
+        <label class="flexrow page-header">
+            <h3 class="flex3">{{localize "fantasycraft.skills"}}</h3>
+            {{#if options.ranksRemaining}}
+            <h3 class="flex6 right-align-text">{{localize "fantasycraft.ranksRemaining"}}</h3>
+            <input class="center-text ranks-remaining" type="number" name="newSkillRanks" value="{{options.ranksRemaining}}" disabled="true">
+            {{/if}}
+        </label>
+        {{#each nextLevel.skills as |skill key|}}
+            <div class="flexrow">
+                <h4 class="flex6 left-indent capitalize">{{localize key}}</h4>
+                <span class="center-text">{{lookup (lookup ../baseActor.skills key) "ranks"}}</span>
+                <i class="fa-solid fa-arrow-right center-text"></i>
+                <span class="center-text">{{skill}}</span>
+            </div>
+        {{/each}}
+    </div>
+    
+    {{#each pages as |page key|}}
+        {{!-- Proficiencies --}}
+        <div class="flexcol" style="{{#if (eq page.page "proficiencies")}} {{else}} display: none {{/if}}">
+            <label class="flexrow page-header">
+                <h3 class="flex3">{{localize "fantasycraft.proficiencies"}}</h3>
+                {{#if ../options.proficiencyPoints}}
+                <h3 class="flex6 right-align-text">{{localize "fantasycraft.proficiencyPointsRemaining"}}</h3>
+                <input class="center-text pointHoldier" type="number" name="proficiencyPoints" value="{{../options.proficiencyPoints}}" disabled=true>
+                {{/if}}
+            </label>
+            {{#each ../nextLevel.proficiencies as |prof key|}}
+            {{#if (or prof.proficient prof.forte)}}
+                <div class="flexrow">
+                    <h4 class="flex3 left-indent capitalize">{{localize key}}</h4>
+                    <div class="right-align-text">
+                        {{#each prof as |p k|}}
+                            {{#if (eq p true)}}
+                            <span class="capitalize">{{k}}</span>
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            {{/if}}
+            {{/each}}
+            {{#each ../nextLevel.careerTrick as |trick key|}}
+                <div class="flexrow">
+                    <h4 class="flex4 left-indent capitalize">{{localize "fantasycraft.trick"}}</h4>
+                    <div class="flex2 flexrow">
+                        <i class="fa fa-plus center-text"></i>
+                        <span class="flex6 right-align-text">{{trick.name}}</span>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+
+        {{!-- Interests --}}    
+        <div class="flexcol" style="{{#if (eq page.page "interests")}} {{else}} display: none {{/if}}">
+            <label class="flexrow page-header">
+                <h3 class="flex3">{{localize "fantasycraft.interests"}}</h3>
+                {{#if ../options.interestsRemaining}}
+                <h3 class="flex6 right-align-text">{{localize "fantasycraft.interestsRemaining"}}</h3>
+                <input class="center-text pointHoldier" type="number" name="interestsRemaining" value="{{../options.interestsRemaining}}" disabled=true>
+                {{/if}}
+            </label>
+            {{#each ../nextLevel.interests as |interest key|}}
+                {{#if interest}}
+                <div class="flexrow">
+                    <h4 class="flex3 left-indent capitalize">{{key}}</h4>
+                    <span class="right-align-text">{{interest}}</span>
+                </div>
+                {{/if}}
+            {{/each}}
+        </div>
+
+        {{!-- Feats --}}
+        <div class="flexcol" style="{{#if (eq page.page "feats")}} {{else}} display: none {{/if}}">
+            <h3>{{localize "fantasycraft.feats"}}</h3>
+            <div class="flexrow">
+                <h4 class="flex4 left-indent capitalize">{{localize "fantasycraft.feat"}}</h4>
+                <div class="flex2 flexrow">
+                    <i class="fa fa-plus center-text"></i>
+                    <span class="flex6 right-align-text">
+                    {{#if ../nextLevel.careerFeat.name}}
+                        {{../nextLevel.careerFeat.name}}
+                    {{else}}
+                        {{localize "fantasycraft.missingFeat"}}
+                    {{/if}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Path Steps --}}
+        <div class="flexcol" style="{{#if (eq page.page "path")}} {{else}} display: none {{/if}}">
+        </div>
+
+        {{!-- Spellcasting --}}
+        <div class="flexcol" style="{{#if (eq page.page "spellcasting")}} {{else}} display: none {{/if}}">
+            <h3>{{localize "fantasycraft.spellcasting"}}</h3>
+            <div class="flexrow">
+            {{#each ../nextLevel.classSpell as |spell key|}}
+                <div class="flexrow flexhalf">
+                    <div>
+                        <i class="fa fa-plus center-text"></i>
+                        <span class="flex6 right-align-text">{{spell.name}}</span>
+                    </div>
+                </div>
+            {{/each}}
+            </div>
+        </div>
+
+        <div class="flexcol" style="{{#if (eq page.page "eslot")}} {{else}} display: none {{/if}}">
+
+        </div>
+    {{/each}}
+</div>

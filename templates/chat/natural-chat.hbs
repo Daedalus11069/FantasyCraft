@@ -1,5 +1,4 @@
-<div class="chat-card weapon" data-item-id="{{item.id}}" data-owner-id="{{actor._id}}">
-
+<div class="chat-card weapon" data-item-id="{{item.id}}" data-owner-id="{{actor._id}}" data-token-id="{{token.uuid}}">
 
     <header class="card-header">
       <div class="attackbox">
@@ -8,7 +7,7 @@
         </h1>
     </header>
 
-        <div class="dice-roll">
+    <div class="dice-roll">
         <div class="dice-result">
             <div class="dice-formula">
                 {{data.formula}}
@@ -35,7 +34,7 @@
         </div>
     </div>
 
-    {{#compare data.trick1 "" operator="!="}}
+    {{#if data.trick1}}
     <div class="card-content">
         <div><b>{{localize "fantasycraft.trick"}}: </b></div>
         <div>{{data.trick1.name}}</div>
@@ -43,7 +42,7 @@
             <div>{{data.trick2.name}}</div>
         {{/compare}}
     </div>
-    {{/compare}}
+    {{/if}}
 
     <div class="card-content">
         {{#if data.areaSize}}
@@ -67,14 +66,4 @@
         </div>
     </div>
 
-    {{#compare data.attackType "extraSave" operator="!="}}
-    <div class="card-buttons">
-        <button class="damage">{{localize "fantasycraft.damage"}} </button>
-    </div>
-    {{/compare}}
-    {{#compare data.attackType "extraSave" operator="=="}}
-    <div class="card-buttons">
-        <button class="applyCondition">{{localize "fantasycraft.applyCondition"}} </button>
-    </div>
-    {{/compare}}
 </div>

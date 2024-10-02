@@ -37,7 +37,9 @@ export default class ActorFC extends Actor {
       // Ability modifiers
       for (let [id, abl] of Object.entries(data.abilityScores)) 
         abl.mod = Math.floor(((abl.value + abl.adjustment) - 10) / 2);
-      
+
+      this._prepareAttack(actorData);       // Determine Attack Bonus, includes checking for martial and masters art
+
       if (this.type == "npc") 
       {
         this._calculateNPCXP(actorData);
@@ -51,10 +53,11 @@ export default class ActorFC extends Actor {
         this._careerLevel(actorData);
         this._prepareInterestsAndFocuses(data);
         this._prepareKnowledge(actorData);
-        this._prepareskills(actorData);
+        this._prepareSkills(actorData);
         this._prepareLifeStyle();
         this._renownInformation();
         this._carryingCapacity(data);
+        this._prepareCombatActions(data);
 
         this._equipmentWeight();
         this._calculateMovementSpeed();
@@ -72,7 +75,6 @@ export default class ActorFC extends Actor {
       
       this._prepareInitiative(actorData);   
       this._prepareDefense(actorData);
-      this._prepareAttack(actorData);       // Determine Attack Bonus, includes checking for martial and masters art
       this._prepareSaves(actorData);
       this._calculateWounds(actorData);
       this._linkAttacks(actorData);
@@ -458,6 +460,9 @@ export default class ActorFC extends Actor {
 
     _prepareDefense(actorData)
     {
+        actorData.system.martialArts = (actorData.items.find(item => item.name == game.i18n.localize("fantasycraft.martialArts"))) ? true : false;
+        actorData.system.mastersArt = (actorData.items.find(item => item.name == game.i18n.localize("fantasycraft.mastersArt"))) ? true : false;
+
         //Total = class, ability, size, guard, misc, penalty
         const def = actorData.system.defense;
         let misc = def.misc;
@@ -678,7 +683,7 @@ export default class ActorFC extends Actor {
     }
 
     //Autocalculation for skills Ability Score + Ranks + misc
-    _prepareskills(actorData)
+    _prepareSkills(actorData)
     {
       const characterData = actorData.system;
       let totalRanks = 0;
@@ -691,6 +696,7 @@ export default class ActorFC extends Actor {
         skill.magic = this._calculateCharmBonus("skillRanks", id)
         skill.abModifier = characterData.abilityScores[skill.ability].mod;
         skill.total = skill.abModifier + skill.ranks + skill.misc + skill.magic;
+        if (skill.ranks == "" || skill.ranks == undefined) skill.ranks = 0
 
         totalRanks += skill.ranks;
       }
@@ -846,6 +852,13 @@ export default class ActorFC extends Actor {
 
     _prepareInterestsAndFocuses(traits) 
     {
+      for (let [key, interest] of Object.entries(traits.interests))
+      {
+        interest.custom = interest.custom.split(";").map(e => e.trim());
+        interest.custom = interest.custom.filter(i => i);
+        interest.custom = interest.custom.join("; ");
+      }
+
       const map = 
       {
         "focusRide": CONFIG.fantasycraft.focusRide,
@@ -871,7 +884,7 @@ export default class ActorFC extends Actor {
         // Add custom entry
         if ( trait.custom ) 
         {
-          trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
+          trait.custom.split(";").filter(i => i).forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
         }
 
         trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
@@ -964,8 +977,9 @@ export default class ActorFC extends Actor {
     {
         const char = actorData.system;
 
-        // Get information from every item on the character that has a castingLevel
+        // Get information from every item on the character that has a Casting Level
         let items = actorData.items.filter(function(item) {return item.system.castingLevel})
+
         // Drop weapons and armor that are not equipped
         items = items.filter(item => ((item.type != "weapon" && item.type != "armour") || item.system.readied || item.system.equipped) )
         if(items.length > 0)
@@ -1075,6 +1089,7 @@ export default class ActorFC extends Actor {
       actorData.saves.fortitude.total = traits.resilience.value + actorData.abilityScores.constitution.mod;
       actorData.saves.reflex.total = traits.resilience.value + actorData.abilityScores.dexterity.mod;
       actorData.saves.will.total = traits.resilience.value + actorData.abilityScores.wisdom.mod;
+      traits.health.size = (sizeNumber*2);
       traits.health.total = traits.health.value + actorData.abilityScores.constitution.mod + (sizeNumber*2);
 
       actorData.spellcasting.total = actorData.spellcasting.value + actorData.abilityScores.intelligence.mod;
@@ -1124,6 +1139,9 @@ export default class ActorFC extends Actor {
       if (CONFIG.fantasycraft.sizeNumber[actorData.size] < 0)
         str -= CONFIG.fantasycraft.sizeNumber[actorData.size] * 2;
 
+      if (improvedStability != null)
+        str += 5;
+
       if (str < 1) str = 1;
       
       let backpack = this.items.find(item => item.name == game.i18n.localize("fantasycraft.backpack"));
@@ -1142,6 +1160,23 @@ export default class ActorFC extends Actor {
         actorData.carryingCapacity.heavy = "thou";
         actorData.carryingCapacity.overloaded = "even lift?";
       }
+    }
+
+    _prepareCombatActions(data)
+    {
+      data.combatActions["anticipate"] = data.skills.senseMotive.total;
+      data.combatActions["bullRush"] = data.skills.athletics.total;
+      data.combatActions["grapple"] = data.skills.athletics.total;
+      data.combatActions["distract"] = data.skills.bluff.ranks + data.skills.bluff.misc + data.abilityScores.dexterity.mod;
+      data.combatActions["taunt"] = data.skills.senseMotive.total;
+      data.combatActions["feint"] = data.skills.prestidigitation.total;
+      data.combatActions["threaten"] = data.skills.intimidate.total;
+      data.combatActions["tire"] = data.skills.resolve.total;
+      data.combatActions["trip"] = data.skills.acrobatics.total;
+
+      
+      data.combatActions["disarm"] = data.attackTypes.melee.value;
+      data.combatActions["pummel"] = data.attackTypes.unarmed.value;
     }
 
     _equipmentWeight()
@@ -1466,50 +1501,41 @@ export default class ActorFC extends Actor {
     ///////////////// DICE ROLLS //////////////////
     ///////////////////////////////////////////////
     ///////////////////////////////////////////////
-    rollSavingThrow(saveName, iaction = null)
+    async rollSavingThrow(saveName, iaction = null)
     {
       saveName = this.type == "character" ? saveName.toLowerCase() : saveName;
       let save = this.system.saves[saveName];
-      let saveInfo = [];
-
-      if (this.type == "character")
+      
+      const data = 
       {
-        saveInfo = [
-          save.class,
-          save.ability.value,
-        ]
-        if (save.misc != 0)
-        {
-          saveInfo.push(save.misc);
-        }
-      }
-      else if (this.type == "npc")
-      {
-        saveInfo = [
-          this.system.traits.resilience.value,
-          save.value
-        ]
+        base: (this.type == "character") ? save.class : this.system.traits.resilience.value,
+        ability: (this.type == "character") ? save.ability.value : save.value,
+        misc: save?.misc,
+        sick: -2,
+        hasted: 1,
+        slowed: -2,
+        tainted: -2
       }
 
+      let rollFormula = (this.type == "character") ? ["1d20", "@base", "@ability", "@misc"] : ["1d20", "@base", "@value"];
       if (this.effects.find(e => e.flags?.core?.statusId === "sickened"))
-        saveInfo.push(-2);
+        saveInfo.push("@sick");
 
       if (this.effects.find(e => e.flags?.core?.statusId === "hasted") && saveName == "reflex")
-        saveInfo.push(-1);
+        saveInfo.push("@hasted");
       
       if (this.effects.find(e => e.flags?.core?.statusId === "slowed") && saveName == "reflex")
-        saveInfo.push(1);
+        saveInfo.push("@slowed");
       
       if (this.effects.find(e => e.flags?.core?.statusId === "tainted") && saveName == "will")
-        saveInfo.push(this.system.conditions.tainted * -2);
-    
-      let rollFormula = ["1d20"];
-      for (let bonus of saveInfo)
       {
-        rollFormula += Utils.returnPlusOrMinusString(bonus);
-      }    
-      const saveRoll = new Roll(rollFormula)
-      saveRoll.evaluate({async: false})
+        saveInfo.push("@tainted" + this.system.conditions.tainted);
+        data.tainted = this.system.conditions.tainted * -2;
+      }
+    
+    
+      const saveRoll = new Roll(rollFormula.join(" + "), data);
+      await saveRoll.evaluate();
 
       let trick;
       if (iaction == "parry")
@@ -1532,46 +1558,55 @@ export default class ActorFC extends Actor {
       return saveRoll.total;
     }
 
-    rollSkillCheck(skillName)
+    async rollSkillCheck(skillName, act = this, spell = null)
     {
-      const actor = this.system;
-      let skill = this.type == "character" ? actor.skills[skillName] : actor.signatureSkills[skillName];
+      const actor = act.system;
+      const flawless = act.items.filter(item => item.type == "feature" && item.system.flawless.isFlawless && (item.system.flawless.skill1 == skillName || item.system.flawless.skill2 == skillName ));
+      const data = 
+      {
+        untrained: false,
+        skillModifiers: [],
+        magicItems: Utils.getMagicItems(act),
+        flawlessResult: 0,
+        threat: 20,
+        modifiers: 
+        {
+          ranks: 0,
+          misc: 0,
+          ability: 0,
+          magicBonus: 0
+        }
+      }
+      let skill = act.type == "character" ? actor.skills[skillName] : actor.signatureSkills[skillName]
       
       if (skillName == "spellcasting") 
-        skill = this.type == "character" ? actor.arcane[skillName] : actor[skillName];
-
-      const flawless = this.items.filter(item => item.type == "feature" && item.system.flawless.isFlawless && (item.system.flawless.skill1 == skillName || item.system.flawless.skill2 == skillName ));
-      let flawlessResult = 0;
-
+        skill = act.type == "character" ? actor.arcane[skillName] : actor[skillName];
+      
       if (flawless.length > 0)
       {
-        if (this.type == "character")
+        if (act.type == "character")
         {
           for (let feature of flawless)
           {
-            let classes = this.items.filter(item => item.name.toLowerCase() == feature.system.flawless.classSource);
+            let classes = act.items.filter(item => item.name.toLowerCase() == feature.system.flawless.classSource);
             for (let cls of classes)
             {
-              flawlessResult += cls.system.levels;
+              data.flawlessResult += cls.system.levels;
             }
           }
-          flawlessResult = flawlessResult + 20;
+          data.flawlessResult = data.flawlessResult + 20;
         }
         else 
-          flawlessResult = this.system.threat + 20;
+          data.flawlessResult = actor.threat + 20;
       }
 
-      let untrained = false;
-      let skillModifiers = []
-      let magicItems = Utils.getMagicItems(this);
-      let magicBonus = 0;
 
       //ranks, ability mod, misc, threat range
-      if (this.type == "character")
+      if (act.type == "character")
       {
         if (!skill.ranks) skill.ranks = 0;
         //Untrained exceptions: trained skill magic item, jacks of all trades quality
-        let magicItem = this.items.filter(function(item)
+        let magicItem = act.items.filter(function(item)
         {
           if (!item.system.isMagic)
             return;
@@ -1582,102 +1617,98 @@ export default class ActorFC extends Actor {
         });
 
         if (skill.ranks == 0 && !game.settings.get('fantasycraft', 'jacksOfAllTrades') && magicItem.length == 0)
-          untrained = true;
+          data.untrained = true;
 
-        skillModifiers =
-        [
-          actor.abilityScores[skill.ability].mod,
-          skill.ranks,
-          skill.misc
-        ]
+          data.modifiers.ability = actor.abilityScores[skill.ability].mod;
+          data.modifiers.ranks = skill.ranks;
+          data.modifiers.misc = skill.misc;
       }
-      else if (this.type == "npc")
+      else if (act.type == "npc")
       {
         if (skillName == "spellcasting")
-          skillModifiers = 
-          [
-            actor.abilityScores.intelligence.mod,
-            actor[skillName].value
-          ]
+        {
+          data.modifiers.ability = actor.abilityScores.intelligence.mod;
+          data.modifiers.ranks = actor[skillName].value
+        }
         else
-          skillModifiers = 
-          [
-            skill.attributeBonus,
-            skill.skillBonus
-          ]
+        {
+          skill.modifiers.attributeBonus,
+          data.modifiers.ranks = skill.skillBonus
+        }
       }
 
-      if (magicItems.length > 0)
+      if (data.magicItems.length > 0)
       {
-        for (let item of magicItems)
+        for (let item of data.magicItems)
         {
           let charm = Utils.getSpecificCharm(item, "skillRanks")
           if (charm != null && charm[1].target == skillName)
-            magicBonus = (Utils.getCharmBonus(item, charm[1].greater) > magicBonus) ? Utils.getCharmBonus(item, charm[1].greater) : magicBonus;
+            data.modifiers.magicBonus = (Utils.getCharmBonus(item, charm[1].greater) > magicBonus) ? Utils.getCharmBonus(item, charm[1].greater) : magicBonus;
         }
       }
 
-
-      if (actor.conditions.baffled > 0)
-        skillModifiers.push(actor.conditions.baffled * -2);
-
-      if (this.effects.find(e => e.flags?.core?.statusId === "sickened"))
-        skillModifiers.push(-2);
-      
-      if (this.effects.find(e => e.flags?.core?.statusId === "entangled") && skill.ability == "dexterity") 
-        skillModifiers.push(-4);
-
-      if (skill.ability == "strength" || skill.ability == "dexterity" || skill.ability == "constitution")
-        {
-          skillModifiers.push(-actor.acp);
-          if (actor.totalWeight > actor.carryingCapacity.light)
-            (actor.totalWeight <= actor.carryingCapacity.heavy) ? skillModifiers.push(-2) : skillModifiers.push(-5);
-        }
-
-      if ((skill.ability == "strength" || skill.ability == "dexterity") && this.effects.find(e => e.flags?.core?.statusId === "fatigued"))
-        skillModifiers.push(-actor.conditions.fatigued);
-
-      if (skill.ability == "wisdom")
-        skillModifiers.push(actor.conditions.shaken * -2);
+      act.getSkillPenalties(actor, skill, data)
 
       if (skill.ability == "charisma")
-      {
-        skillModifiers.push(actor.appearance);
-        skillModifiers.push(actor.conditions.shaken * -2);
-        skillModifiers.push(actor.conditions.tainted * -2);
-      }
+        data.modifiers.appearance = actor.appearance
 
-      if (magicBonus > 0)
-        skillModifiers.push(magicBonus);
-
+      
       let rollFormula = ["1d20"];
-      for (let bonus of skillModifiers)
+      
+      for (let [k, mod] of Object.entries(data.modifiers))
       {
-        rollFormula += Utils.returnPlusOrMinusString(bonus);
+        if (mod != 0) rollFormula.push("@" + k);
       }
 
-      const skillRoll = new Roll(rollFormula)
-      skillRoll.evaluate({async: false})
+      const skillRoll = new Roll(rollFormula.join(" + "), data.modifiers)
+      await skillRoll.evaluate()
 
       if (skillRoll.terms[0].results[0].result == 1)
-        flawlessResult = 0;
+        data.flawlessResult = 0;
 
-      Chat.onSkillCheck(skillRoll, this, skillName, flawlessResult, null, untrained);
+      Chat.onSkillCheck(skillRoll, act, skillName, data.flawlessResult, null, data.untrained);
 
       return skillRoll;
     }
 
-    async rollCompetence()
+    getSkillPenalties(actor, skill, data)
     {
-      let formula = "d20";
-      let competence = this.system.traits.competence.value;
-      let ability = await this.getRelatedAbility();
-      ability = ability[0].replace('fantasycraft.','');
+      if (actor.conditions.baffled > 0) data.modifiers.baffled = actor.conditions.baffled * -2;
+      if (this.effects.find(e => e?.name === game.i18n.localize("fantasycraft.sickened"))) data.modifiers.sickened = -2;
+      if (this.effects.find(e => e?.name === game.i18n.localize("fantasycraft.entangled")) && skill.ability == "dexterity") data.modifiers.entangled = -4
 
-      formula += " + " + competence + Utils.returnPlusOrMinusString(this.system.abilityScores[ability].mod);
+      if (skill.ability == "strength" || skill.ability == "dexterity" || skill.ability == "constitution")
+        {
+          data.modifiers.acp = -actor.acp
+          if (actor.totalWeight > actor.carryingCapacity.light)
+            data.modifiers.weight = (actor.totalWeight <= actor.carryingCapacity.heavy) ? -2 : -5;
+        }
 
-      const skillRoll = new Roll(formula)
-      skillRoll.evaluate({async: false})
+      if ((skill.ability == "strength" || skill.ability == "dexterity") && this.effects.find(e => e?.name === game.i18n.localize("fantasycraft.Fatigued"))) data.modifiers.fatigue = -actor.conditions.fatigued
+
+      if (skill.ability == "wisdom") data.modifiers.shaken = actor.conditions.shaken * -2
+
+      if (skill.ability == "charisma")
+      {
+        data.modifiers.shaken = actor.conditions.shaken * -2
+        data.modifiers.tainted = actor.conditions.tainted * -2
+      }
+
+      return data;
+}
+
+    async rollCompetence(attribute)
+    {
+      let formula = ["d20", "@comp", "@ability"];
+      let ability = attribute;
+      const data = 
+      {
+        comp: this.system.traits.competence.value,
+        ability: this.system.abilityScores[ability].mod
+      } 
+
+      const skillRoll = new Roll(formula.join(" + "), data)
+      await skillRoll.evaluate()
 
       Chat.onSkillCheck(skillRoll, this, "competence", 0);
     }
@@ -1713,33 +1744,29 @@ export default class ActorFC extends Actor {
       return dialogOptions;
     }
 
-    rollHealing(healingValue, healingType)
+    async rollHealing(healingValue, healingType)
     {
-      
       let healingRoll = new Roll(healingValue)
-      healingRoll.evaluate({async: false})
+      await healingRoll.evaluate()
 
       Chat.onHealingRoll(healingRoll, this, healingType);
 
       return healingRoll.total;
     }
 
-    rollHealthSave(saveDC)
+    async rollHealthSave(saveDC)
     {
-      const saveMod = 
-      [
-        this.system.abilityScores.constitution.mod,
-        this.system.traits.health.value
-      ]
-
-      let rollFormula = ["1d20"];
-      for (let bonus of saveMod)
+      const data = 
       {
-        rollFormula += Utils.returnPlusOrMinusString(bonus);
+        ability: this.system.abilityScores.constitution.mod,
+        health: this.system.traits.health.value,
+        size: this.system.traits.health.size,
       }
 
-      const damageSaveRoll = new Roll(rollFormula)
-      damageSaveRoll.evaluate({async: false})
+      let rollFormula = ["1d20", "@ability", "@health", "@size"];
+
+      const damageSaveRoll = new Roll(rollFormula.join(" + "), data)
+      await damageSaveRoll.evaluate()
 
       Chat.onSavingThrow(damageSaveRoll, this, game.i18n.localize("fantasycraft.damage"), saveDC)
     
@@ -1813,13 +1840,13 @@ export default class ActorFC extends Actor {
       return tricks;
     }
 
-    genericAttackModifiers(attackModifiers, item)
+    genericAttackModifiers(attackModifiers, item, rollFormula)
     {
       // sickened/prone/sprawled/blinded/Entangled/shaken/slowed 
       attackModifiers = this.applyEffectsToAttackRoll(attackModifiers, item?.system.attackType);
       
       let magicItems = Utils.getMagicItems(this);
-      let magicBonus = 0;
+      attackModifiers.magicBonus = 0;
 
       if (magicItems.length > 0)
       {
@@ -1828,135 +1855,136 @@ export default class ActorFC extends Actor {
           let charm = Utils.getSpecificCharm(mi, "accuracyBonus");
           
           if (charm != null && (charm[1].target == item.system.attackType || mi == item))
-              magicBonus = (Utils.getCharmBonus(mi, charm[1].greater) > magicBonus) ? Utils.getCharmBonus(mi, charm[1].greater) : magicBonus;
+            attackModifiers.magicBonus = (Utils.getCharmBonus(mi, charm[1].greater) > attackModifiers.magicBonus) ? Utils.getCharmBonus(mi, charm[1].greater) : attackModifiers.magicBonus;
         }
       }
 
-      if (magicBonus != 0) attackModifiers.push(magicBonus);
+      if (attackModifiers.magicBonus != 0) rollFormula.push("@magicBonus");
 
-
-      let stances = this.items.filter(item => item.type == "stance" && item.system.inStance);
-      if (stances.length > 0)
+      //Stance Bonuses
+      let stance = this.items.find(item => item.type == "stance" && item.system.inStance && (
+                    item.system.effect1.effect == "accuracyBonus" || item.system.effect2.effect == "accuracyBonus" ||
+                    item.system.effect1.effect == "variableBonus" || item.system.effect2.effect == "variableBonus"
+                  ));
+      if (stance)
       {
-        if (stances[0].system.effect1.effect == "accuracyBonus") attackModifiers.push(stances[0].system.effect1.bonus)
-        if (stances[0].system.effect2.effect == "accuracyBonus") attackModifiers.push(stances[0].system.effect2.bonus)
+        rollFormula.push("@stance");
+        let stanceBonus = (stance.system.effect1.effect == "accuracyBonus" || stance.system.effect1.effect == "variableBonus" ) ? stance.system.effect1.bonus : stance.system.effect2.bonus;
+        
+        attackModifiers.stance = stanceBonus;
       }
 
-      return attackModifiers;
+
+      return rollFormula;
     }
 
     async rollWeaponAttack(item, skipInputs)
     {
       const actor = this.system;
-
-      let abilityMod = actor.attackTypes[item.system.attackType].ability.name;
-      let attackBonus = (this.type == "character") ? actor.baseAttack : actor.traits.attack.value;
-      let tricks = await this.getWeaponTricks(item);
-      let powerAttack = false;
-      let multiAttack = false;
       let target = Utils.getTargets();
-      let mastersTouch = false;
-      let mastersTouchII = false;
 
-      if (item.system.attackType == "melee" && (this.getFlag("fantasycraft", "Two-Weapon Fighting") || this.getFlag("fantasycraft", "Darting Weapon"))) multiAttack = true;
-      else if (item.system.attackType == "ranged" && (this.getFlag("fantasycraft", "Angry Hornet"))) multiAttack = true;
+      const data = 
+      {
+        tricks: await this.getWeaponTricks(item),
+        abilityMod: actor.attackTypes[item.system.attackType].ability.name,
+        modifiers: 
+        {
+          attackBonus: (this.type == "character") ? actor.baseAttack : actor.traits.attack.value,
+          abilityBonus: actor.abilityScores[actor.attackTypes[item.system.attackType].ability.name].mod,
+          powerAttack: 0,
+          multiAttack: 0,
+          proficency: 0,
+          morale: 0,
+          conversion: 0
+        },
+        mastersTouch: 0,
+      }
+
+      if (item.system.attackType == "melee" && (this.getFlag("fantasycraft", "Two-Weapon Fighting") || this.getFlag("fantasycraft", "Darting Weapon"))) data.multiAttack = true;
+      else if (item.system.attackType == "ranged" && (this.getFlag("fantasycraft", "Angry Hornet"))) data.multiAttack = true;
       
-      if (item.system.attackType == "melee" && this.getFlag("fantasycraft", "All-Out Attack")) powerAttack = true;
-      else if (item.system.attackType == "ranged" && this.getFlag("fantasycraft", "Bullseye")) powerAttack = true;
+      if (item.system.attackType == "melee" && this.getFlag("fantasycraft", "All-Out Attack")) data.powerAttack = true;
+      else if (item.system.attackType == "ranged" && this.getFlag("fantasycraft", "Bullseye")) data.powerAttack = true;
 
       let mastersCheck = this.items.find(item => item.name == game.i18n.localize("fantasycraft.mastersTouch"))
       if (mastersCheck)
       {
-        mastersTouch = true;
-  
-        if (mastersCheck.system.grades.value == "II")
-          mastersTouchII = true
+        data.mastersTouch = (mastersCheck.system.grades.value == "II") ? 2 : 1;
       }
 
-        //if a character has heartseeker then there attack bonus is equal to their career level
-      if (( target[0]?.document.actor.type == "character" ||  target[0]?.document.actor.system?.type == "special") && this.items.find(item => item.type == "feature" && item.name == game.i18n.localize("fantasycraft.heartseeker")))
+      //if a character has heartseeker then their attack bonus is equal to their career level 
+      if (( target[0]?.document.actor.type == "character" ||  target[0]?.document.actor.system?.isSpecial == true) && this.items.find(item => item.type == "feature" && item.name == game.i18n.localize("fantasycraft.heartseeker")))
       {
-        attackBonus = actor.careerLevel.value;
+        data.modifiers.attackBonus = actor.careerLevel.value;
       }
-
-      //Str/Dex + BAB + Weapon Forte + stance bonus
-      let attackModifiers = 
-      [
-        actor.abilityScores[abilityMod].mod,
-        attackBonus
-      ];
       
       //If the actor is a character get their proficiency bonus
       if (this.type == "character")
       {
-        let proficency = 0;
-        
-        if (!actor.proficency[item.system.weaponProficiency].proficient) proficency = -4;
-        else if (actor.proficency[item.system.weaponProficiency].forte) proficency = 1
-
-        if (proficency != 0) attackModifiers.push(proficency);
+        if (!actor.proficency[item.system.weaponProficiency].proficient) data.modifiers.proficency = -4;
+        else if (actor.proficency[item.system.weaponProficiency].forte) data.modifiers.proficency = 1
       }
       
-      //Magic Bonuses, stance bonueses, Conditions bonuses and penalties
-      attackModifiers = this.genericAttackModifiers(attackModifiers, item);
-
+      
       let rollFormula = ["1d20"];
-      for (let bonus of attackModifiers)
+      for (let [key, mod] of Object.entries(data.modifiers))
       {
-        rollFormula += Utils.returnPlusOrMinusString(bonus);
+        if (mod != 0) rollFormula.push("@" + key);
       }
 
-      let stances = this.items.filter(item => item.type == "stance" && item.system.inStance);
-      let stance = false
-      if (stances.length > 0)
-      {
-        if (stances[0].system.effect1.effect == "variableBonus") stance = true
-        if (stances[0].system.effect2.effect == "variableBonus") stance = true
-      }
+      rollFormula = this.genericAttackModifiers(data.modifiers, item, rollFormula);
 
       //check to see if the weapon requires the player to choose an ammunition type, and if the player has any ammunition for that weapon.
       let ammo;
       if (item.system.weaponCategory == "bow")
         ammo = this.itemTypes.weapon.filter(i => i.system.weaponCategory=="arrowsAndBolts");
+      else if (item.system.weaponCategory == "longarm" || item.system.weaponCategory == "sidearm")
+        ammo = this.itemTypes.weapon.filter(i => i.system.weaponCategory=="powder");
 
       if (ammo?.length == 0)
       {
         ui.notifications.error(game.i18n.localize('fantasycraft.Dialog.noAmmunitionForChosenWeapon'))
         return;
       }
+
+      //Alter qualities based on class features or ammunition
+      let pod = this.itemTypes.path.find(i => i.name == game.i18n.localize("fantasycraft.pathOfDestruction"));
+      item.system.weaponProperties.ap += (!!pod && item.system.attackType == "melee") ? pod.system.pathStep : 0;
       
       if (!skipInputs)
-      {
-        const rollInfo = await this.preRollDialog(item.name, "systems/fantasycraft/templates/chat/attackRoll-Dialog.hbs", rollFormula, tricks, powerAttack, multiAttack, mastersTouch, mastersTouchII, stance, ammo)
+      { 
+        const rollInfo = await this.preRollDialog(item.name, "systems/fantasycraft/templates/chat/attackRoll-Dialog.hbs", rollFormula, data.tricks, data.powerAttack, data.multiAttack, data.mastersTouch, data.stance, ammo)
 
         if (rollInfo == null) return;
 
-        //Alter qualities based on class features, or ammunition
-        let pod = this.itemTypes.path.find(i => i.name == game.i18n.localize("fantasycraft.pathOfDestruction"));
-        item.system.weaponProperties.ap += (!!pod) ? pod.system.pathStep : 0;
         
         if (rollInfo.ammo != null)
           this.handleAmmo(rollInfo.ammo, item);
         
-
-        rollFormula = determinePreRollTrickEffect(rollInfo?.trick1, actor, rollInfo, rollFormula, target, rollInfo?.trick2);
+        rollInfo.trick1 = (rollInfo.trick1 == undefined && rollInfo.trick2 != undefined) ? rollInfo.trick2 : rollInfo.trick1;
+        rollInfo.trick2 = (rollInfo.trick1 == rollInfo.trick2) ? null : rollInfo.trick2;
+    
+        if (rollInfo.trick1 != undefined)
+          rollFormula = determinePreRollTrickEffect(data, actor, rollFormula, target, rollInfo.trick1, rollInfo.trick2);
+        
         if (rollFormula == "Error") return;
 
-        //subtract the effect of power attack or multiattack feats
-        if(rollInfo?.powerAttack) rollFormula += " - " + rollInfo.powerAttack;
-        if(rollInfo?.multiAttack) rollFormula += " - " + rollInfo.multiAttack;
-        if(rollInfo?.morale) rollFormula += Utils.returnPlusOrMinusString(rollInfo.morale);
+        //subtract the effect of power attack or multiAttack feats
+        if(rollInfo?.powerAttack) { rollFormula.push("@powerAttack"); data.modifiers.powerAttack = -rollInfo.powerAttack; }
+        if(rollInfo?.multiAttack) { rollFormula.push("@multiAttack"); data.modifiers.powerAttack = -rollInfo.powerAttack; }
+        if(rollInfo?.morale) rollFormula.push("@morale");
 
         //roll the dice
-        const attackRoll = new Roll(rollFormula)
-        attackRoll.evaluate({async: false})
+        const attackRoll = new Roll(rollFormula.join(" + "), data.modifiers)
+        await attackRoll.evaluate()
 
-        let additionalInfo = determinePostRollTrickEffect(rollInfo?.trick1, actor, item, target, attackRoll);
+        let additionalInfo = determinePostRollTrickEffect(rollInfo.trick1, actor, item, target, attackRoll, rollInfo.trick2);
 
         if (rollInfo == null)
           return;
 
-        Chat.onAttack(attackRoll, this, item, rollInfo.trick1, rollInfo.trick2, additionalInfo, rollInfo.ammo);
+        console.log("tst")
+        Chat.onAttack(attackRoll, this, item, rollInfo, additionalInfo, rollInfo.ammo);
       }
       else
       {
@@ -1968,13 +1996,13 @@ export default class ActorFC extends Actor {
           this.handleAmmo(ammo[0], item)
         }
 
-        const attackRoll = new Roll(rollFormula)
-        attackRoll.evaluate({async: false})
+        const attackRoll = new Roll(rollFormula.join(" + "), data.modifiers)
+        await attackRoll.evaluate()
 
         if (!!ammo)
-          Chat.onAttack(attackRoll, this, item, null, null, null, ammo[0]);
+          Chat.onAttack(attackRoll, this, item, null, null, ammo[0]);
         else 
-          Chat.onAttack(attackRoll, this, item, null, null, null, null);
+          Chat.onAttack(attackRoll, this, item, null, null, null);
       }
 
     }
@@ -1998,66 +2026,51 @@ export default class ActorFC extends Actor {
         }
     }
 
-    //natural attack/save attack/damage attack
-    async rollNaturalAttack(item, skipInputs)
+    //unarmed attack
+    async rollUnarmedAttack(item, skipInputs)
     {
       const actor = this.system;
-
-      const attackType = item.system.attackType;
-      let supernaturalAttack;
-      let attackModifiers;
-      let target = Utils.getTargets();
-      let tricks = await this.getUnarmedAttackTricks();
-      let abilityMod = "strength";
-      let attackBonus = (this.type == "character") ? actor.baseAttack : actor.traits.attack.value;
-      let mastersTouch = false;
-      let mastersTouchII = false;
-      let multiAttack = false;
-      let powerAttack = false;
-
-      if (this.getFlag("fantasycraft", "Two-Hit combo")) multiAttack = true;
+      const target = Utils.getTargets();
       
-      if (this.getFlag("fantasycraft", "All-Out Attack")) powerAttack = true;
-      
-      //check to see if the player has the masters touch ability
       let mastersCheck = this.items.find(item => item.name == game.i18n.localize("fantasycraft.mastersTouch"))
+
+      const attackType = (item != null) ? item.system.attackType : "";
+      const data = 
+      {
+        name: (item == null) ? game.i18n.localize("fantasycraft.unarmedStrike") : item.name,
+        attackBonus: (this.type == "character") ? actor.baseAttack : actor.traits.attack.value,
+        abilityMod: "strength",
+        threatRange: (item == null) ? 20 : item.system.threat,
+        errorRange: 1,
+        ap: (item == null) ? 0: item.system.naturalUpgrades.armourPiercing,
+        tricks: await this.getUnarmedAttackTricks(),
+        modifiers: 
+        {
+          multiAttack: (this.getFlag("fantasycraft", game.i18n.localize("fantasycraft.twoHitCombo"))) ? true : false,
+          powerAttack: (this.getFlag("fantasycraft", game.i18n.localize("fantasycraft.allOutAttack"))) ? true : false,
+          mastersTouch: 0,
+          stance: false,
+          prof: 0,
+          attr: 0,
+          base: 0,
+        },
+        supernaturalAttack: "",
+      }
+      
+      // Get AP bonuses from feats or path steps/
+      data.ap += (this.items.find(item => item.name == game.i18n.localize("fantasycraft.kickingMastery"))) ? 2 : 0;
+      data.ap += this.items.find(item => item.name == game.i18n.localize("fantasycraft.pathOfDestruction"))?.system.pathStep;
+
+      //check to see if the player has the masters touch ability    
       if (mastersCheck)
       {
-        mastersTouch = true;
-  
-        if (mastersCheck.system.grades.value == "II")
-          mastersTouchII = true
+        data.mastersTouch = (mastersCheck.system.grades.value == "II") ? 2 : 1;
       }
 
-      if (actor.martialArts) 
-      {
-        abilityMod = (this.type == "character") ? actor.defense.ability.name : actor.defense.defenseAttribute;
-        item.system.threatRange = (actor.mastersArt) ? item.system.threat - 2 : item.system.threat - 1;
-      }
-
-      let stances = this.items.filter(item => item.type == "stance" && item.system.inStance);
-      let stance = false
-      if (stances.length > 0)
-      {
-        if (stances[0].system.effect1.effect == "variableBonus") stance = true
-        if (stances[0].system.effect2.effect == "variableBonus") stance = true
-      }
-
-      //needs to determine if the attack is natural attack, if it is treat it essentially like a weapon attack
-      if (attackType == "naturalAttack" || !!supernaturalAttack)
-      {
-        attackModifiers = this.naturalOrUnarmedAttackModifiers(actor, attackBonus, abilityMod);
-      }
-      
-      //if the attack is instead a damage extrodanary attack needs to roll damage and output the total as well as damage type and save.
-      if (attackType == "playerBreathWeapon" || attackType == "extraDamage" || attackType == "extraSave")
-      {
-        if (item.system.area.shape != "")
-          abilityMod = "dexterity"
-
-          attackModifiers = this.naturalOrUnarmedAttackModifiers(actor, attackBonus, abilityMod);
-      }
-
+      //if the attack is a supernatural attack with a shape, change ability mod to dex as a default
+      if (item?.system.area.shape != "" && attackType != "naturalAttack" && attackType != "")
+        data.abilityMod = "dexterity";
+        
       //finally if the attack is extraordinary save it needs to output the information about the attack, 
       if (attackType == "extraSave")
       {
@@ -2069,147 +2082,93 @@ export default class ActorFC extends Actor {
         }
       }
 
-      //Magic Bonuses, Conditions bonuses and penalties
-      attackModifiers = this.genericAttackModifiers(attackModifiers, item);
-
-      
-      let rollFormula = ["1d20"];
-      for (let bonus of attackModifiers)
-      {
-        rollFormula += Utils.returnPlusOrMinusString(bonus);
-      }
-      if (!skipInputs)
-      {
-        const rollInfo = await this.preRollDialog(item.name, "systems/fantasycraft/templates/chat/attackRoll-Dialog.hbs", rollFormula, tricks, powerAttack, multiAttack, mastersTouch, mastersTouchII, stance);
-        if (rollInfo == null) return;
-
-        rollFormula = determinePreRollTrickEffect(rollInfo?.trick1, actor, rollInfo, rollFormula, target, rollInfo?.trick2);
-        if (rollFormula == "Error") return;
-
-        //subtract the effect of power attack or multiattack feats
-        if(rollInfo?.powerAttack) rollFormula += " - " + rollInfo.powerAttack;
-        if(rollInfo?.multiAttack) rollFormula += " - " + rollInfo.multiAttack;
-        if(rollInfo?.morale) rollFormula += Utils.returnPlusOrMinusString(rollInfo.morale);
-        
-        //roll the dice
-        const attackRoll = new Roll(rollFormula)
-        attackRoll.evaluate({async: false})
-  
-        //let additionalInfo = determinePostRollTrickEffect(rollInfo?.trick1, actor, item, null, attackRoll);
-  
-        if (rollInfo == null)
-          return;
-  
-        Chat.onNaturalAttack(attackRoll, this, item, rollInfo.trick1, rollInfo.trick2, supernaturalAttack);
-      }
-      else 
-      {
-        const attackRoll = new Roll(rollFormula)
-        attackRoll.evaluate({async: false})
-
-        Chat.onNaturalAttack(attackRoll, this, item, null, null, supernaturalAttack);
-      }
-
-    }
-
-    //unarmed attack
-    async rollUnarmedAttack(item, skipInputs)
-    {
-      const actor = this.system;
-
-      let attackBonus = (this.type == "character") ? actor.baseAttack : actor.traits.attack.value;
-      let abilityMod = "strength"
-      let threatRange = 20;
-      let errorRange = 1;
-      let ap = 0; 
-      let target = Utils.getTargets();
-      let tricks = await this.getUnarmedAttackTricks();
-      let multiAttack = (this.getFlag("fantasycraft", game.i18n.localize("fantasycraft.twoHitCombo"))) ? true : false;
-      let powerAttack = (this.getFlag("fantasycraft", game.i18n.localize("fantasycraft.allOutAttack"))) ? true : false;
-      let mastersTouch = false;
-      let mastersTouchII = false;
-
-      ap = (this.items.find(item => item.name == game.i18n.localize("fantasycraft.kickingMastery"))) ? 2 : 0;
-      ap += this.items.find(item => item.name == game.i18n.localize("fantasycraft.pathOfDestruction"))?.system.pathStep;
-
-      //check to see if the player has the masters touch ability
-      let mastersCheck = this.items.find(item => item.name == game.i18n.localize("fantasycraft.mastersTouch"))
-      if (mastersCheck)
-      {
-        mastersTouch = true;
-  
-        if (mastersCheck.system.grades.value == "II")
-          mastersTouchII = true
-      }
-
       if (actor.martialArts) 
       {
-        abilityMod = (this.type == "character") ? actor.defense.ability.name : actor.defense.defenseAttribute;
-        threatRange = (actor.mastersArt) ? 18 : 19;
+        if (this.type == "character")
+        {
+          if (actor.abilityScores[actor.defense.ability.name].mod > actor.abilityScores[data.abilityMod].mod)
+            data.abilityMod = actor.defense.ability.name; 
+        }
+        else
+        {
+          if (actor.abilityScores[actor.defense.defenseAttribute].mod > actor.abilityScores[data.abilityMod].mod)
+            data.abilityMod = actor.defense.defenseAttribute;
+        }
+        data.threatRange -= (actor.mastersArt) ? 2 : 1;
       }
       
-      let attackModifiers = this.naturalOrUnarmedAttackModifiers(actor, attackBonus, abilityMod);
-      let rollFormula = ["1d20"];
-      for (let bonus of attackModifiers)
-      {
-        rollFormula += Utils.returnPlusOrMinusString(bonus);
-      }
+      this.naturalOrUnarmedAttackModifiers(actor, data);
 
       //Magic Bonuses, Conditions bonuses and penalties
-      attackModifiers = this.genericAttackModifiers(attackModifiers, item);
-
       
+      let rollFormula = ["1d20", "@base", "@attr", "@prof"];
+      
+      rollFormula = this.genericAttackModifiers(data.modifiers, item, rollFormula);
+
+      let tricks = null;
       if (!skipInputs)
       {
-        const rollInfo = await this.preRollDialog(game.i18n.localize("fantasycraft.unarmedStrike"), "systems/fantasycraft/templates/chat/attackRoll-Dialog.hbs", rollFormula, tricks, powerAttack, multiAttack, mastersTouch, mastersTouchII)
+        const rollInfo = await this.preRollDialog(data.name, "systems/fantasycraft/templates/chat/attackRoll-Dialog.hbs", rollFormula, data.tricks, data.powerAttack, data.multiAttack, data.mastersTouch);
+        
         if (rollInfo == null) return;
 
-        rollFormula = determinePreRollTrickEffect(rollInfo?.trick1, actor, rollInfo, rollFormula, target, rollInfo?.trick2);
-        if(rollInfo?.powerAttack) rollFormula += " - " + rollInfo.powerAttack;
-        if(rollInfo?.multiAttack) rollFormula += " - " + rollInfo.multiAttack;
-        if(rollInfo?.stance) rollFormula += " - " + rollInfo.stance;
-        if(rollInfo?.morale) rollFormula += Utils.returnPlusOrMinusString(rollInfo.morale);
+        rollInfo.trick1 = (rollInfo.trick1 == undefined && rollInfo.trick2 != undefined) ? rollInfo.trick2 : rollInfo.trick1;
+        rollInfo.trick2 = (rollInfo.trick1 == undefined && rollInfo.trick2 != undefined) ? null : rollInfo.trick2;
+
+        rollFormula = determinePreRollTrickEffect(data, actor, rollFormula, target, rollInfo.trick1, rollInfo.trick2);
+        if (rollFormula == "Error") return;
+
+        if(rollInfo?.powerAttack) {rollFormula.push("@pwr"); data.pwr = -rollInfo?.powerAttack;}
+        if(rollInfo?.multiAttack) {rollFormula.push("@mlt"); data.mlt = -rollInfo?.multiAttack;}
+        if(rollInfo?.morale) {rollFormula.push("@misc"); data.misc = rollInfo?.morale;}
+        tricks = {
+          trick1: rollInfo.trick1,
+          trick2: rollInfo.trick2
+        }
       }
 
-      const attackRoll = new Roll(rollFormula)
-      attackRoll.evaluate({async: false})
+      const attackRoll = new Roll(rollFormula.join(" + "), data.modifiers);
+      await attackRoll.evaluate();
 
-      let unarmedItem = 
+      if (item == null) 
       {
-        id: "",
-        name: "Unarmed Attack",
-        system: {
-          attackType: "unarmed",
-          threatRange: threatRange,
-          errorRange: errorRange,
-          weaponProperties: 
-          {
-            ap: ap
-          }
-        },
+        item = 
+        {
+          id: "",
+          name: "Unarmed Attack",
+          system: {
+            attackType: "unarmed",
+            threatRange: data.threatRange,
+            errorRange: data.errorRange,
+            weaponProperties: 
+            {
+              ap: data.ap
+            }
+          },
+        }
       }
 
-      Chat.onAttack(attackRoll, this, unarmedItem);
+      Chat.onAttack(attackRoll, this, item, tricks);
     }
 
     applyEffectsToAttackRoll(attackModifiers, attackType)
     {
-      if (this.effects.find(e => e.flags?.core?.statusId === "sickened")) attackModifiers.push(-2);
+      if (this.effects.find(e => e.flags?.core?.statusId === "sickened")) attackModifiers.push("@sick");
 
       if (attackType == "melee")
-        if (this.effects.find(e => e.flags?.core?.statusId === "prone")) attackModifiers.push(-2);
+        if (this.effects.find(e => e.flags?.core?.statusId === "prone")) attackModifiers.push("@prone");
   
-      if (this.effects.find(e => e.flags?.core?.statusId === "sprawled")) attackModifiers.push(-2);
-      if (this.effects.find(e => e.flags?.core?.statusId === "blinded")) attackModifiers.push(-8);
-      if (this.effects.find(e => e.flags?.core?.statusId === "entangled")) attackModifiers.push(-2);
+      if (this.effects.find(e => e.flags?.core?.statusId === "sprawled")) attackModifiers.push("@sprawl");
+      if (this.effects.find(e => e.flags?.core?.statusId === "blinded")) attackModifiers.push("@blind");
+      if (this.effects.find(e => e.flags?.core?.statusId === "entangled")) attackModifiers.push("@entangled");
       if (this.effects.find(e => e.flags?.core?.statusId === "shaken")) 
       {
         let attackPenalty = this.effects.find(e => e.flags?.core?.statusId === "shaken").changes[0].value;
         attackPenalty *= this.system.conditions.shaken;
-        attackModifiers.push(attackPenalty);
+        attackModifiers.push("@shaken" + this.system.conditions.shaken);
       }
-      if (this.effects.find(e => e.flags?.core?.statusId === "slowed")) attackModifiers.push(-1);
-      if (this.effects.find(e => e.flags?.core?.statusId === "haste")) attackModifiers.push(1);
+      if (this.effects.find(e => e.flags?.core?.statusId === "slowed")) attackModifiers.push("@slow");
+      if (this.effects.find(e => e.flags?.core?.statusId === "haste")) attackModifiers.push("@haste");
 
       return attackModifiers;
     }
@@ -2217,19 +2176,82 @@ export default class ActorFC extends Actor {
 
     async rollCombatAction(action)
     {
-      let actionShort = (action == "bull rush") ? "bullRush" : action;
-      let actionValue = this.system.combatActions[actionShort];
-      let tricks = await this.getCombatActionTricks(actionShort);
-      const rollFormula = "1d20 " + Utils.returnPlusOrMinusString(actionValue);
-      
-      
+      const actionShort = (action == "bull rush") ? "bullRush" : action;
+      let target = (Utils.getTargets().length > 0) ? Utils.getTargets() : canvas.tokens.controlled.filter(token => token.actor);
+      target = (target.length > 0 || undefined) ? await fromUuid(target[0].document.uuid) : null; // if no targets or multiple targets are selected, disregard targets, otherwise get the selected character target
+
+      const data =
+      {
+        tricks: await this.getCombatActionTricks(actionShort),
+        attribute: "strength",
+        threat: 20,
+        modifiers: 
+        {
+          gear: 0,
+          magic: 0,
+          size: 0,
+          misc: 0, 
+          ranks: 0,
+          bab: 0,
+          aMod: 0,
+          skillMisc: 0,
+          appearance: 0
+        }
+      }
+      let sizeDifference = (target) ? CONFIG.fantasycraft.sizeNumber[this.system.size] - CONFIG.fantasycraft.sizeNumber[target.actor.system.size] : 0;
+
+      //TODO Update this so that it feats and class features can tell it to replace the attribute instead of hard coding fan service
+      let source = await this.getCombatActionSkill(actionShort);
+
+      if (source.type == "skill")
+      {
+        data.threat = source.source.threat;
+        data.attribute = source.source.ability;
+        data.modifiers.ranks = source.source.ranks;  
+        data.modifiers.mod = this.system.abilityScores[source.source.ability].mod;
+      }
+      else if (source.type == "melee")
+      {
+        data.attribute = source.source.ability.name;
+        data.modifiers.bab = this.system.bab;
+      }
+      else 
+      {
+        data.attribute = source.source.ability.name; 
+        data.modifiers.bab = this.system.bab;
+      }
+
+      data.modifiers.skillMisc = source.source.misc;
+      data.modifiers.magic = source.source.magic
+
+      if (actionShort == "bullRush" || actionShort == "trip" || actionShort == "grapple")
+        data.modifiers.size = sizeDifference * 2;
+
+      this.getCombatActionBonuses(actionShort, data.modifiers);
+
+
+
+      let rollFormula = ["1d20"];
+
+      for (let [key, mod] of Object.entries(data.modifiers))
+      {
+        if (mod != 0) rollFormula.push("@" + key);
+      }
+
+      //Disarm (Two Buttons in the chat dialog, one for resist one for disarm)
+      //Grapple (Two Buttons in the chat dialog, one for resist one for grapple)
+
       //check for tricks
-      const rollInfo = await this.preRollDialog(actionShort, "systems/fantasycraft/templates/chat/attackRoll-Dialog.hbs", rollFormula, tricks);
+      const rollInfo = await this.preRollDialog(actionShort, "systems/fantasycraft/templates/chat/attackRoll-Dialog.hbs", rollFormula, data.tricks);
+
+
+      // TODO ability to select weapon that you're disarming
+      //Weapon size
 
       if (rollInfo == null) return;
 
-      const actionRoll = new Roll(rollFormula);
-      actionRoll.evaluate({async: false});
+      const actionRoll = new Roll(rollFormula.join(" + "), data.modifiers);
+      await actionRoll.evaluate();
 
 
       if (rollInfo == null)
@@ -2241,14 +2263,119 @@ export default class ActorFC extends Actor {
       Chat.onCombatAction(actionRoll, this, actionShort, rollInfo.trick1);
     }
     
-    naturalOrUnarmedAttackModifiers(actor, attackBonus, abilityMod)
+    async getCombatActionSkill(actionShort)
     {
-        let attackModifiers = 
-        [
-          actor.abilityScores[abilityMod].mod,
-          attackBonus
-        ];
+      let fanService = this.items.find(item => item.type == "feat" && item.name == game.i18n.localize("fantasycraft.fanService"));
+
+      if ((actionShort == "feint" || actionShort == "distract") && fanService)
+        return {source: this.system.skills["impress"], type: "skill"};
+      if (actionShort == "bullRush" || actionShort == "grapple")
+        return {source: this.system.skills["athletics"], type: "skill"};
+      if(actionShort == "disarm")
+        return {source: this.system.attackTypes["melee"], type: "melee"};
+      if(actionShort == "distract")
+        return {source: this.system.skills["bluff"], type: "skill"};
+      if(actionShort == "feint")
+        return {source: this.system.skills["prestidigitation"], type: "skill"};
+      if(actionShort == "pummel")
+        return {source: this.system.attackTypes["unarmed"], type: "unarmed"};
+      if(actionShort == "taunt" || actionShort == "anticipate")
+        return {source: this.system.skills["senseMotive"], type: "skill"};
+      if (actionShort == "threaten")
+        return {source: this.system.skills["intimidate"], type: "skill"};
+      if(actionShort == "tire")
+        return {source: this.system.skills["resolve"], type: "skill"};
+      if(actionShort == "trip")
+        return {source: this.system.skills["acrobatics"], type: "skill"};
+    }
+
+    async getCombatActionBonuses(action, modifiers)
+    {
+      let weapons = this.items.filter(w => w.type == "weapon" && w.system.readied);
+
+      //** BULLRUSH AND TRIP */
+      if (action == "bullRush" || action == "trip")
+      {
+        //Great Sweep (MA): You gain a +4 bonus with Bull Rush and Trip actions.
+        modifiers.misc += (this.items.find(item => item.name == game.i18n.localize("fantasycraft.greatSweep"))) ? 4 : 0;
+
+        //Trip quality(weapon trip) +2 on a melee weapon
+        if (action == "trip")
+          modifiers.gear = (weapons.find(item => item.system.attackType == "melee" && item.system.weaponProperties.trip)) ? 2 : 0;
+      }
+      //** DISARM */
+      if(action == "disarm")
+      {
+        //expert disarm
+        modifiers.misc += (this.items.find(item => item.name == game.i18n.localize("fantasycraft.expertDisarm"))) ? 4 : 0;
+        //Garrote mastery
+        if (modifiers.attackType == "unarmed")
+          modifiers.misc += (this.items.find(item => item.name == game.i18n.localize("fantasycraft.garroteMastery")) && this.items.find(item => item.name == "Garrote")) ? 4 : 0;
+        //Weapon modifiers
+        else 
+        {
+          // check to see if the player is two handing a weapon
+          let handsUsed = 0;
+          let twoHanded = false;
+
+          let grip = false;
+          let hook = true;
+          for (let weapon of weapons)
+          {
+            let handsNeeded = parseInt(weapon.system.size.hands[0]) 
+            handsUsed += handsNeeded;
+
+            if (handsNeeded > 1) twoHanded = true;
+
+            hook = (weapon.system.weaponProperties.hook) ? true : false;
+            grip = (weapon.system.weaponProperties.grip) ? true : false;
+
+          }
+          // +4 Two handing
+          if (handsUsed < this.system.hands || twoHanded)
+            modifiers.misc += 4;
+          
+          //hook if disarming, grip if being disarmed
+          if (hook == true) modifiers.oGear = 2;
+          if (grip == true) modifiers.dGear = 4;
+
+        }
         
+      }
+      //** FEINT */
+      if (action == "feint")
+        modifiers.gear = (item => weapons.find(item.system.attackType == "melee" && item.system.weaponProperties.lure)) ? 2 : 0;
+      //** GRAPPLE */
+      if (action == "grapple")
+      {
+        //  Grappler (NPC) +2 Grapple
+        modifiers.misc += (this.items.find(item => item.name == game.i18n.localize("fantasycraft.grappler"))) ? 2 : 0;
+      }
+      //** THREATEN */
+      if (action == "threaten")
+      {
+        //Trip quality(weapon trip) +2 on a melee weapon
+        modifiers.gear = (weapons.find(item => item.system.weaponProperties.horiffic)) ? 2 : 0;
+      }
+      //** TAUNT AND TIRE */
+      if (action == "taunt" || action == "tire")
+      {
+        //Provoke (MA): You gain a +4 bonus with Taunt and Trip actions.
+        modifiers.misc += (this.items.find(item => item.name == game.i18n.localize("fantasycraft.provoke"))) ? 4 : 0;
+
+        if (action == "taunt")
+          {
+            //  Easy Prey (Aggro stance) +4 to taunt
+            modifiers.misc += this.items.find (stance => stance.name == game.i18n.localize("fantasycraft.easyPrey" && stance.inStance)) ? 4 : 0;
+          }
+      }    
+    }
+
+    naturalOrUnarmedAttackModifiers(actor, data)
+    {
+        data.modifiers.base = data.attackBonus;
+        data.modifiers.attr = actor.abilityScores[data.abilityMod].mod;
+
         ////Str/Dex + BAB + Weapon Forte 
         if (this.type == "character")
         {
@@ -2258,26 +2385,25 @@ export default class ActorFC extends Actor {
           else if (actor.proficency.unarmed.forte) proficency = 1;
         
           if (proficency != 0)
-            attackModifiers.push(proficency);
+            data.modifiers.prof = proficency;
         }
 
-        return attackModifiers;
+        return data;
     }
 
-    async preRollDialog(attackName, template, formula, tricks, powerAttack = false, multiAttack = false, mastersTouch = false, mastersTouchII = false, stance = false, ammo=false)
+    async preRollDialog(attackName, template, formula, tricks, powerAttack = false, multiAttack = false, mastersTouch = false, stance = false, ammo=false)
     {
       const content = await renderTemplate(template, {
-        formula: formula,
+        formula: formula.join(" + "),
         tricks: tricks,
         powerAttack: powerAttack,
         multiAttack: multiAttack,
         mastersTouch: mastersTouch,
-        mastersTouchII: mastersTouchII,
         stance: stance,
         ammo: ammo
       });
 
-      return new Promise(resolve => {
+      return await new Promise(resolve => {
         new Dialog({
           title: attackName,
           content,
@@ -2328,11 +2454,8 @@ export default class ActorFC extends Actor {
       if (form.moraleValue.value != 0)
         dialogOptions.morale = form.moraleValue.value
 
-      if (form.trick.value)
-      {
-        dialogOptions.trick1 = this.items.get(form.trick.value);
-        if (form?.trick2) dialogOptions.trick2 = this.items.get(form.trick2.value);
-      }
+      if (form.trick.value)  dialogOptions.trick1 = this.items.get(form.trick.value);
+      if (form.trick2?.value) dialogOptions.trick2 = this.items.get(form.trick2.value);
 
       return dialogOptions;
     }

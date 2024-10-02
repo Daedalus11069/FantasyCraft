@@ -2,7 +2,7 @@ import * as Utils from '../Utils.js';
 export default function renderGMScreen() {
     const system = game.system;
     const moduleId = system.id;
-    const title = system.data.title;
+    const title = system.title;
     game.settings.register(title, 'version', {
         name: `${title}`,
         default: "0.0.0",

@@ -1,119 +1,185 @@
-{{#compare step.effect1 "other" operator="=="}}
+{{#if (eq step.effect1 "other")}}
     {{step.value1}}
-{{/compare}}
+{{/if}}
 
-{{#compare step.effect1 "resistances" operator="=="}}
+{{#if (eq step.effect1 "resistances")}}
     {{localize "fantasycraft.Dialog.youGain"}} {{localize step.damageType1}} {{localize "fantasycraft.resistance"}} {{step.value1}}
-    {{#compare step.effect1Scaling "false" operator="=="}}
-    {{localize "fantasycraft.Dialog.equalToPathStep"}}
-    {{/compare}}
-{{/compare}}
+    {{#if (eq step.effect1Scaling "false")}}
+        {{localize "fantasycraft.Dialog.equalToPathStep"}}
+    {{/if}}
+{{/if}}
 
-
-{{#compare step.effect1 "spell" operator="=="}}
-    {{localize "fantasycraft.Dialog.youMayCast"}} {{localize step.value1}} 
-    {{#compare step.spell1Reset "atWill" operator="=="}}
+{{#if (eq step.effect1 "spell")}}
+    {{localize "fantasycraft.Dialog.youMayCast"}} {{#if step.target1}}<a class="item edit-item" data-item-id="{{step.target1}}"><b>{{localize step.value1}} </b></a>{{else}}{{localize step.value1}}{{/if}}
+    {{#if (eq step.spell1Reset "atWill")}}
     {{localize "fantasycraft.atWill"}}
-    {{/compare}}
-    {{#compare step.spell1Reset "perScene" operator="=="}}
+    {{/if}}
+    {{#if (eq step.spell1Reset "perScene")}}
     {{localize "fantasycraft.once"}} {{localize "fantasycraft.perScene"}}
-    {{/compare}}
-    {{#compare step.spell1Reset "perAdventure" operator="=="}}
+    {{/if}}
+    {{#if (eq step.spell1Reset "perAdventure")}}
     {{localize "fantasycraft.once"}} {{localize "fantasycraft.perAdventure"}}
-    {{/compare}}
-{{/compare}}
+    {{/if}}
+{{/if}}
 
-
-{{#compare step.effect1 "feat" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} {{localize "fantasycraft.the"}} {{step.value1}} {{localize "fantasycraft.feat"}}
-{{/compare}}
-
-
-{{#compare step.effect1 "skillBonus" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value1}} {{localize "fantasycraft.with"}} {{step.target1}} {{localize "fantasycraft.skillChecks"}}
-{{/compare}}
-
-
-{{#compare step.effect1 "damageBonus" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value1}} {{localize "fantasycraft.Dialog.bonusToDamage"}}
-    {{#compare step.effect1Scaling "true" operator="=="}}
-    {{localize "fantasycraft.Dialog.equalToPathStep"}}
-    {{/compare}}
-{{/compare}}
-
-
-{{#compare step.effect1 "damageImmunity" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} {{localize step.damageType1}} {{localize "fantasycraft.immunity"}}
-{{/compare}}
-
-
-{{#compare step.effect1 "speedBonus" operator="=="}}
-    {{localize "fantasycraft.Dialog.yourMovementSpeedIncreases"}} {{step.value1}} {{localize "fantasycraft.ft"}}
-{{/compare}}
-
-
-{{#compare step.effect1 "saveBonus" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value1}} {{localize "fantasycraft.with"}} {{step.target1}} {{localize "fantasycraft.saves"}}
-{{/compare}}
-
-{{#compare step.effect2 "" operator="!="}}
+{{#if (eq step.effect1 "twoZeroLevels")}}
+    {{localize "fantasycraft.Dialog.youMayCast"}} {{#if step.target1}}<a class="item edit-item" data-item-id="{{step.target1}}"><b>{{localize step.value1}} </b></a>{{else}}{{localize step.value1}}{{/if}} 
     {{localize "fantasycraft.and"}}
-{{/compare}}
-
-{{#compare step.effect2 "other" operator="=="}}
-    {{step.value2}}
-{{/compare}}
-
-{{#compare step.effect2 "resistances" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} {{localize step.damageType2}} {{localize "fantasycraft.resistance"}} {{step.value2}}
-    {{#compare step.effect2Scaling "false" operator="=="}}
-    {{localize "fantasycraft.Dialog.equalToPathStep"}}
-    {{/compare}}
-{{/compare}}
-
-
-{{#compare step.effect2 "spell" operator="=="}}
-    {{localize "fantasycraft.Dialog.youMayCast"}} {{localize step.value2}}
-    {{#compare step.spell2Reset "atWill" operator="=="}}
+    {{#if step.specialTarget}}<a class="item edit-item" data-item-id="{{step.specialTarget}}"><b>{{localize step.special}} </b></a>{{else}}{{localize step.special}}{{/if}}
+    {{#if (eq step.spell1Reset "atWill")}}
     {{localize "fantasycraft.atWill"}}
-    {{/compare}}
-    {{#compare step.spell2Reset "perScene" operator="=="}}
-    {{localize "fantasycraft.once"}} {{localize "fantasycraft.perScene"}}
-    {{/compare}}
-    {{#compare step.spell2Reset "perAdventure" operator="=="}}
-    {{localize "fantasycraft.once"}} {{localize "fantasycraft.perAdventure"}}
-    {{/compare}}
-{{/compare}}
+    {{/if}}
+{{/if}}
+
+{{#if (eq step.effect1 "attributeBonus")}}
+    {{localize "fantasycraft.your"}} {{localize step.target1}} {{localize "fantasycraft.increasesBy"}} {{step.value1}}
+{{/if}}
 
 
-{{#compare step.effect2 "feat" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} {{localize "fantasycraft.the"}} {{step.value2}} {{localize "fantasycraft.feat"}}
-{{/compare}}
+{{#if (eq step.effect1 "feat")}}
+    {{localize "fantasycraft.Dialog.youGain"}} {{localize "fantasycraft.the"}} {{#if step.target1}}<a class="item edit-item" data-item-id="{{step.target1}}"><b>{{localize step.value1}} </b></a>{{else}}{{localize step.value1}}{{/if}} {{localize "fantasycraft.feat"}}
+{{/if}}
 
 
-{{#compare step.effect2 "skillBonus" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value2}} {{localize "fantasycraft.with"}} {{step.target2}} {{localize "fantasycraft.skillChecks"}}
-{{/compare}}
-
-
-{{#compare step.effect2 "damageBonus" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value2}} {{localize "fantasycraft.Dialog.bonusToDamage"}}
-    {{#compare step.effect2Scaling "true" operator="=="}}
+{{#if (eq step.effect1 "skillBonus")}}
+    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value1}} {{localize "fantasycraft.with"}} {{step.target1}} {{localize "fantasycraft.skillChecks"}}
+    {{#if step.effect1Scaling}}
     {{localize "fantasycraft.Dialog.equalToPathStep"}}
-    {{/compare}}
-{{/compare}}
+    {{/if}}
+{{/if}}
 
 
-{{#compare step.effect2 "damageImmunity" operator="=="}}
-    {{localize "fantasycraft.Dialog.youGain"}} {{localize step.damageType2}} {{localize "fantasycraft.immunity"}}
-{{/compare}}
+{{#if (eq step.effect1 "damageBonus")}}
+    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value1}} {{localize "fantasycraft.Dialog.bonusToDamage"}}
+    {{#if step.effect1Scaling}}
+    {{localize "fantasycraft.Dialog.equalToPathStep"}}
+    {{/if}}
+{{/if}}
 
 
-{{#compare step.effect2 "speedBonus" operator="=="}}
-    {{localize "fantasycraft.Dialog.yourMovementSpeedIncreases"}} {{step.value2}} {{localize "fantasycraft.ft"}}
-{{/compare}}
+{{#if (eq step.effect1 "damageImmunity")}}
+    {{localize "fantasycraft.Dialog.youGain"}} {{localize step.damageType1}} {{localize "fantasycraft.damageImmunity"}}
+{{/if}}
 
 
-{{#compare step.effect2 "saveBonus" operator="=="}}
+{{#if (eq step.effect1 "speedBonus")}}
+    {{localize "fantasycraft.Dialog.yourMovementSpeedIncreases"}} {{step.value1}} {{localize "fantasycraft.ft"}}
+{{/if}}
+
+{{#if (eq step.effect1 "convertDamage")}}
+    {{localize "fantasycraft.Dialog.youMayConvert"}} {{step.damageType1}} {{localize "fantasycraft.damage"}}
+{{/if}}
+
+ {{#if (eq step.effect1 "npcOrOriginFeature")}} 
+    {{localize "fantasycraft.Dialog.youGain"}} {{#if step.target1}}<a class="item edit-item" data-item-id="{{step.target1}}"><b>{{localize step.value1}} </b></a>{{else}}{{localize step.value1}}{{/if}}
+{{/if}}
+ {{#if (eq step.effect1 "classAbility")}} 
+    {{localize "fantasycraft.Dialog.youGain"}} {{#if step.target1}}<a class="item edit-item" data-item-id="{{step.target1}}"><b>{{localize step.value1}} </b></a>{{else}}{{localize step.value1}}{{/if}} {{localize "fantasycraft.Dialog.classAbility"}}
+ {{/if}}
+
+ {{#if (eq step.effect1 "trick")}}
+{{localize "fantasycraft.Dialog.youGain"}} {{localize "fantasycraft.a"}} {{localize "fantasycraft.trick"}} {{#if step.target1}}<a class="item edit-item" data-item-id="{{step.target1}}"><b>{{localize step.value1}} </b></a>{{else}}{{localize step.value1}}{{/if}}
+ {{/if}}
+
+{{#if (eq step.effect1 "saveBonus")}}
+    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value1}} {{localize "fantasycraft.with"}} {{step.target1}} {{localize "fantasycraft.saves"}}
+    {{#if step.effect1Scaling}}
+    {{localize "fantasycraft.Dialog.equalToPathStep"}}
+    {{/if}}
+{{/if}}
+
+{{#if (not (eq step.effect2 ""))}}
+    {{localize "fantasycraft.and"}}
+{{/if}}
+
+{{#if (eq step.effect2 "other")}}
+    {{step.value2}}
+{{/if}}
+
+{{#if (eq step.effect2 "resistances")}}
+    {{localize "fantasycraft.Dialog.youGain"}} {{localize step.damageType2}} {{localize "fantasycraft.resistance"}} {{step.value2}}
+    {{#if (eq step.effect2Scaling "false")}}
+    {{localize "fantasycraft.Dialog.equalToPathStep"}}
+    {{/if}}
+{{/if}}
+
+
+{{#if (eq step.effect2 "spell")}}
+    {{localize "fantasycraft.Dialog.youMayCast"}} {{#if step.target2}}<a class="item edit-item" data-item-id="{{step.target2}}"><b>{{localize step.value2}} </b></a>{{else}}{{localize step.value2}}{{/if}}
+    {{#if (eq step.spell2Reset "atWill")}}
+    {{localize "fantasycraft.atWill"}}
+    {{/if}}
+    {{#if (eq step.spell2Reset "perScene")}}
+    {{localize "fantasycraft.once"}} {{localize "fantasycraft.perScene"}}
+    {{/if}}
+    {{#if (eq step.spell2Reset "perAdventure")}}
+    {{localize "fantasycraft.once"}} {{localize "fantasycraft.perAdventure"}}
+    {{/if}}
+{{/if}}
+
+{{#if (eq step.effect2 "twoZeroLevels")}}
+    {{localize "fantasycraft.Dialog.youMayCast"}} {{#if step.target2}}<a class="item edit-item" data-item-id="{{step.target2}}"><b>{{localize step.value2}} </b></a>{{else}}{{localize step.value2}}{{/if}} 
+    {{localize "fantasycraft.and"}}
+    {{#if step.specialTarget}}<a class="item edit-item" data-item-id="{{step.specialTarget}}"><b>{{localize step.special}} </b></a>{{else}}{{localize step.special}}{{/if}}
+    {{#if (eq step.spell1Reset "atWill")}}
+    {{localize "fantasycraft.atWill"}}
+    {{/if}}
+{{/if}}
+
+{{#if (eq step.effect2 "attributeBonus")}}
+    {{localize "fantasycraft.your"}} {{localize step.target2}} {{localize "fantasycraft.increasesBy"}} {{step.value2}}
+{{/if}}
+
+{{#if (eq step.effect2 "feat")}}
+    {{localize "fantasycraft.Dialog.youGain"}} {{localize "fantasycraft.the"}} {{#if step.target2}}<a class="item edit-item" data-item-id="{{step.target2}}"><b>{{localize step.value2}} </b></a>{{else}}{{localize step.value2}}{{/if}} {{localize "fantasycraft.feat"}}
+{{/if}}
+
+
+{{#if (eq step.effect2 "skillBonus")}}
+    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value2}} {{localize "fantasycraft.with"}} {{step.target2}} {{localize "fantasycraft.skillChecks"}}
+    {{#if (eq step.effect2Scaling "true")}}
+    {{localize "fantasycraft.Dialog.equalToPathStep"}}
+    {{/if}}
+{{/if}}
+
+
+{{#if (eq step.effect2 "damageBonus")}}
+    {{localize "fantasycraft.Dialog.youGain"}} +{{step.value2}} {{localize "fantasycraft.Dialog.bonusToDamage"}}
+    {{#if (eq step.effect2Scaling "true")}}
+    {{localize "fantasycraft.Dialog.equalToPathStep"}}
+    {{/if}}
+{{/if}}
+
+
+{{#if (eq step.effect2 "damageImmunity")}}
+    {{localize "fantasycraft.Dialog.youGain"}} {{localize step.damageType2}} {{localize "fantasycraft.damageImmunity"}}.
+{{/if}}
+
+
+{{#if (eq step.effect2 "speedBonus")}}
+    {{localize "fantasycraft.Dialog.yourMovementSpeedIncreases"}} {{step.value2}} {{localize "fantasycraft.ft"}}.
+{{/if}}
+
+{{#if (eq step.effect2 "convertDamage")}}
+    {{localize "fantasycraft.Dialog.youMayConvert"}} {{step.damageType2}} {{localize "fantasycraft.damage"}}.
+{{/if}}
+
+ {{#if (eq step.effect2 "npcOrOriginFeature")}} 
+    {{localize "fantasycraft.Dialog.youGain"}} {{#if step.target2}}<a class="item edit-item" data-item-id="{{step.target2}}"><b>{{localize step.value2}} </b></a>{{else}}{{localize step.value2}}{{/if}} 
+{{/if}}
+ {{#if (eq step.effect2 "classAbility")}} 
+    {{localize "fantasycraft.Dialog.youGain"}} {{#if step.target2}}<a class="item edit-item" data-item-id="{{step.target2}}"><b>{{localize step.value2}} </b></a>{{else}}{{localize step.value2}}{{/if}} {{localize "fantasycraft.Dialog.classAbility"}}
+ {{/if}}
+
+ {{#if (eq step.effect2 "trick")}}
+{{localize "fantasycraft.Dialog.youGain"}} {{localize "fantasycraft.a"}} {{localize "fantasycraft.trick"}}  {{#if step.target2}}<a class="item edit-item" data-item-id="{{step.target2}}"><b>{{localize step.value2}} </b></a>{{else}}{{localize step.value2}}{{/if}} 
+ {{/if}}
+
+
+{{#if (eq step.effect2 "saveBonus")}}
     {{localize "fantasycraft.Dialog.youGain"}} +{{step.value2}} {{localize "fantasycraft.with"}} {{step.target2}} {{localize "fantasycraft.saves"}}
-{{/compare}}
+        {{#if (eq step.effect2Scaling "true")}}
+    {{localize "fantasycraft.Dialog.equalToPathStep"}}
+    {{/if}}
+
+{{/if}}

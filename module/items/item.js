@@ -1,5 +1,6 @@
-export default class ItemFC extends Item {
-
+export default class ItemFC extends Item 
+{
+  //** @inheritedDoc */
   prepareDerivedData() 
   {
     super.prepareDerivedData();
@@ -12,7 +13,7 @@ export default class ItemFC extends Item {
 
 
     if (itemData.type === "class") {
-      data.levels = Math.clamped(data.levels, 1, 20);
+      data.levels = Math.clamp(data.levels, 1, 20);
     }
     
     if(itemData.type === "spell"){
@@ -42,6 +43,12 @@ export default class ItemFC extends Item {
       }
       else
         this._prepareExtraordinaryAttack(data);
+    }
+
+    if (itemData.type == "path")
+    {
+      this._createDropZones(data);
+      this.system.shorthand = this.name.replace("Path of ", "");
     }
 
     if (itemData.system.isMagic)
@@ -213,6 +220,20 @@ export default class ItemFC extends Item {
     }
   }
 
+  _createDropZones(itemData)
+  {
+    for (let i = 1; i <= 5 ; i++)
+    {
+      let step = itemData["step" + i];
+
+      step.drop1 = (step.effect1 == "spell" || step.effect1 == "twoZeroLevels" || step.effect1 == "feat" || step.effect1 == "classAbility" || step.effect1 == "npcOrOriginFeature" || step.effect1 == "trick") ? true : false;
+      step.drop2 = (step.effect2 == "spell" || step.effect2 == "twoZeroLevels" || step.effect2 == "feat" || step.effect2 == "classAbility" || step.effect2 == "npcOrOriginFeature" || step.effect2 == "trick") ? true : false;
+
+      step.requiresValueInput1 = (!step.drop1 && step.effect1 != "convertDamage" && step.effect1 != "damageImmunity") ? true : false;
+      step.requiresValueInput2 = (!step.drop2 && step.effect2 != "convertDamage" && step.effect2 != "damageImmunity") ? true : false;
+    }
+  }
+
   _separateSpellTerms(terms) 
   {
     const map = 
@@ -243,7 +264,7 @@ export default class ItemFC extends Item {
         term.custom.split(";").forEach((c, i) => term.selected[`custom${i+1}`] = c.trim());
       }
 
-      term.cssClass = !isEmpty(term.selected) ? "" : "inactive";
+      term.cssClass = !foundry.utils.isEmpty(term.selected) ? "" : "inactive";
     }
   }
 
@@ -336,6 +357,7 @@ export default class ItemFC extends Item {
         }
     
         data.damage.diceSize = diceSize;
+        data.damage.value = data.damage.diceNum + "d" + data.damage.diceSize;
   }
 
   _saveCalc(data)

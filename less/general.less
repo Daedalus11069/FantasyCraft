@@ -22,6 +22,11 @@
                 &:last-child { margin-right: 0; }
             }
         }
+
+        .extended
+        {
+          flex: 5;
+        }
     }
   
     // Stacked Groups
@@ -50,8 +55,23 @@
     font-size: 15px;
   }
 
-  .active, .collapsible:hover {
-    //background-color: #555;
+  .nav
+  {
+    .sheet-tabs
+    {
+      margin: 4px 0px;
+    }
+  }
+
+  .title-name
+  {
+    input
+    {
+      color: white;
+      height: 32px;
+      font-size: 32px;
+      font-family: .title-font();
+    }
   }
 
   .content {
@@ -97,7 +117,6 @@
         height: 17px;
         width: 17px;
         background-color: lightgray;
-        font-family: signika; 
         font-size: 13px; 
         font-weight: normal;
         display: inline-block;
@@ -120,20 +139,33 @@
           border: 2px outset tan;
           color: black;
           text-align: center;
-          padding: 5px 0;
+          padding: 5px 5px;
           border-radius: 6px;
           font-family: signika; 
           width: fit-content;
+          opacity: 0;
 
           z-index: 1;
           &.absolute-position
           {
             position: absolute;
+            margin-top: 15px;
           }
   
           &.relative-position
           {
             position: relative;
+          }
+
+          &.ad-tooltip
+          {
+            color: black;
+            width: 130px;
+  
+            i 
+            {
+              color: white
+            }
           }
         }
 
@@ -141,6 +173,8 @@
         &:hover .tooltiptext 
         {
           visibility: visible;
+          opacity: 1;
+          transition: opacity 0.5s ease 0.75s;
         }
     }
   } 
@@ -219,6 +253,21 @@
       &:focus {
         border: 1px solid #111;
       }
+
+      &:disabled
+      {
+        background: none;
+      }
+
+      &.underline
+      {
+        background: none;
+        border: 0;
+        outline: 0;
+        border-bottom: 1px solid black;
+        border-radius: 0%;
+        height: 15px;
+      }
     }
   
     // Select Fields
@@ -244,13 +293,14 @@
         a 
         {
             display: inline-block;
-            border: 1px solid #b5b3a4;
+            border: 2px groove grey;
             border-radius: 2px;
             margin: 3px;
             padding: 0 2px;
-            width: 90px;
+            min-width: 70px;
             height: 22px;
-            background-color: lightgray;
+            background-color: whitesmoke;
+            box-shadow: 2px 2px grey;
 
             &:hover {
               
@@ -408,8 +458,8 @@
   
     .sheet-navigation {
       flex: 0 0 @navHeight;
-      margin-top: 0px !important;
-      margin-bottom: 5px;
+      margin: 0px !important;
+      border-top: none !important;
       .title-font();
       text-align: center;
 
@@ -420,13 +470,12 @@
       }
 
       .item {
-        height: 30px;
-        line-height: 32px;
+        padding: 2px 12px;
+        line-height: 20px;
         margin: 0 15px;
-        border-bottom: 3px solid beige;
   
         &.active {
-          border-bottom: 3px solid crimson;
+          border-bottom: 3px solid darkred;
         }
       }
     }
@@ -578,8 +627,6 @@ h4.box-title {
     line-height: 16px;
     margin: 0px 0px 0px;
     .title-font();
-    font-size: 16px;
-    color: #4b4a44;
     border-bottom: 1px solid #c9c7b8;
     text-align: center;
 }
@@ -617,25 +664,26 @@ input.narrowField
 }
 input.mediumField 
 {
-  max-width: 50px;
+  max-width: 40px;
 }
 input.wideField 
 {
   width: 100px;
 }
 
-input.underline
+button.smaller-button
 {
-  border: 0;
-  outline: 0;
-  border-bottom: 1px solid black;
+  padding: 0px;
+  width: 28px;
+  height: 28px;
+  margin: -1px;
 }
 
 button.smallButton
 {
   padding: 0px;
   width: 100px;
-  height: 30px;
+  height: 27px;
 }
 
 textarea.text-area
@@ -662,7 +710,7 @@ textarea.text-area
 
 .center-text
 {
-  text-align: center;
+  text-align: -webkit-center;
 }
 
 .capitalize 
@@ -674,4 +722,67 @@ textarea.text-area
 {
   font-size: 9.5px;
   white-space: nowrap;
+}
+
+.ranks-remaining
+{
+  border-bottom: 1px solid darkred;
+  height: 20px;
+  border-radius: 0;
+  text-align: center;
+}
+
+.plus-minus-buttons
+{
+  height: 20px;
+  width: 20px;
+  border: 1px solid black;
+  background: lightblue;
+  padding-top: 2px;
+  padding-right: 1px;
+}
+
+.left-indent
+{
+  padding-left: 25px;
+}
+
+.drop-zone
+{
+  border-radius: 5px;
+  min-width: 125px;
+  border: 2px dashed gray;
+  text-align: center;
+  color: gray;
+  background: rgba(0, 0, 0, 0.1);
+
+  &:hover
+  {
+    border-color: black;
+    color: black;
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  &.extra-space
+  {
+    padding: 5px 25px;
+  }
+
+  &.center-flexrow
+  {
+    align-self: center;
+    width: 250px
+  }
+
+
+  &.feature-container
+  {
+    min-width: 125px;
+    border-radius: 5px;
+    border: 2px solid black;
+    text-align: center;
+    color: black;
+    background: rgba(0, 0, 0, 0.1);
+    
+  }  
 }

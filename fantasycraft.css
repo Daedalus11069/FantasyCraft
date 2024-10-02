@@ -1,32 +1,14 @@
 .fantasycraft.sheet.actor {
-  min-width: 761px;
-  min-height: 680px;
-}
-.fantasycraft.sheet.actor .sheet-header .attributes {
-  flex: 0 0 100%;
-  margin: 0;
-}
-.fantasycraft.sheet.actor .sheet-header .attributes .attribute {
-  height: 70px;
-  border: none;
-  border-left: 2px groove #eeede0;
-  border-radius: 0;
-}
-.fantasycraft.sheet.actor .sheet-header .summary {
-  height: 30px;
-  border-bottom: 2px groove #eeede0;
-  font-size: 18px;
-}
-.fantasycraft.sheet.actor .sheet-header .summary input,
-.fantasycraft.sheet.actor .sheet-header .summary span {
-  display: block;
-  height: 24px;
-  line-height: 24px;
+  min-width: 765px;
+  min-height: 715px;
 }
 .fantasycraft.sheet.actor ul.attributes {
   flex: 0 0 60px;
   margin: 0;
   padding: 0;
+}
+.fantasycraft.sheet.actor ul.attributes li.attribute {
+  border-left: 1px groove lightgray;
 }
 .fantasycraft.sheet.actor ul.attributes li.attribute .attribute-value {
   display: flex;
@@ -74,6 +56,10 @@
   text-align: center;
   max-height: 18px;
 }
+.fantasycraft.sheet.actor .footer-information {
+  font-size: 12px;
+  margin-top: -1px;
+}
 .fantasycraft.sheet.actor .footer-text {
   flex: 0 0 18px;
   margin-top: -1px;
@@ -97,18 +83,21 @@
   overflow-y: hidden;
 }
 .fantasycraft.sheet.actor .sheet-body .tab {
-  padding: 0 5px;
   overflow: hidden auto;
 }
-.fantasycraft.sheet.actor ul.ability-scores {
+.fantasycraft.sheet.actor .skill-body {
+  max-height: 350px;
+}
+.fantasycraft.sheet.actor .ability-scores {
   padding: 0px;
   min-height: 260px;
+  border-right: 2px groove;
 }
-.fantasycraft.sheet.actor ul.ability-scores li.ability {
+.fantasycraft.sheet.actor .ability-scores .ability {
   max-width: 240px;
   line-height: 40px;
 }
-.fantasycraft.sheet.actor ul.ability-scores li.ability input {
+.fantasycraft.sheet.actor .ability-scores .ability input {
   border: 3px solid white;
   height: 60px;
   max-width: 60px;
@@ -118,7 +107,7 @@
   font-size: 20px;
   color: white;
 }
-.fantasycraft.sheet.actor ul.ability-scores li.mod input {
+.fantasycraft.sheet.actor .ability-scores .mod input {
   border: 3px solid white;
   height: 40px;
   max-width: 40px;
@@ -134,6 +123,13 @@
 }
 .fantasycraft.sheet.actor table tr td input.skill-input {
   min-width: 28px;
+  text-align: center;
+}
+.fantasycraft.sheet.actor table tr td input.skill-input:disabled {
+  font-size: 16px;
+  border: none;
+  background: none;
+  padding: 0px;
 }
 .fantasycraft.sheet.actor ul.skills {
   -webkit-column-count: 2;
@@ -210,6 +206,7 @@
   background-color: maroon;
   color: white;
   text-align: center;
+  max-height: 20px;
   font-size: 16px;
   margin-bottom: 0px;
   text-transform: uppercase;
@@ -217,11 +214,34 @@
 .fantasycraft.sheet.actor .category-body {
   margin-top: 0px;
   padding: 5px;
-  border-left: 1px groove lightgray;
   min-height: 110px;
+}
+.fantasycraft.sheet.actor .category-body.compact-input h4 {
+  margin: 0px;
+}
+.fantasycraft.sheet.actor .category-body.compact-input input {
+  height: 20px;
+  width: 25px;
+}
+.fantasycraft.sheet.actor .category-body.compact-input select {
+  height: 19px;
 }
 .fantasycraft.sheet.actor .right-border {
   border-right: 1px groove lightgray;
+}
+.fantasycraft.sheet.actor .collapse-button {
+  width: 30px;
+  height: 16px;
+  color: white;
+  background-color: midnightblue;
+  position: relative;
+  left: 30px;
+  line-height: 0px;
+  padding: 0px 0px 0px 3px;
+  top: 180px;
+}
+.fantasycraft.sheet.actor .collapse-button.collapsed {
+  top: 15px;
 }
 .fantasycraft.sheet.actor .collapsed-category {
   padding: 0 18px;
@@ -279,16 +299,426 @@
 }
 .fantasycraft.sheet.actor .ownedItem {
   border: 3px outset lightgray;
-  padding: 2px;
+  padding: 0px 2px;
   border-radius: 2px;
-  background: #efe;
-  height: 26px;
+  background: azure;
+}
+.fantasycraft.sheet.actor .ownedItem.limit-height {
+  height: 28px;
+}
+.fantasycraft.sheet.actor .ownedItem.unarmed {
+  max-height: 45px;
+}
+.fantasycraft.sheet.actor .ownedItem .center-content {
+  align-self: center;
+  text-align: center;
+  display: inline-flex;
+}
+.fantasycraft.sheet.actor .ownedItem .center-content.right-align {
+  justify-content: end;
+}
+.fantasycraft.sheet.actor .npc-footer {
+  color: grey;
+  text-transform: capitalize;
+  font-size: 10.5px;
+}
+.fantasycraft.sheet.actor .defense-shield {
+  font-size: 16px;
+  border: 3px solid;
+  border-radius: 20% 20% 50% 50% / 12% 12% 65% 65%;
+  width: 35px;
+  text-align: center;
+  height: 33px;
+  background: lightsteelblue;
+  padding: 2px;
+  margin: 3px;
+}
+.fantasycraft.sheet.actor .separator-border {
+  border-top-style: double;
+  border-bottom-style: double;
+  margin: 2px 12px 0px 2px;
+}
+.fantasycraft.sheet.actor .groove-border {
+  border-bottom-style: groove;
+  margin: 2px 12px 0px 2px;
+}
+.fantasycraft.sheet.actor .webkit-flex {
+  text-align: -webkit-center;
+}
+.fantasycraft.sheet.actor .flex {
+  display: flex;
+}
+.fantasycraft.sheet.actor .flex.center-flex {
+  justify-content: center;
+}
+.fantasycraft.sheet.actor .top-align {
+  vertical-align: top;
+}
+.fantasycraft.sheet.actor form.style {
+  display: grid;
+  grid: "sidebar header" 5.75rem "sidebar nav" minmax(min-content, max-content) "sidebar content" 1fr/14rem 1fr;
+  font-family: 'Warnock Pro Light', Warnock, monospace;
+  background: url(../fantasycraft/assets/ui/header2.png), antiquewhite;
+  background-repeat: repeat-x, no-repeat;
+  background-size: 39rem 8.45rem, cover;
+  background-position-x: 11rem;
+}
+.fantasycraft.sheet.actor .sidebar {
+  display: flex;
+  flex-direction: column;
+  grid-area: sidebar;
+  margin: 0 0 0 12px;
+  background: url(../fantasycraft/assets/ui/Red-Banner.png), tan;
+  background-position: center;
+  color: white;
+  height: 95%;
+  border: 3px groove;
+  border-image: linear-gradient(to top, rgba(255, 179, 0, 0), #bba008) 1;
+  border-radius: 0 0 30% 30% / 0 0 5% 5%;
+  border-top: none;
+}
+.fantasycraft.sheet.actor .sidebar .small-gap {
+  margin-top: 10px;
+}
+.fantasycraft.sheet.actor .sidebar .gap {
+  margin-top: 20px;
+}
+.fantasycraft.sheet.actor .sidebar .diamond {
+  height: 30px;
+  text-align: center;
+  transform: rotate(45deg);
+  width: 30px;
+  position: fixed;
+  border: 3px groove darkgrey;
+  z-index: 1;
+  margin: 2px 10px;
+}
+.fantasycraft.sheet.actor .sidebar .diamond.wounds {
+  background-color: red;
+}
+.fantasycraft.sheet.actor .sidebar .diamond.vitality {
+  background-color: cornflowerblue;
+  margin: 2px 25px;
+}
+.fantasycraft.sheet.actor .sidebar .diamond .icon {
+  margin: 6px;
+  transform: rotate(-45deg);
+}
+.fantasycraft.sheet.actor .sidebar .empty-bar {
+  width: 125px;
+  background-color: gray;
+  border: 3px groove darkgray;
+  text-align: right;
+  position: relative;
+  height: 24px;
+  margin: 5px 20px;
+  border-radius: 5px;
+}
+.fantasycraft.sheet.actor .sidebar .empty-bar.vitality {
+  left: 20px;
+  top: 5px;
+}
+.fantasycraft.sheet.actor .sidebar .empty-bar span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  margin-right: 4px;
+}
+.fantasycraft.sheet.actor .sidebar .fill-bar {
+  position: relative;
+  height: 18px;
+  border-radius: 5px;
+}
+.fantasycraft.sheet.actor .sidebar .fill-bar.wounds {
+  --wounds-percentage: 100%;
+  background-color: red;
+  width: var(--wounds-percentage);
+}
+.fantasycraft.sheet.actor .sidebar .fill-bar.vitality {
+  --vitality-percentage: 0%;
+  background-color: cornflowerblue;
+  width: var(--vitality-percentage);
+}
+.fantasycraft.sheet.actor .sidebar input[type="number"] {
+  border: none;
+  width: 20px;
+  background: none;
+  color: white;
+  padding: 2px 0 0 0;
+  height: 20px;
+  text-align: center;
+}
+.fantasycraft.sheet.actor .sidebar input[type="number"].right {
+  text-align: right;
+}
+.fantasycraft.sheet.actor .sidebar .defense {
+  height: 65px;
+  width: 65px;
+}
+.fantasycraft.sheet.actor .sidebar .defense.shield {
+  height: 75px;
+  border-radius: 0 0 75% 75% / 0 0 75% 75%;
+  box-shadow: inset 1px 2px 1px #444;
+  background: #669;
+  border: 4px outset darkgrey;
+}
+.fantasycraft.sheet.actor .sidebar .defense.armour {
+  background-image: url(../fantasycraft/assets/icons/breastplate.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.fantasycraft.sheet.actor .sidebar .defense.armour input {
+  margin-top: 25px;
+}
+.fantasycraft.sheet.actor .sidebar .defense input {
+  font-size: 25px;
+  width: 35px;
+  margin-top: 8px;
+}
+.fantasycraft.sheet.actor .sidebar .defense footer {
+  margin-top: 4px;
+  line-height: 10px;
+}
+.fantasycraft.sheet.actor .sidebar .defense footer * {
+  margin-top: 0px;
+  font-size: 11px;
+}
+.fantasycraft.sheet.actor .sidebar .fatigue-shaken {
+  margin: 0 21px;
+  display: inline-flex;
+  gap: 2px;
+}
+.fantasycraft.sheet.actor .sidebar input[type=radio] + .fs-label::before {
+  content: "\f006";
+}
+.fantasycraft.sheet.actor .sidebar .armour-slot {
+  background-color: rgba(0, 0, 0, 0.15);
+  border: 1px solid darkslategray;
+  padding: 1px 4px 0px 4px;
+  color: darkgray;
+  max-height: 20px;
+  width: 180px;
+  display: inline-flex;
+  overflow: hidden;
+}
+.fantasycraft.sheet.actor .sidebar .armour-slot.equipped {
+  color: white;
+}
+.fantasycraft.sheet.actor .sidebar .dice-icon:hover {
+  transform: rotate(360deg);
+  transition: all 1s ease-in-out 0s;
+}
+.fantasycraft.sheet.actor .sidebar .button {
+  color: black;
+}
+.fantasycraft.sheet.actor .sheet-navigation {
+  color: white;
+  font-size: 18px;
+}
+.fantasycraft.sheet.actor .sheet-navigation .item {
+  padding: 8px 6px;
+  margin: 0px;
+}
+.fantasycraft.sheet.actor .sheet-navigation.dark {
+  color: black;
+}
+.fantasycraft.sheet.actor .sheet-header {
+  color: white;
+}
+.fantasycraft.sheet.actor .sheet-header .attributes {
+  flex: 0 0 100%;
+  margin: 0;
+}
+.fantasycraft.sheet.actor .sheet-header .attributes .attribute {
+  height: 70px;
+  border: none;
+  border-left: 2px groove #eeede0;
+  border-radius: 0;
+}
+.fantasycraft.sheet.actor .sheet-header .action-dice {
+  text-align: center;
+}
+.fantasycraft.sheet.actor .sheet-header .action-dice input {
+  color: white;
+  border-bottom: 1px solid darkgray;
+  border-radius: 0px;
+}
+.fantasycraft.sheet.actor .sheet-header .npc-name {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.fantasycraft.sheet.actor .sheet-header .summary {
+  height: 30px;
+  border-bottom: 2px groove #eeede0;
+  font-size: 18px;
+}
+.fantasycraft.sheet.actor .sheet-header .summary input,
+.fantasycraft.sheet.actor .sheet-header .summary span {
+  display: block;
+  height: 24px;
+  line-height: 24px;
+}
+.fantasycraft.sheet.actor .sheet-header > .right {
+  text-align: right;
+}
+.fantasycraft.sheet.actor .sheet-header .action-dice-buttons {
+  border: 3px double cornflowerblue;
+  background-color: black;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  padding-top: 4px;
+  margin: 0px 2px;
+  font-size: x-large;
+  color: lightblue;
+}
+.fantasycraft.sheet.actor .sheet-header .action-dice-buttons:hover {
+  color: whitesmoke;
+}
+.fantasycraft.sheet.actor .sheet-header .saving-throw-buttons {
+  text-transform: capitalize;
+  display: inline-block;
+  border: 1px solid #999;
+  border-radius: 3px;
+  font-size: 14px;
+  background: black;
+  width: 65px;
+  text-align: center;
+  margin: 2px, 4px;
+}
+.fantasycraft.sheet.actor .sheet-header input[number] {
+  text-align: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.35);
+}
+.fantasycraft.sheet.actor .sheet-header.dark {
+  color: black;
+}
+.fantasycraft.sheet.actor .attributes-abilities .ability-scores-v2 {
+  max-height: 100px;
+  text-align: center;
+}
+.fantasycraft.sheet.actor .attributes-abilities .ability-scores-v2 .ability {
+  width: 85px;
+  margin-top: 4px;
+}
+.fantasycraft.sheet.actor .attributes-abilities .ability-scores-v2 .ability input {
+  position: relative;
+  background: #333;
+  color: white;
+  border: 3px double white;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 6px;
+}
+.fantasycraft.sheet.actor .attributes-abilities .ability-scores-v2 .ability input.score {
+  width: 60px;
+  height: 40px;
+}
+.fantasycraft.sheet.actor .attributes-abilities .ability-scores-v2 .ability input.mod {
+  width: 30px;
+}
+.fantasycraft.sheet.actor .attributes-abilities .ability-scores-v2 .ability .ability-name-v2 {
+  margin: 0px;
+}
+.fantasycraft.sheet.actor ul.weapons li .center-dice {
+  align-self: center;
+  text-align: center;
+}
+.fantasycraft.sheet.actor ul.weapons li .center-dice .dice-button {
+  border: 2px groove gray;
+  height: 32px;
+  width: 32px;
+  padding: 7px 2px 0px 0px;
+  display: inline-block;
+  background: whitesmoke;
+  box-shadow: 2px 1px grey;
+  border-radius: 5px;
+}
+.fantasycraft.sheet.actor ul.weapons li .damage-threat {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 15px;
+}
+.fantasycraft.sheet.actor ul.weapons li .not-available {
+  color: gray;
+}
+.fantasycraft.sheet.actor .empty-bar {
+  border: 3px groove darkgray;
+  border-radius: 7px;
+  height: 25px;
+  background: gray;
+}
+.fantasycraft.sheet.actor .empty-bar span {
+  position: absolute;
+}
+.fantasycraft.sheet.actor .empty-bar .right {
+  right: 0;
+}
+.fantasycraft.sheet.actor .weight-bar {
+  --carry-percentage: 0%;
+  background-color: green;
+  height: 18px;
+  width: var(--carry-percentage);
+  border-radius: 6px;
+}
+.fantasycraft.sheet.actor .feat-num {
+  max-width: 25px;
+}
+.fantasycraft.sheet.actor .childFeatures {
+  border-top: none;
+  z-index: 0;
+  margin: -4px 2px 0 20px;
+  padding-top: 10px;
+}
+.fantasycraft.sheet.actor .childFeatures.collapsable {
+  transform: translate(0, 50%) scaleY(0);
+  transition: transform 1s;
+}
+.fantasycraft.sheet.actor .childFeatures span {
+  padding-top: 3px;
+  border-bottom: 1px solid;
+}
+.fantasycraft.sheet.actor .childFeatures .discription {
+  font-size: 11px;
+}
+.fantasycraft.sheet.actor .childFeatures .childFeature {
+  margin-left: 5px;
+  padding-right: 5px;
+  font-style: italic;
+}
+.fantasycraft.sheet.actor .add-item {
+  max-height: 11px;
+  position: relative;
+  text-align: end;
+  top: -16px;
+}
+.fantasycraft.sheet.actor .appearance {
+  border-radius: 0;
+  border-bottom: 1px solid black;
+}
+.fantasycraft.sheet.actor .combat-action div {
+  align-items: center;
+}
+.fantasycraft.sheet.actor .combat-action a {
+  font-weight: bold;
+}
+.fantasycraft.sheet.actor h4 input[type="checkbox"] {
+  margin: 0;
+  height: 16px;
 }
 .flexrow {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
+}
+.flexrow .flex05 {
+  flex: 0.5;
 }
 .flexrow .flex1 {
   flex: 1;
@@ -308,6 +738,12 @@
 .flexrow .flex6 {
   flex: 6;
 }
+.flexrow .flex100 {
+  flex: 100%;
+}
+.flexrow .flexhalf {
+  flex: 50%;
+}
 .flexrow > * {
   flex: 1;
 }
@@ -315,6 +751,9 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+}
+.flexcol.wrap {
+  flex-wrap: wrap;
 }
 .flexcol > * {
   flex: 1;
@@ -344,6 +783,9 @@
   flex-wrap: wrap;
   justify-content: flex-start;
 }
+.fantasycraft .form-group .form-fields .flex05 {
+  flex: 0.5;
+}
 .fantasycraft .form-group .form-fields .flex1 {
   flex: 1;
 }
@@ -362,6 +804,12 @@
 .fantasycraft .form-group .form-fields .flex6 {
   flex: 6;
 }
+.fantasycraft .form-group .form-fields .flex100 {
+  flex: 100%;
+}
+.fantasycraft .form-group .form-fields .flexhalf {
+  flex: 50%;
+}
 .fantasycraft .form-group .form-fields > * {
   flex: 1;
 }
@@ -370,6 +818,9 @@
 }
 .fantasycraft .form-group .form-fields > *:last-child {
   margin-right: 0;
+}
+.fantasycraft .form-group .extended {
+  flex: 5;
 }
 .fantasycraft .form-group.stacked label {
   flex: 0 0 100%;
@@ -388,6 +839,15 @@
   text-align: left;
   outline: none;
   font-size: 15px;
+}
+.fantasycraft .nav .sheet-tabs {
+  margin: 4px 0px;
+}
+.fantasycraft .title-name input {
+  color: white;
+  height: 32px;
+  font-size: 32px;
+  font-family: [object Object],[object Object],[object Object];
 }
 .fantasycraft .content {
   padding: 0 18px;
@@ -425,7 +885,6 @@
   height: 17px;
   width: 17px;
   background-color: lightgray;
-  font-family: signika;
   font-size: 13px;
   font-weight: normal;
   display: inline-block;
@@ -443,20 +902,31 @@
   border: 2px outset tan;
   color: black;
   text-align: center;
-  padding: 5px 0;
+  padding: 5px 5px;
   border-radius: 6px;
   font-family: signika;
   width: fit-content;
+  opacity: 0;
   z-index: 1;
 }
 .fantasycraft .tooltip .tooltiptext.absolute-position {
   position: absolute;
+  margin-top: 15px;
 }
 .fantasycraft .tooltip .tooltiptext.relative-position {
   position: relative;
 }
+.fantasycraft .tooltip .tooltiptext.ad-tooltip {
+  color: black;
+  width: 130px;
+}
+.fantasycraft .tooltip .tooltiptext.ad-tooltip i {
+  color: white;
+}
 .fantasycraft .tooltip:hover .tooltiptext {
   visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s ease 0.75s;
 }
 .sheet {
   /* ----------------------------------------- */
@@ -536,6 +1006,19 @@
 .sheet input[type="number"]:focus {
   border: 1px solid #111;
 }
+.sheet input[type="text"]:disabled,
+.sheet input[type="number"]:disabled {
+  background: none;
+}
+.sheet input[type="text"].underline,
+.sheet input[type="number"].underline {
+  background: none;
+  border: 0;
+  outline: 0;
+  border-bottom: 1px solid black;
+  border-radius: 0%;
+  height: 15px;
+}
 .sheet select {
   flex: 1;
   font-size: 12px;
@@ -553,13 +1036,14 @@
 }
 .sheet .button a {
   display: inline-block;
-  border: 1px solid #b5b3a4;
+  border: 2px groove grey;
   border-radius: 2px;
   margin: 3px;
   padding: 0 2px;
-  width: 90px;
+  min-width: 70px;
   height: 22px;
-  background-color: lightgray;
+  background-color: whitesmoke;
+  box-shadow: 2px 2px grey;
 }
 .sheet .button a:hover {
   background-color: white;
@@ -673,8 +1157,8 @@
 }
 .sheet .sheet-navigation {
   flex: 0 0 30px;
-  margin-top: 0px !important;
-  margin-bottom: 5px;
+  margin: 0px !important;
+  border-top: none !important;
   font-family: "Freebooter", "Palatino Linotype", serif;
   font-size: 20px;
   font-weight: 700;
@@ -685,13 +1169,12 @@
   max-height: 0px;
 }
 .sheet .sheet-navigation .item {
-  height: 30px;
-  line-height: 32px;
+  padding: 2px 12px;
+  line-height: 20px;
   margin: 0 15px;
-  border-bottom: 3px solid beige;
 }
 .sheet .sheet-navigation .item.active {
-  border-bottom: 3px solid crimson;
+  border-bottom: 3px solid darkred;
 }
 .sheet .sheet-body {
   flex: 1;
@@ -801,8 +1284,6 @@ h4.box-title {
   font-family: "Freebooter", "Palatino Linotype", serif;
   font-size: 20px;
   font-weight: 700;
-  font-size: 16px;
-  color: #4b4a44;
   border-bottom: 1px solid #c9c7b8;
   text-align: center;
 }
@@ -830,20 +1311,21 @@ input.narrowField {
   width: 25px;
 }
 input.mediumField {
-  max-width: 50px;
+  max-width: 40px;
 }
 input.wideField {
   width: 100px;
 }
-input.underline {
-  border: 0;
-  outline: 0;
-  border-bottom: 1px solid black;
+button.smaller-button {
+  padding: 0px;
+  width: 28px;
+  height: 28px;
+  margin: -1px;
 }
 button.smallButton {
   padding: 0px;
   width: 100px;
-  height: 30px;
+  height: 27px;
 }
 textarea.text-area {
   min-width: 100%;
@@ -860,7 +1342,7 @@ textarea.text-area {
   text-align: right;
 }
 .center-text {
-  text-align: center;
+  text-align: -webkit-center;
 }
 .capitalize {
   text-transform: capitalize;
@@ -868,6 +1350,51 @@ textarea.text-area {
 .small-font {
   font-size: 9.5px;
   white-space: nowrap;
+}
+.ranks-remaining {
+  border-bottom: 1px solid darkred;
+  height: 20px;
+  border-radius: 0;
+  text-align: center;
+}
+.plus-minus-buttons {
+  height: 20px;
+  width: 20px;
+  border: 1px solid black;
+  background: lightblue;
+  padding-top: 2px;
+  padding-right: 1px;
+}
+.left-indent {
+  padding-left: 25px;
+}
+.drop-zone {
+  border-radius: 5px;
+  min-width: 125px;
+  border: 2px dashed gray;
+  text-align: center;
+  color: gray;
+  background: rgba(0, 0, 0, 0.1);
+}
+.drop-zone:hover {
+  border-color: black;
+  color: black;
+  background: rgba(0, 0, 0, 0.15);
+}
+.drop-zone.extra-space {
+  padding: 5px 25px;
+}
+.drop-zone.center-flexrow {
+  align-self: center;
+  width: 250px;
+}
+.drop-zone.feature-container {
+  min-width: 125px;
+  border-radius: 5px;
+  border: 2px solid black;
+  text-align: center;
+  color: black;
+  background: rgba(0, 0, 0, 0.1);
 }
 .fantasycraft.item .item-form header {
   background: url(../fantasycraft/assets/ui/header2.png) repeat-x local;
@@ -921,8 +1448,12 @@ textarea.text-area {
 }
 .fantasycraft.sheet.item header.path-header {
   position: relative;
-  padding: 5px;
+  padding: 3px;
   max-height: 55px;
+}
+.fantasycraft.sheet.item header.path-header input {
+  height: 50px;
+  font-size: 30px;
 }
 .fantasycraft.sheet.item .sheet-header .attributes {
   flex: 0 0 100%;
@@ -1095,6 +1626,15 @@ textarea.text-area {
 }
 .fantasycraft.sheet.item .top-padding {
   padding-top: 3px;
+}
+.sheet .page-header input {
+  text-align: center;
+  border-bottom: 1px solid darkred;
+  border-radius: 0px;
+  padding: 0px;
+  height: 20px;
+  font-size: 20px;
+  padding-bottom: 2px;
 }
 .body {
   font-family: 'ariel';

@@ -7,7 +7,7 @@ export default class Qualities extends Application   {
         this.actor = actor; 
     }
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "npc-qualites",
             classes: ["fantasycraft"],
             choices: {},

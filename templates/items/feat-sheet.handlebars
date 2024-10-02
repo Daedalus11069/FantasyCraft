@@ -14,11 +14,7 @@
             <ul class="flexrow center-contents">
                 <li class="center-text">
                     <select name="system.featType"> 
-                        {{#select item.system.featType}}
-                            {{#each config.featType as |name type|}}
-                                <option value="{{name}}">{{localize name}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.featType selected=item.system.featType localize=true}}
                     </select>
                     <footer class="footer-text">{{ localize 'fantasycraft.feat' }} {{ localize 'fantasycraft.type' }}</footer>
                 </li>

@@ -1,4 +1,4 @@
-<div class="item ownedItem flexrow item-card" data-item-id="{{id}}" data-item-name="{{name}}">
+<div class="item ownedItem flexrow item-card {{#if system.weight}} {{else}}limit-height{{/if}}" data-item-id="{{id}}" data-item-name="{{name}}">
     <div class="flexrow">
         <span class="flex6" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{name}}{{#if (eq system.xpMultiplier "grades")}} I {{#convertToNumeral system.number}} {{/convertToNumeral}}
             {{else}} 
@@ -6,24 +6,24 @@
             {{/if}}
         </span>
         {{#if system.weight}}
-        <div class="flex3" style="text-align:left">
-            <span>{{localize "fantasycraft.quantity"}}: {{system.quantity}}</span>
-        </div>
-        <div class="flex2" style="text-align:right">
-            <span>{{#compare type "armour" operator="=="}}{{system.weight}} {{/compare}} {{#compare type "armour" operator="!="}}{{system.totalWeight}}{{/compare}} {{localize "fantasycraft.lbs"}}</span>
-        </div>
-        <div class="flex2" style="text-align:right">
+        <div class="flex3 center-text">
             <a class="decreaseItem">
                 <i class="fas fa-minus"></i>
             </a>
+            <span>{{system.quantity}}</span>
             <a class="increaseItem">
                 <i class="fas fa-plus"></i>
             </a>
+        </div>
+        <div class="flex3">
+            <span style="padding-left: 15%;"><i class="fa-regular fa-weight-hanging"></i>{{#compare type "armour" operator="=="}}{{system.weight}} {{/compare}} {{#compare type "armour" operator="!="}}{{system.totalWeight}}{{/compare}}</span>
+        </div>
+        <div class="flex1" style="text-align: right">
             <a class="deleteItem push">
                 <i class="fas fa-trash"></i>
             </a>
         </div>
         {{/if}}
-        {{#if system.featType}}<span class="flex2 featCat"> {{localize system.featType}}  </span>{{/if}}
+        {{#if system.featType}}<span class="flex3 featCat"> {{localize featType}}  </span>{{/if}}
     </div>
 </div>

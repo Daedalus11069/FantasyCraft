@@ -3,9 +3,7 @@
     <label>{{localize "fantasycraft.skillSelection"}}</label>
     <div>
         <select class="change-skill-selection" name="signatureSkills">
-            {{#select system.signatureSkills}}
-                {{selectOptions choices selected=(lookup (lookup skills 0) 'skillName') localize=true}}
-            {{/select}}
+            {{selectOptions choices selected=(lookup (lookup skills 0) 'skillName') localize=true}}
         </select>
         <select class="change-skill-grade" name="signatureSkills" selected="V">
             {{selectOptions grades selected=(lookup (lookup skills 0) 'skillGrade') localize=true}}
@@ -13,19 +11,15 @@
     </div>
     <div>
         <select class="change-skill-selection" name="signatureSkills">
-            {{#select system.signatureSkills}}
-                {{selectOptions choices selected=(lookup (lookup skills 1) 'skillName') localize=true}}
-            {{/select}}
+            {{selectOptions choices selected=(lookup (lookup skills 1) 'skillName') localize=true}}
         </select>
         <select class="change-skill-grade" name="signatureSkills" selected="V">
-            {{selectOptions grades selected=(lookup (lookup skills 1) 'skillGrade')}}
+            {{selectOptions grades selected=(lookup (lookup skills 1) 'skillGrade') localize=true}}
         </select>
     </div>
     <div>
         <select class="change-skill-selection" name="signatureSkills">
-            {{#select system.signatureSkills}}
-                {{selectOptions choices selected=(lookup (lookup skills 2) 'skillName') localize=true}}
-            {{/select}}
+            {{selectOptions choices selected=(lookup (lookup skills 2) 'skillName') localize=true}}
         </select>
         <select class="change-skill-grade" name="signatureSkills" selected="V">
             {{selectOptions grades selected=(lookup (lookup skills 2) 'skillGrade')}}
@@ -33,9 +27,7 @@
     </div>
     <div>
         <select class="change-skill-selection" name="signatureSkills">
-            {{#select system.signatureSkills}}
-                {{selectOptions choices selected=(lookup (lookup skills 3) 'skillName') localize=true}}
-            {{/select}}
+            {{selectOptions choices selected=(lookup (lookup skills 3) 'skillName') localize=true}}
         </select>
         <select class="change-skill-grade" name="signatureSkills" selected="V">
             {{selectOptions grades selected=(lookup (lookup skills 3) 'skillGrade')}}
@@ -43,9 +35,7 @@
     </div>
     <div>
         <select class="change-skill-selection" name="signatureSkills">
-            {{#select system.signatureSkills}}
-                {{selectOptions choices selected=(lookup (lookup skills 4) 'skillName') localize=true}}
-            {{/select}}
+            {{selectOptions choices selected=(lookup (lookup skills 4) 'skillName') localize=true}}
         </select>
         <select class="change-skill-grade" name="signatureSkills" selected="V">
             {{selectOptions grades selected=(lookup (lookup skills 4) 'skillGrade')}}

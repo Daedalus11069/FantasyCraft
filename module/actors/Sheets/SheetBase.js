@@ -12,6 +12,8 @@ import Treasure from "../../apps/npc-apps/treasure-selection.js";
 import TextField from "../../apps/text-field.js";
 import * as Chat from "../../chat.js";
 import ActionDiceInfo from "../../apps/action-dice-info.js";
+import {getClassFeatures, playerLevelUp} from "../../level-up-functions.js";
+import PathBonuses from "../../apps/path-bonuses.js";
 
 export default class ActorSheetFC extends ActorSheet 
 {
@@ -28,7 +30,7 @@ export default class ActorSheetFC extends ActorSheet
     /** @override */
     static get defaultOptions() 
     {
-      return mergeObject(super.defaultOptions, {
+      return foundry.utils.mergeObject(super.defaultOptions, {
         tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}],
       });
     }
@@ -50,7 +52,6 @@ export default class ActorSheetFC extends ActorSheet
         data.data = data.actor.system;
         data.labels = this.actor.labels || {};
         data.filters = this._filters;
-        data.collapsed = this._collapsed;
 
         //Set Labels for 
         this._setLabel(data.data.abilityScores, CONFIG.fantasycraft.abilityScores);   //Ability Modifiers
@@ -142,11 +143,12 @@ export default class ActorSheetFC extends ActorSheet
       html.find('.adoptStance').click(this._adoptStance.bind(this));
       html.find('.spellCard').click(this._spellCard.bind(this));
       html.find('.pathChange').change(this._pathChange.bind(this));
+      html.find('.path-bonus').click(this._getPathBonus.bind(this));
       html.find('.item-create').click(this._createItem.bind(this));
       html.find('.roll-treasure').click(this._rollTreasure.bind(this));
       html.find('.open-gm-screen').click(this.openGMScreen.bind(this));
       html.find('.pin-spell').click(this.pinSpell.bind(this));
-      html.find('.collapse').click(this.collapseCategory.bind(this));
+      html.find('.coin-transfer').click(this._coinTransfer.bind(this));
       
       
       const filterLists = html.find(".filter-list");
@@ -160,7 +162,7 @@ export default class ActorSheetFC extends ActorSheet
       new ContextMenu(html, '.skill-name', this.skillEntry);
       new ContextMenu(html, ".item-card", this.itemContextMenu);
       
-      html.find('.fatigueShaken').change(this._fatigueShaken.bind(this));
+      html.find('.fatigueShaken').click(this._fatigueShaken.bind(this));
 
 
       // Handle default listeners last so system listeners are triggered first
@@ -184,11 +186,15 @@ export default class ActorSheetFC extends ActorSheet
     {
       let act = this.actor;
 
-      if (itemData.type == "spell")
+      
+      if (itemData.type == "spell" || itemData.type == "path")
       {
-        let hasSpell = act.itemTypes.spell.find(c => c.name == itemData.name);
+        if (act.items.filter(i => i.type == "path").length > 3)
+          return;
         
-        if (!!hasSpell)
+        let hasFeature = act.items.find(c => c.name == itemData.name);
+        
+        if (!!hasFeature)
           return;
       }
 
@@ -299,6 +305,7 @@ export default class ActorSheetFC extends ActorSheet
 
       let actorInfo = {
         "name": newActor.name,
+        "xp": newActor.system.xp,
         "id": newActor._id
       }
       let actorDest = this.actor.system[actorType];
@@ -475,7 +482,7 @@ export default class ActorSheetFC extends ActorSheet
       const clss = this.actor.itemTypes.class.find(c => c.name == itemID.dataset.itemName);
 
       //find the features of the level being removed and either delete them or reduce their number by 1
-      let features = await ActorSheetFC.getClassFeatures({className: clss.name, level: clss.system.levels, priorLevel: clss.system.levels - 1, actor: this.actor});
+      let features = await getClassFeatures({className: clss.name, level: clss.system.levels, priorLevel: clss.system.levels - 1, actor: this.actor});
       this._reduceOrRemoveFeatures(features);
 
       if (clss.system.levels == 1)
@@ -496,7 +503,7 @@ export default class ActorSheetFC extends ActorSheet
 
       for (let i = cls.system.levels; i >= 0; i--)
       {
-        features = await ActorSheetFC.getClassFeatures({className: cls.name, level: i, priorLevel: i - 1});
+        features = await getClassFeatures({className: cls.name, level: i, priorLevel: i - 1});
         for (let j = features.length - 1; j >= 0; j--)
         {
             let feature = this.actor.itemTypes.feature.find(f => f.name == features[j].name)
@@ -537,75 +544,9 @@ export default class ActorSheetFC extends ActorSheet
     async _onLevelUp(event)
     {
       event.preventDefault();
-
-      let element = event.currentTarget;
-      const act = this.actor;
-      const clss = act.itemTypes.class.find(c => c.name == element.closest(".item").dataset.itemName);
-      let priorLevel = clss.system.levels;
-      let maxLevel = 20;
-      let classCap;
-
-      //if the class is a base class max level is 20, if it is exper it's 10 and if it's a master class the max level is 5
-      if (clss.system.classType != "base")
-        classCap = (clss.system.classType == "expert") ? 10 : 5;
-
-      const next = (act.system.careerLevel.value == maxLevel || clss.system.levels == classCap) ? 0 : priorLevel + 1;
       
-      if (next > priorLevel)
-      {
-        clss.system.levels = next;
-        await clss.update({"system.levels": next});
-        let features = await ActorSheetFC.getClassFeatures({className: clss.name, level: clss.system.levels, priorLevel: priorLevel, actor: act});
-        let clsConfig = await ActorSheetFC.findAndReturnConfigInfo({name: clss.name, type: CONFIG.fantasycraft.classFeatures})
-
-        if (clss.system.eSlot.hasESlot) 
-        {
-          if (next == clss.system.eSlot.firstLevel || ((next - clss.system.eSlot.firstLevel > 0) && (next - clss.system.eSlot.firstLevel) % clss.system.eSlot.frequency == 0))
-          {
-            //Expert classes do not get their eSlot on their final level
-            if (clss.system.classType == "base" || (clss.system.classType == "expert" && next != 10))
-            {
-              let eSlotFeature = await this.getESlotFeature(clsConfig);
-              let newFeature = await Promise.all(eSlotFeature.map(id => fromUuid(id)));
-              features = features.concat(newFeature);
-            }
-          }
-        }
-
-        features = this.checkFeaturesForDoubles(features);
-
-        for (let i = 0; i < features.length; i++)
-        {
-          await act.createEmbeddedDocuments("Item", [features[i]]);
-        }
-
-        //if any of the owned class features has a number of 0, set it to 1;
-        act.items.filter(item => item.type == "feature" && item.system.number == 0).forEach(item => item.system.number = 1);
-      }
+      playerLevelUp(event, this.actor);
     }
-
-    async getESlotFeature(clsConfig)
-    {
-      const content = await renderTemplate("systems/fantasycraft/templates/chat/dropdownDialog.hbs", {
-        options: clsConfig.eSlot
-        });
-        
-      return new Promise(resolve => {
-        new Dialog({
-            title: "Feature Select",
-            content,
-            buttons: {
-            accept: {
-                label: game.i18n.localize("fantasycraft.accept"),
-                callback: html => resolve(this.actor.returnSelection(html))
-            }
-            },
-            close: () => resolve(null)
-        }).render(true);
-      });
-    }
-
-
     async _onIncreaseQuantity(event)
     {
       event.preventDefault();
@@ -657,29 +598,31 @@ export default class ActorSheetFC extends ActorSheet
         this._onItemDelete(event);
     }
 
-    async _updateGradedCondition(conditionName, element)
+    async _updateGradedCondition(conditionGrade, element)
     {
-      conditionName = (conditionName.includes("shaken")) ? element.name.slice(7, -8) : element.name.slice(7, -9);
+      let conditionName = conditionGrade.substring(0, conditionGrade.length - 1);
       const act = this.actor.system[conditionName];
       let updateString;
-      let conditionGrade = parseInt(element.name.slice(-1));
-      let direction = (!element.checked) ? 1 : -1;
+      let direction = (act[conditionGrade]) ? 1 : -1;
+      let gradeNum = parseInt(conditionGrade.slice(-1));
 
       //dynamically adjusted for loop
-      for (let i = conditionGrade; (direction == 1) ? i <= 4 : i > 0; i += direction)
+
+      for (let i = (direction == 1) ? 4 : 0 ; (direction == 1) ? i >= gradeNum : i <= gradeNum; i += -direction)
       {
         updateString = "system." + conditionName;
+        if (Object.keys(act)[i-1] == undefined) continue;
         updateString += "." + Object.keys(act)[i-1];
 
-        (element.checked == false) ? await this.actor.update({[updateString]: false}) : await this.actor.update({[updateString]: true});
+        (act[conditionGrade] == true) ? await this.actor.update({[updateString]: false}) : await this.actor.update({[updateString]: true});
       }
 
       if (!element.checked)
-        conditionGrade--;
+        gradeNum--;
 
       updateString = "system.conditions.";
       updateString += (element.name.includes("fatigue")) ? "fatigued" : conditionName;
-      await this.actor.update({[updateString]: conditionGrade});
+      await this.actor.update({[updateString]: gradeNum});
 
       if (conditionName == "fatigue") conditionName = "fatigued";
 
@@ -692,7 +635,7 @@ export default class ActorSheetFC extends ActorSheet
     async _fatigueShaken(event)
     {
       let element = event.currentTarget;
-      this._updateGradedCondition(element.name, element);
+      this._updateGradedCondition(element.dataset.grade, element);
     }
 
     async _readyWeapon(event)
@@ -807,109 +750,6 @@ export default class ActorSheetFC extends ActorSheet
       await anst.update({[ancestryChange]: value});
     }
 
-    // Get the configuration of features which may be added
-    static async findAndReturnConfigInfo({name="", type})
-    {
-      return type[name.toLowerCase()];
-    }
-
-    // Function to return the features for a given origin (ancestry, talent or specialty)
-    static async getOriginFeatures({originName=""})
-    {
-      const ognConfig = await ActorSheetFC.findAndReturnConfigInfo({name: originName, type: CONFIG.fantasycraft.originFeatures})
-      if (!ognConfig) return [];
-
-      let ids = [];
-      for ( let [l, f] of Object.entries(ognConfig.features || {}) ) {
-        ids = ids.concat(f);
-      }
-
-      // Load item data for all identified features
-      const features = await Promise.all(ids.map(id => fromUuid(id)));
-
-      return features;
-    }
-
-    // Function to return the features for a given origin (ancestry, talent or specialty)
-    static async getSkillOrStats({originName="", searchObject="skill"})
-    {
-      const ognConfig = await ActorSheetFC.findAndReturnConfigInfo({name: originName, type: CONFIG.fantasycraft.originFeatures})
-      if (!ognConfig) return [];
-
-      //Determine where in the feature block to pull information from
-      if (searchObject == "attribute") searchObject = ognConfig.attributes;
-      else if (searchObject == "skill") searchObject = ognConfig.practiced;
-      else if (searchObject == "paired") searchObject = ognConfig.paired;
-      else if (searchObject == "feat") searchObject = ognConfig.expert;
-
-      let ids = [];
-      for ( let [l, f] of Object.entries(searchObject || {}) ) {
-        ids = ids.concat(f);
-      }
-
-      return ids;
-    }    
-
-    // Function to return the features for a given class level
-    static async getClassFeatures({className="", level=1, priorLevel=0, actor=null}={}) 
-    {
-      const clsConfig = await ActorSheetFC.findAndReturnConfigInfo({name: className, type: CONFIG.fantasycraft.classFeatures})
-      if (!clsConfig) return [];
-  
-      // Acquire class features
-      let ids = [];
-      for ( let [l, f] of Object.entries(clsConfig.features || {}) ) {
-        l = parseInt(l);
-
-        if ( (l <= level) && (l > priorLevel) ) ids = ids.concat(f);
-      }
-
-      // Load item data for all identified features
-      const features = await Promise.all(ids.map(id => fromUuid(id)));
-  
-      return features;
-    }
-
-    checkFeaturesForDoubles(featureList)
-    {
-      // Check to see if the character already has something with the same name
-      // if they do add 1 to the number owned of that feature and remove that id from the array
-      for (let i = featureList.length - 1; i >= 0; i--)
-      {
-        let feature = this.actor.itemTypes.feature.find(c => c.name == featureList[i].name)
-        if (feature)
-        {
-          //increase the number on the feature on the actor
-          this._increaseItemCount(feature);
-                    
-          //remove the feature from the featureList.
-          featureList.splice(i, 1);
-        }
-      }
-
-        return featureList;
-    }
-
-    async _increaseItemCount(item)
-    {
-      await item.update({"system.number": item.system.number + 1});
-    }
-
-    // Function to return the feat for a given specialty
-    static async getFeat({specialtyName="",}={}) 
-    {
-      const spcConfig = await ActorSheetFC.findAndReturnConfigInfo({name: specialtyName, type: CONFIG.fantasycraft.originFeatures})
-      if (!spcConfig) return [];
-  
-      // Acquire the feat from the specialty
-      let id = spcConfig.feat;
-
-      // Load item data for all identified features
-      const features = await Promise.resolve(fromUuid(id));
-  
-      return features;
-    }
-
     ////Dice functions////
     _rollSave(event) 
     {
@@ -925,8 +765,9 @@ export default class ActorSheetFC extends ActorSheet
     _rollSkill(event)
     {
       event.preventDefault();
-      const skill = event.currentTarget.closest("[data-skill]").dataset.skill;
-      return this.actor.rollSkillCheck(skill, {event: event});
+      const element = event.currentTarget.closest("[data-skill]")
+      const skill = element.dataset.skill;
+      return this.actor.rollSkillCheck(skill);
     }
   
     _rollAD(event) 
@@ -937,6 +778,7 @@ export default class ActorSheetFC extends ActorSheet
       let rollFormula = "d" + diceSize + "x" + explodesOn;
       let grace = act.items.find(item => item.name == game.i18n.localize("fantasycraft.graceUnderPressure"))?._id
       let fortune = act.items.find(item => item.name == game.i18n.localize("fantasycraft.fortuneFavorsTheBold"))?._id
+      let pathOfFortune = act.items.find(item => item.name == game.i18n.localize("fantasycraft.pathOfFortune"));
 
       //Check to see if the character has any flags that modify AD, if so add to the roll formula
       if (fortune != undefined)
@@ -944,11 +786,15 @@ export default class ActorSheetFC extends ActorSheet
       
       if (grace != undefined)
           rollFormula += " + @graceUnderPressure";
+        
+      if (pathOfFortune != undefined && pathOfFortune.system.pathStep >= 3)
+        rollFormula += " + @pathOfFortune";
   
       let rollData = 
       {
           fortuneFavors: (act.items.get(fortune)) ? 2 : 0,
-          graceUnderPressure:  (act.items.get(grace)) ? 2 : 0
+          graceUnderPressure: (act.items.get(grace)) ? 2 : 0,
+          pathOfFortune: (pathOfFortune != undefined && pathOfFortune.system.pathStep >= 3) ? pathOfFortune.system.pathStep : 0
       };
   
       let messageData = 
@@ -992,10 +838,103 @@ export default class ActorSheetFC extends ActorSheet
       event.preventDefault();
       const newValue = event.currentTarget.value;
       const pathID = event.currentTarget.dataset.itemId;
-
+      
       const path = this.actor.items.get(pathID);
+      
+      if (path.system.pathStep > parseInt(newValue))
+        this._getPathFeature(path, parseInt(newValue), "down");
+      else 
+        this._getPathFeature(path, parseInt(newValue), "up");
+
 
       path.update({"system.pathStep": parseInt(newValue)}) 
+    }
+
+    async _getPathBonus(event)
+    {
+      const element = event.currentTarget;
+      const item = element.closest(".item");
+      const pathName = item.dataset.itemName;
+      const pathID = item.dataset.itemId;
+      const path = this.actor.items.get(pathID);
+      const options = { name: pathName, title: "Path Bonuses", choices: {path: path}};
+
+      new PathBonuses(this.actor, options).render(true);
+    }
+    
+
+    /**
+     * Get the features from a path step and grant spells, feats, tricks, class features, and other qualities to the actor
+     * @param {*} path Divine Path
+     * @param {int} newStep The new step of the path
+     * @param feature1 First feature of a path step
+     * @param feature2 Second feature of a path step
+     */
+    async _getPathFeature(path, newStep, direction)
+    {
+      const act = this.actor;
+      let x = (direction == "up") ? newStep : path.system.pathStep;
+      let y = (direction == "up") ? path.system.pathStep + 1 : newStep + 1;
+
+      for (let i = y; i <= x; i++)
+      {
+        let feature1 = path.system["step" + i].effect1;
+        let feature2 = path.system["step" + i].effect2;
+        //damageImmunity: "fantasycraft.damageImmunity", 
+        
+        if (feature1 == "attributeBonus" || feature2 == "attributeBonus")
+        {
+          let value = (feature1 == "attributeBonus") ? path.system["step" + i].value1 : path.system["step" + i].value2;
+          if (direction == "down") value = -value;
+          let attribute = (feature1 == "attributeBonus") ? path.system["step" + i].target1 : path.system["step" + i].target2;
+          
+          let updateString = "system.abilityScores." + attribute + ".value";
+          let newValue = act.system.abilityScores[attribute].value + value;
+          act.update({[updateString]: newValue});
+        }
+        
+        //TODO: convertDamage
+        if (feature1 == "convertDamage" || feature2 == "convertDamage")
+        {
+          if (direction == "up")
+            this.actor.setFlag("fantasycraft", "convertDamage");
+          else
+            this.actor.unsetFlag("fantasycraft", "convertDamage");
+        }
+        
+        if (feature1 == "spell" || feature1 == "feat" || feature1 == "classAbility" || feature1 == "npcOrOriginFeature" || feature1 == "trick" )
+        {
+          if (direction == "up")
+          {
+            feature1 = await fromUuid(path.system["step" + i].target1);
+            let double = act.items.find(item => item.name == feature1.name)
+            if (double == undefined)
+              await act.createEmbeddedDocuments("Item", [feature1]);
+          }
+          else 
+          {
+            feature1 = act.items. find(item => item.name == path.system["step" + i].value1);
+            await act.deleteEmbeddedDocuments("Item", [feature1._id]);
+          }
+        }
+
+        if (feature2 == "spell" || feature2 == "feat" || feature2 == "classAbility" || feature2 == "npcOrOriginFeature" || feature2 == "trick" )
+        {
+          if (direction == "up")
+          {
+            feature2 = await fromUuid(path.system["step" + i].target2);
+            if (!act.items.find(item => item.name == feature2.name))
+              await act.createEmbeddedDocuments("Item", [feature2]);
+          }
+          else 
+          {
+            feature2 = act.items.find(item => item.name == path.system["step" + i].value2);
+            if (feature2 == undefined)
+              continue;
+            await act.deleteEmbeddedDocuments("Item", [feature2._id]);
+          }
+        }
+      }
     }
 
     _rollTreasure(event)
@@ -1047,6 +986,24 @@ export default class ActorSheetFC extends ActorSheet
       return this.actor.createEmbeddedDocuments("Item", [itemData]);
       }
 
+      _coinTransfer(event)
+      {
+        event.preventDefault();
+
+        let actor = this.actor;
+
+        //convert coin in hand to stake
+        if (actor.system.coin.inHand > 0)
+        {
+            let newValue = Math.ceil(actor.system.coin.inHand * (actor.system.lifeStyle.savedEarned / 100));
+            let updateString = "system.coin.inHand"
+            actor.update({[updateString]: 0})
+
+            updateString = "system.coin.stake"
+            actor.update({[updateString]: actor.system.coin.stake + newValue});
+        }
+      }
+
     _filterItem(event)
     {
       event.preventDefault();
@@ -1092,7 +1049,7 @@ export default class ActorSheetFC extends ActorSheet
       const li = event.currentTarget.closest(".item");
       const item = this.actor.items.get(li.dataset.itemId);
       const skipInputs = event?.shiftKey;
-      this.actor.rollNaturalAttack(item, skipInputs)
+      this.actor.rollUnarmedAttack(item, skipInputs)
     }
 
     _rollUnarmed(event)
@@ -1115,8 +1072,9 @@ export default class ActorSheetFC extends ActorSheet
     }
 
     _rollCompetence(event)
-    {      
-      this.actor.rollCompetence();
+    {
+      const element = event.currentTarget;
+      this.actor.rollCompetence(element.dataset.rollInfo);
     }
 
     async openGMScreen(event)
@@ -1142,17 +1100,5 @@ export default class ActorSheetFC extends ActorSheet
       item.update({'system.pinned': true});
     }
     
-    _collapsed = new Set();
-
-    async collapseCategory(event)
-    {
-      const li = event.target
-
-			if (!li.parentNode.open) {
-				this._collapsed.add(li.dataset.collapseId);
-			} else {
-				this._collapsed.delete(li.dataset.collapseId);
-			};
-    }
 
 }

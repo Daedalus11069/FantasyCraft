@@ -1,1 +1,8 @@
-2023/02/26-18:58:10.730 a0f4 Delete type=3 #1
+2024/10/01-22:40:49.525 edec Recovering log #141
+2024/10/01-22:40:49.796 edec Delete type=0 #141
+2024/10/01-22:40:49.796 edec Delete type=3 #139
+2024/10/01-22:41:23.567 9e84 Level-0 table #146: started
+2024/10/01-22:41:23.568 9e84 Level-0 table #146: 0 bytes OK
+2024/10/01-22:41:23.634 9e84 Delete type=0 #144
+2024/10/01-22:41:23.733 9e84 Manual compaction at level-0 from '!folders!rUFEDaQGilv8lC0f' @ 72057594037927935 : 1 .. '!items!zRNb87V6afXLVDHL' @ 0 : 0; will stop at (end)
+2024/10/01-22:41:23.733 9e84 Manual compaction at level-1 from '!folders!rUFEDaQGilv8lC0f' @ 72057594037927935 : 1 .. '!items!zRNb87V6afXLVDHL' @ 0 : 0; will stop at (end)

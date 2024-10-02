@@ -7,8 +7,13 @@
             </h3>
             <div class="category-body" style="text-align: center;">
                 <h4 class="box-title">{{localize "fantasycraft.coinInHand"}}</h4>
-                <input type="number" name="system.coin.inHand" value="{{actor.system.coin.inHand}}" />
-                
+                <div class="flexrow">
+                    <input class="flex4" type="number" name="system.coin.inHand" value="{{actor.system.coin.inHand}}" />
+                    <div class="tooltip remove-background">
+                        <a class="coin-transfer"><i class="fa-regular fa-coins fa-xl "></i></a>
+                        <div class="tooltiptext absolute-position">{{localize "fantasycraft.Dialog.moveCoin"}}</div>
+                    </div>
+                </div>
                 <h4 class="box-title">{{localize "fantasycraft.stake"}}</h4>
                 <input type="number" name="system.coin.stake" value="{{actor.system.coin.stake}}" />
             </div>
@@ -19,34 +24,36 @@
             </h3>
             <div class="category-body">
                 <div class="flexrow">
-                    <h4 class="box-title flex3">{{localize "fantasycraft.lifeStyle"}}</h4>
-                    <input class="flex1" type="number" class="medBox" name="system.lifeStyle.value" value="{{actor.system.lifeStyle.value}}" disabled=true />
+                    <h4 class="flex3">{{localize "fantasycraft.lifeStyle"}}</h4>
+                    <span>{{actor.system.lifeStyle.value}}</span>
                 </div>
                 <div class="flexrow">
                     {{!Panache}}
-                    <div class="flexcol flex3">
-                        <span>
+                    <div class="flexcol">
+                        <span class="flexrow">
                             <label class="box-title">{{localize "fantasycraft.panache"}}</label>
                             <input type="number" class="smallBox" name="system.lifeStyle.panache" value="{{actor.system.lifeStyle.panache}}" placeholder="0" />
                         </span>
-                        <span>
+                        <span class="flexrow">
                             <label>{{localize "fantasycraft.income"}}</label>
                             <input type="number" class="smallBox" name="system.lifeStyle.income" value="{{actor.system.lifeStyle.income}}" disabled=true />
                         </span>
-                        <span>
+                        <span class="flexrow">
                             <label>{{localize "fantasycraft.appearance"}}</label>
                             <input type="number" class="smallBox" name="system.lifeStyle.appearance" value="{{actor.system.lifeStyle.appearance}}" disabled=true />
+                        </span>
+                        <span class="flexrow">
                             <label>{{localize "fantasycraft.misc"}}</label>
                             <input type="number" class="smallBox" name="system.lifeStyle.appearanceMisc" value="{{actor.system.lifeStyle.appearanceMisc}}" />
                         </span>
                     </div>
                     {{!Prudence}}
-                    <div class="flexcol flex2">
-                        <span>
+                    <div class="flexcol">
+                        <span class="flexrow">
                             <label class="box-title">{{localize "fantasycraft.prudence"}}</label>
                             <input type="number" class="smallBox" name="system.lifeStyle.prudence" value="{{actor.system.lifeStyle.prudence}}" placeholder="0" />
                         </span>
-                        <span>
+                        <span class="flexrow">
                             <label>{{localize "fantasycraft.savedEarned"}}</label>
                             <input type="number" class="smallBox" name="system.lifeStyle.savedEarned" value="{{actor.system.lifeStyle.savedEarned}}" disabled=true />
                         </span>
@@ -63,34 +70,34 @@
                 <div class="flexrow">
                     <label>{{localize "fantasycraft.totalRenown"}}:</label> 
                     <input type="number" class="smallBox" name="system.reputationAndRenown.renownTotal" value="{{actor.system.reputationAndRenown.renownTotal}}" disabled=true/>
-                    <label>{{localize "fantasycraft.reputation"}}:</label> 
+                    <label>{{localize "fantasycraft.rep"}}:</label> 
                     <input type="number" class="smallBox" name="system.reputationAndRenown.reputation" value="{{actor.system.reputationAndRenown.reputation}}" />
                     <label>{{localize "fantasycraft.legend"}}:</label> 
                     <input type="number" class="smallBox" name="system.reputationAndRenown.legend" value="{{actor.system.reputationAndRenown.legend}}" />
                 </div>
                 {{!Heroic Renown}}
                 <div class="flexrow">
-                    <label>{{localize "fantasycraft.heroicRenown"}}</label>
+                    <label>{{localize "fantasycraft.heroic"}}</label>
                     <input type="number" class="smallBox" name="system.reputationAndRenown.heroicRenown" min=0 max=10 value="{{actor.system.reputationAndRenown.heroicRenown}}" />
-                    <span>{{actor.system.reputationAndRenown.heroicTitle}}</span>
+                    <span class="flex2">{{actor.system.reputationAndRenown.heroicTitle}}</span>
                 </div>
                 {{!Military Renown}}
                 <div class="flexrow">
-                    <label>{{localize "fantasycraft.militaryRenown"}}</label>
+                    <label>{{localize "fantasycraft.military"}}</label>
                     <input type="number" class="smallBox" name="system.reputationAndRenown.militaryRenown" min=0 max=10 value="{{actor.system.reputationAndRenown.militaryRenown}}" />
-                    <span>{{actor.system.reputationAndRenown.militaryTitle}}</span>
+                    <span class="flex2">{{actor.system.reputationAndRenown.militaryTitle}}</span>
                 </div>
                 {{!Noble Renown}}
                 <div class="flexrow">
-                    <label>{{localize "fantasycraft.nobleRenown"}}</label>
+                    <label>{{localize "fantasycraft.noble"}}</label>
                     <input type="number" class="smallBox" name="system.reputationAndRenown.nobleRenown" min=0 max=10 value="{{actor.system.reputationAndRenown.nobleRenown}}" />
-                    <span>{{actor.system.reputationAndRenown.nobleTitle}}</span>
+                    <span class="flex2">{{actor.system.reputationAndRenown.nobleTitle}}</span>
                 </div>
                 {{!Custom Renown}}
                 <div class="flexrow">
                     <input type="text" name="system.reputationAndRenown.customRenownTitle" value="{{actor.system.reputationAndRenown.customRenownTitle}}" style="height: 17px" placeholder="Custom Renown" />
                     <input type="number" class="smallBox" name="system.reputationAndRenown.customRenown" min=0 max=10 value="{{actor.system.reputationAndRenown.customRenown}}" placeholder="0"/>
-                    <input type="text" name="system.reputationAndRenown.customTitle" value="{{actor.system.reputationAndRenown.customTitle}}" style="height: 17px" placeholder="Custom Title"/>
+                    <input class="flex2" type="text" name="system.reputationAndRenown.customTitle" value="{{actor.system.reputationAndRenown.customTitle}}" style="height: 17px" placeholder="Custom Title"/>
                 </div>
             </div>
         </li>
@@ -99,14 +106,29 @@
         {{!Equipment}}
         <li class="flex3">
             <h3 class="category-label flexrow">
-                <span style="flex: 0 0 88%">{{localize "fantasycraft.gear"}}</span>
+                <span style="flex: 0 0 100%">{{localize "fantasycraft.gear"}}</span>
                 
-                <a class="item-create" data-type="general" style="max-height: 11px; flex: 0 0 12%">
+                <a class="item-create add-item" data-type="general">
                     <i class="fas fa-plus"></i> {{localize "fantasycraft.addItem"}}
                 </a>
             </h3>
             <div class="category-body right-border" style="padding: 0px">
                 <section class="two-column item-list">
+                {{!-- Item headers --}}
+                <h4 class="flexrow">
+                    <span class="flex6">{{localize "fantasycraft.itemName"}}</span>
+                    <span class="flex3 center-text"> {{localize "fantasycraft.qty"}}</span>
+                    <span class="flex3"> {{localize "fantasycraft.weight"}}</span>
+                    <span style="visibility: hidden">.</span>
+                </h4>
+                <h4 class="flexrow">
+                    <span class="flex6">{{localize "fantasycraft.itemName"}}</span>
+                    <span class="flex3 center-text"> {{localize "fantasycraft.qty"}}</span>
+                    <span class="flex3"> {{localize "fantasycraft.weight"}}</span>
+                    <span style="visibility: hidden">.</span>
+                </h4>
+
+                {{!-- Item list --}}
                 {{#each ownedItems as |item id|}}
                     {{> "systems/fantasycraft/templates/partials/item-part.hbs" item id=_id inSheet=true}}
                 {{/each}}
@@ -114,7 +136,7 @@
             </div>
             
             <h3 class="category-label flexrow">
-                <span style="flex: 0 0 88%">{{localize "fantasycraft.weapons"}}</span>
+                <span>{{localize "fantasycraft.weapons"}}</span>
             </h3>
             <div class="category-body right-border" style="padding: 0px; min-height: 50px">
                 <section class="two-column item-list">
@@ -125,7 +147,7 @@
             </div>
             
             <h3 class="category-label flexrow">
-                <span style="flex: 0 0 88%">{{localize "fantasycraft.armour"}}</span>
+                <span>{{localize "fantasycraft.armour"}}</span>
             </h3>
             <div class="category-body right-border" style="padding: 0px; min-height: 50px">
                 <section class="two-column item-list">
@@ -134,11 +156,13 @@
                 {{/each}}
                 </section>
             </div>
-            <div class="flexrow right-border" style="align-contents: center; justify-contents: space-between; border-left: 1px groove lightgray">
-                <div>{{localize "fantasycraft.Dialog.totalWeight"}}: 
-                    <span style="{{#compare encumbered "encumbered" operator="=="}} color: darkorange{{/compare}}{{#compare encumbered "overencumbered" operator="=="}} color: red{{/compare}}">{{actor.system.totalWeight}} {{localize "fantasycraft.lbs"}}</span>
+            <div class="flexrow right-border">
+                <div class="empty-bar">
+                    <span><b>{{localize "fantasycraft.Dialog.totalWeight"}}</b> {{actor.system.totalWeight}} {{localize "fantasycraft.lbs"}}</span>
+                    <span class="right"><b>{{localize "fantasycraft.carryingCapacity"}}</b> <i>{{localize "fantasycraft.light"}}:</i> {{actor.system.carryingCapacity.light}} <i>{{localize "fantasycraft.heavy"}}: </i>{{actor.system.carryingCapacity.heavy}}  <i>{{localize "fantasycraft.overloaded"}}: </i>{{actor.system.carryingCapacity.overloaded}}+</span>
+                    <div class="weight-bar" style="--carry-percentage: {{ cPercs }}%; {{#compare encumbered "encumbered" operator="=="}} background-color: darkorange;{{/compare}}{{#compare encumbered "overencumbered" operator="=="}} background-color: red;{{/compare}}"></div>
                 </div>
-                <div><b>{{localize "fantasycraft.carryingCapacity"}}</b> <i>{{localize "fantasycraft.light"}}:</i> {{actor.system.carryingCapacity.light}} <i>{{localize "fantasycraft.heavy"}}: </i>{{actor.system.carryingCapacity.heavy}}  <i>{{localize "fantasycraft.overloaded"}}: </i>{{actor.system.carryingCapacity.overloaded}}+</div>
+                
             </div>
         </li>
     </ul>
@@ -149,22 +173,40 @@
             </h3>
             <div class="category-body">
                 {{#each magicItems as |item id|}}
-                    {{item.name}} {{localize "fantasycraft.level"}}: {{item.system.itemLevel}}
-                    {{localize "fantasycraft.reputation"}} {{item.system.totalReputation}}
-                    <br> 
-                    {{localize "fantasycraft.essences"}}: 
-                    {{#each essences as |essence id|}} 
-                        {{~#compare essence.ability "none" operator="!="}}
-                            {{~#unless @first~}}, {{/unless}}
-                            {{localize (lookup ../../config.magicItemEssences essence.ability)~}} 
-                            {{#compare essence.target "" operator="!="}}
-                                ({{~essence.target~}})
+                <div class="item ownedItem item-card">
+                    <span> <b>{{item.name}} </b></span>
+                    <span class="footer-text" style="float: right">
+                        {{localize "fantasycraft.level"}}: {{item.system.itemLevel}}
+                        {{localize "fantasycraft.reputation"}} {{item.system.totalReputation}}
+                    </span> 
+                    <br>
+                    {{#if system.essences.essenceNumber}}
+                        <b>{{localize "fantasycraft.essences"}}: </b>
+                        {{#each essences as |essence id|}} 
+                            {{~#compare essence.ability "none" operator="!="}}
+                                {{~#unless @first~}}, {{/unless}}
+                                {{localize (lookup ../../config.magicItemEssences essence.ability)~}} 
+                                {{#compare essence.target "" operator="!="}}
+                                    ({{~essence.target~}})
+                                {{/compare~}}
                             {{/compare~}}
-                        {{/compare~}}
-                    {{/each}}
+                        {{/each}}
                     <br>
-                    {{localize "fantasycraft.charms"}}: {{#each charms as |charm id|}} {{~#compare charm.ability "none" operator="!="}}{{~#unless @first~}}, {{/unless}}{{localize (lookup ../../config.magicItemCharms charm.ability)~}}{{#compare charm.target "none" operator="!="~}}({{charm.target}}){{/compare~}}{{/compare~}} {{/each}}
-                    <br>
+                    {{/if}}
+                    {{#if system.charms.charmNumber}}
+                        <span>
+                        <b>{{localize "fantasycraft.charms"}}: </b>
+                        {{#each charms as |charm id|}} 
+                            {{~#compare charm.ability "none" operator="!="}}
+                                {{~#unless @first~}}, {{/unless}}{{localize (lookup ../../config.magicItemCharms charm.ability)~}}
+                                    {{#compare charm.target "none" operator="!="~}}
+                                        <span class="capitalize">({{charm.target}})</span>
+                                    {{/compare~}}
+                            {{/compare~}} 
+                        {{/each}}
+                        </span>
+                    {{/if}}
+                </div>
                 {{/each}}
             </div>
         </li>
@@ -172,46 +214,63 @@
             <h3 class="category-label">
                 {{localize "fantasycraft.mounts"}}
             </h3>
-            <div class="category-body flexcol right-border">
+            <div class="category-body right-border">
                 {{#each mounts as |mount id|}}
-                <div class="actor" data-actor-id="{{mount._id}}">
-                    <span>{{mount.name}} 
-                        ({{#if mount.system.movement.ground.value}}{{localize "fantasycraft.spd"}} {{mount.system.movement.ground.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.ground"}} 
-                        ({{localize "fantasycraft.run"}} {{mount.system.movement.ground.run}} {{localize "fantasycraft.ft"}}){{/if}}
-                        {{#if mount.system.movement.fly.value}}{{localize "fantasycraft.spd"}} {{mount.system.movement.fly.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.fly"}} 
-                        ({{localize "fantasycraft.run"}} {{mount.system.movement.fly.run}} {{localize "fantasycraft.ft"}}){{/if}}
-                        {{#if mount.system.movement.swim.value}}{{localize "fantasycraft.spd"}} {{mount.system.movement.swim.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.swim"}} 
-                        ({{localize "fantasycraft.run"}} {{mount.system.movement.swim.run}} {{localize "fantasycraft.ft"}}){{/if}}
-                        {{#if mount.system.movement.burrow.value}}{{localize "fantasycraft.spd"}} {{mount.system.movement.burrow.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.burrow"}} 
-                        ({{localize "fantasycraft.run"}} {{mount.system.movement.burrow.run}} {{localize "fantasycraft.ft"}}){{/if}}
-                        {{localize "fantasycraft.travel"}} {{mount.system.movement.ground.travel}}; {{localize "fantasycraft.szDef"}} {{mount.system.size}}/{{mount.system.traits.defense.grade}})
+                <div class="actor flexrow item ownedItem item-card" data-actor-id="{{mount._id}}">
+                    <span class="flex2 center-content">
+                        {{mount.name}} 
                     </span>
-                    <a class="openActor">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a class="removeMount">
-                        <i class="fas fa-trash"></i>
-                    </a>
+                    <span class="flex3 flexcol small-font">
+                        <span>
+                            {{#if mount.system.movement.ground.value}}{{localize "fantasycraft.spd"}} {{mount.system.movement.ground.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.ground"}} 
+                                ({{localize "fantasycraft.run"}} {{mount.system.movement.ground.run}} {{localize "fantasycraft.ft"}}){{/if}}
+                            {{#if mount.system.movement.fly.value}}{{localize "fantasycraft.spd"}} {{mount.system.movement.fly.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.fly"}} 
+                                ({{localize "fantasycraft.run"}} {{mount.system.movement.fly.run}} {{localize "fantasycraft.ft"}}){{/if}}
+                            {{#if mount.system.movement.swim.value}}{{localize "fantasycraft.spd"}} {{mount.system.movement.swim.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.swim"}} 
+                                ({{localize "fantasycraft.run"}} {{mount.system.movement.swim.run}} {{localize "fantasycraft.ft"}}){{/if}}
+                            {{#if mount.system.movement.burrow.value}}{{localize "fantasycraft.spd"}} {{mount.system.movement.burrow.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.burrow"}} 
+                                ({{localize "fantasycraft.run"}} {{mount.system.movement.burrow.run}} {{localize "fantasycraft.ft"}}){{/if}}
+                        </span>
+                        <span>
+                            {{localize "fantasycraft.travel"}} {{mount.system.movement.ground.travel}}; {{localize "fantasycraft.szDef"}} {{mount.system.size}}/{{mount.system.traits.defense.grade}}
+                        </span>
+                    </span>
+                        
+                    <span class="center-content right-align">
+                        <a class="openActor">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="removeMount">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </span>
                 </div>
                 {{/each}}
             </div>
         </li>
     </ul>
-    <ul class="flexrow attributes" style="border-bottom: 1px groove grey">
+    <ul class="flexrow attributes">
         <li class="flex2">
             <h3 class="category-label">
                 {{localize "fantasycraft.contacts"}}
             </h3>
-            <div class="category-body flexcol" style="min-height: 166px">
+            <div class="category-body flexcol">
                 {{#each actor.system.contacts as |contact id|}}
-                <div class="actor" data-actor-id="{{contact.id}}">
-                    {{contact.name}}
-                    <a class="openActor">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a class="removeContact">
-                        <i class="fas fa-trash"></i>
-                    </a>
+                <div class="actor flexrow" data-actor-id="{{contact.id}}">
+                    <div class="flex3">
+                        {{contact.name}}
+                    </div>
+                    <div>
+                        {{localize "fantasycraft.xp"}}: {{contact.xp}}
+                    </div>
+                    <div>
+                        <a class="openActor">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="removeContact">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
                 </div>
                 {{/each}}
             </div>
@@ -221,33 +280,45 @@
                 {{localize "fantasycraft.holdings"}}
             </h3>
             <div class="category-body flexcol right-border">
-                <div>
-                    <label>{{localize "fantasycraft.holdingName"}}</label>
-                    <input class="wideField underline" type="text" name="system.holding1.name" value="{{actor.system.holding1.name}}">
-                    <label>{{localize "fantasycraft.scale"}}</label>
-                    <input class="narrowField underline" type="number" name="system.holding1.scale" value="{{actor.system.holding1.scale}}">
-                    <label>{{localize "fantasycraft.guests"}}</label>
-                    <input class="mediumField underline" type="number" name="system.holding1.guests" value="{{actor.system.holding1.guests}}">
-                    <label>{{localize "fantasycraft.max"}}</label>
-                    <input class="mediumField underline" type="number" name="system.holding1.max" value="{{actor.system.holding1.max}}">
-                    <div class="flexrow"><label flex="flex1">{{localize "fantasycraft.upgrades"}}</label>
-                    <input class="flex6 underline" type="text" name="system.holding1.upgrades" value="{{actor.system.holding1.upgrades}}"></div>
-                    <label>{{localize "fantasycraft.repCost"}}</label>
-                    <input class="mediumField underline" type="number" name="system.holding1.repCost" value="{{actor.system.holding1.repCost}}">
+                <div class="flexcol">
+                    <div class="flexrow">
+                        <label class="flex2">{{localize "fantasycraft.holdingName"}}</label>
+                        <input class="flex5 underline" type="text" name="system.holding1.name" value="{{actor.system.holding1.name}}">
+                    </div>
+                    <div>
+                        <label>{{localize "fantasycraft.scale"}}</label>
+                        <input class="narrowField underline" type="number" name="system.holding1.scale" value="{{actor.system.holding1.scale}}">
+                        <label>{{localize "fantasycraft.guests"}}</label>
+                        <input class="mediumField underline" type="number" name="system.holding1.guests" value="{{actor.system.holding1.guests}}">
+                        <label>{{localize "fantasycraft.max"}}</label>
+                        <input class="mediumField underline" type="number" name="system.holding1.max" value="{{actor.system.holding1.max}}">
+                        <label>{{localize "fantasycraft.repCost"}}</label>
+                        <input class="mediumField underline" type="number" name="system.holding1.repCost" value="{{actor.system.holding1.repCost}}">
+                    </div>
+                    <div>
+                        <div class="flexrow"><label flex="flex1">{{localize "fantasycraft.upgrades"}}</label>
+                        <input class="flex6 underline" type="text" name="system.holding1.upgrades" value="{{actor.system.holding1.upgrades}}"></div>
+                    </div>
                 </div>
-                <div>
-                    <label>{{localize "fantasycraft.holdingName"}}</label>
-                    <input class="wideField underline" type="text" name="system.holding2.name" value="{{actor.system.holding2.name}}">
-                    <label>{{localize "fantasycraft.scale"}}</label>
-                    <input class="narrowField underline" type="number" name="system.holding2.scale" value="{{actor.system.holding2.scale}}">
-                    <label>{{localize "fantasycraft.guests"}}</label>
-                    <input class="mediumField underline" type="number" name="system.holding2.guests" value="{{actor.system.holding2.guests}}">
-                    <label>{{localize "fantasycraft.max"}}</label>
-                    <input class="mediumField underline" type="number" name="system.holding2.max" value="{{actor.system.holding2.max}}">
-                    <div class="flexrow"><label flex="flex1">{{localize "fantasycraft.upgrades"}}</label>
-                    <input class="flex6 underline" type="text" name="system.holding2.upgrades" value="{{actor.system.holding2.upgrades}}"></div>
-                    <label>{{localize "fantasycraft.repCost"}}</label>
-                    <input class="mediumField underline" type="number" name="system.holding2.repCost" value="{{actor.system.holding2.repCost}}">
+                <div class="flexcol">
+                    <div class="flexrow">
+                        <label class="flex2">{{localize "fantasycraft.holdingName"}}</label>
+                        <input class="flex5 underline" type="text" name="system.holding2.name" value="{{actor.system.holding2.name}}">
+                    </div>
+                    <div>
+                        <label>{{localize "fantasycraft.scale"}}</label>
+                        <input class="narrowField underline" type="number" name="system.holding2.scale" value="{{actor.system.holding2.scale}}">
+                        <label>{{localize "fantasycraft.guests"}}</label>
+                        <input class="mediumField underline" type="number" name="system.holding2.guests" value="{{actor.system.holding2.guests}}">
+                        <label>{{localize "fantasycraft.max"}}</label>
+                        <input class="mediumField underline" type="number" name="system.holding2.max" value="{{actor.system.holding2.max}}">
+                        <label>{{localize "fantasycraft.repCost"}}</label>
+                        <input class="mediumField underline" type="number" name="system.holding2.repCost" value="{{actor.system.holding2.repCost}}">
+                    </div>
+                    <div>
+                        <div class="flexrow"><label flex="flex1">{{localize "fantasycraft.upgrades"}}</label>
+                        <input class="flex6 underline" type="text" name="system.holding2.upgrades" value="{{actor.system.holding2.upgrades}}"></div>
+                    </div>
                 </div>
             </div>
         </li>

@@ -38,12 +38,8 @@
                     <div>
                         <label>{{ localize "fantasycraft.effect"}} 1</label>
                         <select name="system.effect1.effect">
-                            {{#select item.system.effect1.effect}}
                             <option value="none"> </option>
-                            {{#each config.stanceEffects as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.stanceEffects selected=item.system.effect1.effect localize=true}}
                         </select>
 
                         {{#if effect1IsNumeric}}
@@ -53,31 +49,20 @@
                         {{!attributes to adjust}}
                         {{#compare item.system.effect1.effect "increaseAttributes" operator="=="}}
                         <select name="system.effect1.bonusTarget">
-                            {{#select item.system.effect1.bonusTarget}}
-                            {{#each config.abilityScores as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.abilityScores selected=item.system.effect1.bonusTarget localize=true}}
                         </select>
                         {{/compare}}
 
                         {{#if (eq item.system.effect1.effect "damageResistance")}}
                         <select name="system.effect1.bonusTarget">
-                            {{#select item.system.effect1.bonusTarget}}
-                            {{#each config.damageTypes as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.damageTypes selected=item.system.effect1.bonusTarget localize=true}}
                         </select>
                         {{/if}}
 
                         {{! target skill}}
                         {{#compare item.system.effect1.effect "skillBonus" operator="=="}}
                         <select name="system.effect1.bonusTarget">
-                            {{#select item.system.effect1.bonusTarget}}
-                            {{#each config.skills as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
+                            {{selectOptions config.skills selected=item.system.effect1.bonusTarget localize=true}}
                             <option value="anticipate"> {{localize "fantasycraft.anticipate"}}</option>
                             <option value="bullRush"> {{localize "fantasycraft.bullRush"}}</option>
                             <option value="disarm"> {{localize "fantasycraft.disarm"}}</option>
@@ -89,18 +74,13 @@
                             <option value="trip"> {{localize "fantasycraft.trip"}}</option>
                             <option value="threaten"> {{localize "fantasycraft.threaten"}}</option>
                             <option value="tire"> {{localize "fantasycraft.tire"}}</option>
-                            {{/select}}
                         </select>
                         {{/compare}}
 
                         {{! condition immunity}}
                         {{#compare item.system.effect1.effect "conditionImmunity" operator="=="}}
                         <select name="system.effect1.bonusTarget">
-                            {{#select item.system.effect1.bonusTarget}}
-                            {{#each config.negativeConditions as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.negativeConditions selected=item.system.effect1.bonusTarget localize=true}}
                         </select>
                         {{/compare}}
                     </div>
@@ -110,12 +90,7 @@
                     <div>
                         <label>{{ localize "fantasycraft.effect"}} 2</label>
                         <select name="system.effect2.effect">
-                            {{#select item.system.effect2.effect}}
-                            <option value="none"> </option>
-                            {{#each config.stanceEffects as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.stanceEffects selected=item.system.effect2.effect localize=true}}
                         </select>
 
                         {{#if effect2IsNumeric}}
@@ -125,31 +100,20 @@
                         {{!attributes to adjust}}
                         {{#compare item.system.effect2.effect "increaseAttributes" operator="=="}}
                         <select name="system.effect2.bonusTarget">
-                            {{#select item.system.effect2.bonusTarget}}
-                            {{#each config.abilityScores as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.abilityScores selected=item.system.effect2.bonusTarget localize=true}}
                         </select>
                         {{/compare}}
 
                         {{#if (eq item.system.effect2.effect "damageResistance")}}
                         <select name="system.effect1.bonusTarget">
-                            {{#select item.system.effect2.bonusTarget}}
-                            {{#each config.damageTypes as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.damageTypes selected=item.system.effect2.bonusTarget localize=true}}
                         </select>
                         {{/if}}
 
                         {{! target skill}}
                         {{#compare item.system.effect2.effect "skillBonus" operator="=="}}
                         <select name="system.effect2.bonusTarget">
-                            {{#select item.system.effect2.bonusTarget}}
-                            {{#each config.skills as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
+                            {{selectOptions config.skills selected=item.system.effect2.bonusTarget localize=true}}
                             <option value="anticipate"> {{localize "fantasycraft.anticipate"}}</option>
                             <option value="bullRush"> {{localize "fantasycraft.bullRush"}}</option>
                             <option value="disarm"> {{localize "fantasycraft.disarm"}}</option>
@@ -161,18 +125,13 @@
                             <option value="trip"> {{localize "fantasycraft.trip"}}</option>
                             <option value="threaten"> {{localize "fantasycraft.threaten"}}</option>
                             <option value="tire"> {{localize "fantasycraft.tire"}}</option>
-                            {{/select}}
                         </select>
                         {{/compare}}
 
                         {{! condition immunity}}
                         {{#compare item.system.effect2.effect "conditionImmunity" operator="=="}}
                         <select name="system.effect2.bonusTarget">
-                            {{#select item.system.effect2.bonusTarget}}
-                            {{#each config.negativeConditions as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.negativeConditions selected=item.system.effect2.bonusTarget localize=true}}
                         </select>
                         {{/compare}}
                     </div>

@@ -108,11 +108,7 @@
 
                 {{#compare system.xpMultiplier "grades" operator="=="}}
                 <select style="height: 18px;" class="changeGrade" name="grades.value">
-                    {{#select quality.system.grades.value}}
-                        {{#each quality.system.grades.gradeArray as |grade index|}}
-                        <option value="{{grade}}">{{grade}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions quality.system.grades.gradeArray selected=quality.system.grades.value localize=true}}
                 </select>
                 {{/compare}}
 

@@ -6,7 +6,7 @@ export default class MoveSelector extends Application   {
         this.actor = actor; 
     }
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "move-selector",
             classes: ["fantasycraft"],
             choices: {},
@@ -21,7 +21,7 @@ export default class MoveSelector extends Application   {
     getData() 
     {
         // Populate choices
-        const choices = duplicate(this.moveOptions.choices);
+        const choices =foundry.utils.duplicate(this.moveOptions.choices);
         for ( let [k, v] of Object.entries(choices) ) {
             choices[k] = {
             label: v,

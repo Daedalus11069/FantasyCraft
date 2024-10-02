@@ -8,7 +8,7 @@ export default class FeatureSelector extends FormApplication {
       static get defaultOptions() {
         let _resolvePromise = null;
 
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
         id: "feature-selector",
         classes: ["fantasycraft"],
         title: "Choose Class Ability",
@@ -51,7 +51,7 @@ export default class FeatureSelector extends FormApplication {
       attr.value = attr.value || [];
   
       // Populate choices
-      const choices = duplicate(this.options.choices);
+      const choices =foundry.utils.duplicate(this.options.choices);
       for ( let [k, v] of Object.entries(choices) ) {
         choices[v] = {
           label: k,

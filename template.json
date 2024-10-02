@@ -11,32 +11,32 @@
 				{
 					"strength": 
 					{
-						"value":10,
+						"value":8,
 						"adjustment": 0
 					},
 					"dexterity":
 					{
-						"value":10,
+						"value":8,
 						"adjustment": 0
 					},
 					"constitution": 
 					{
-						"value":10,
+						"value":8,
 						"adjustment": 0
 					},
 					"intelligence":
 					{
-						"value":10,
+						"value":8,
 						"adjustment": 0
 					},
 					"wisdom":
 					{
-						"value":10,
+						"value":8,
 						"adjustment": 0
 					},
 					"charisma":
 					{
-						"value":10,
+						"value":8,
 						"adjustment": 0
 					}
 				},
@@ -666,7 +666,40 @@
 				"situational": 0
 			},
 			"martialArts": false,
-			"mastersArt": false
+			"mastersArt": false,
+			"subplots": 
+			{
+				"plot1":
+				{
+					"value": "",
+					"completed": false
+				},
+				"plot2":
+				{
+					"value": "",
+					"completed": false
+				},
+				"plot3":
+				{
+					"value": "",
+					"completed": false
+				},
+				"plot4":
+				{
+					"value": "",
+					"completed": false
+				},
+				"plot5":
+				{
+					"value": "",
+					"completed": false
+				},
+				"plot6":
+				{
+					"value": "",
+					"completed": false
+				}
+			}
 		},
 		"npc":
 		{
@@ -762,6 +795,12 @@
 			},
 			"details": 
 			{
+				"age": "",
+				"height": "",
+				"wight": "",
+				"hair": "",
+				"eyes": "",
+				"pronouns": "",
 				"appearance": "",
 				"traits": "",
 				"background": "",
@@ -981,7 +1020,7 @@
 			"damageType": "lethal",
 			"attackGrade": "I",
 			"quantity": 1,
-			"threat": 20,
+			"threatRange": 20,
 			"damage":
 			{
 				"value": "1d4",
@@ -1261,6 +1300,8 @@
 			"pathStep": 0,
 			"step1":
 			{
+				"damageType1": "",
+				"damageType2": "",
 				"effect1": "",
 				"value1": "",
 				"effect2": "",
@@ -1270,10 +1311,14 @@
 				"spell1Reset": "per scene",
 				"spell2Reset": "per scene",
 				"target1": "",
-				"target2": ""
+				"target2": "",
+				"special": "",
+				"specialTarget": ""
 			},
 			"step2":
 			{
+				"damageType1": "",
+				"damageType2": "",
 				"effect1": "",
 				"value1": "",
 				"effect2": "",
@@ -1287,6 +1332,8 @@
 			},
 			"step3":
 			{
+				"damageType1": "",
+				"damageType2": "",
 				"effect1": "",
 				"value1": "",
 				"effect2": "",
@@ -1300,6 +1347,8 @@
 			},
 			"step4":
 			{
+				"damageType1": "",
+				"damageType2": "",
 				"effect1": "",
 				"value1": "",
 				"effect2": "",
@@ -1313,6 +1362,8 @@
 			},
 			"step5":
 			{
+				"damageType1": "",
+				"damageType2": "",
 				"effect1": "",
 				"value1": "",
 				"effect2": "",

@@ -6,7 +6,7 @@ export default class AttackDialog extends FormApplication   {
         this.actor = actor; 
     }
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "npc-attack",
             classes: ["fantasycraft"],
             choices: {},

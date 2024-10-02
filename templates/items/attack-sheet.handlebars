@@ -21,7 +21,7 @@
                 {{localize "fantasycraft.threatRange"}} {{#if attack.system.threat}}{{attack.system.threat}}{{else}}-{{/if}}) 
                 {{#each item.system.naturalUpgrades as |name id|}}
                     {{#if name}} 
-                        <span>{{localize id}}{{#compare name true operator="!="}}: {{name}}{{/compare}}{{#unless @last}}, {{/unless}}</span>
+                        <span>{{localize (lookup ../config.attackPropertiesList id)}}{{#compare name true operator="!="}}: {{name}}{{/compare}}{{#unless @last}}, {{/unless}}</span>
                     {{/if}}
                 {{/each}}
             {{/compare}}

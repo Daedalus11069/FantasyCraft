@@ -21,11 +21,7 @@
                     <div class="item-customization-section">
                         <div style="display: inline-flex">
                             <select class="minimal-flex" name="system.size.size"> 
-                            {{#select item.system.size.size}}
-                                {{#each config.sizeLetter as |v k|}}
-                                    <option value="{{k}}">{{localize v}}</option>
-                                {{/each}}
-                            {{/select}}
+                                {{selectOptions config.sizeLetter seleceted=item.system.size.size localize=true}}
                             </select>
 
                             <select class="minimal-flex" name="system.size.hands"> 
@@ -56,11 +52,7 @@
                 <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.era'}} </span>
                     <select class="minimal-flex" name="system.era">
-                        {{#select item.system.era}}
-                            {{#each config.eras as |name type|}}
-                                <option value="{{type}}">{{localize type}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.eras selected=item.system.era localize=true}}
                     </select>
                 </div>
                 <div class="flexrow">
@@ -76,22 +68,14 @@
                 <div class="flexrow">
                     <span class="categorylabel">  {{ localize 'fantasycraft.weaponProficiency'}} </span>
                     <select class="minimal-flex" name="system.weaponProficiency">
-                        {{#select item.system.weaponProficiency}}
-                            {{#each config.attackProficiency as |v k|}}
-                            <option value="{{k}}">{{localize v}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.attackProficiency selected=item.system.weaponProficiency localize=true}}
                     </select>
                 </div>
             </div>
         </div>
         <span class="categorylabel">  {{ localize 'fantasycraft.damageType'}} </span>
         <select class="minimal-flex" name="system.damageType">
-            {{#select item.system.damageType}}
-                {{#each config.damageTypes as |v k|}}
-                <option value="{{k}}">{{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.damageTypes selected=item.system.damageType localize=true}}
         </select>
 
         <select class="minimal-flex" name="system.attackType">
@@ -111,12 +95,8 @@
             </div>
             <div>
                 <select name="system.upgrades.customization">
-                    {{#select item.system.upgrades.customization}}
-                        <option value="none">{{localize "fantasycraft.noEntry"}}</option>
-                        {{#each config.customizations as |name type|}}
-                            <option value="{{name}}">{{localize type}}</option>
-                        {{/each}}
-                    {{/select}}
+                    <option value="none">{{localize "fantasycraft.noEntry"}}</option>
+                    {{selectOptions config.customizations selected=item.system.upgrades.customization localize=true}}
                 </select>
             </div>
         </div>
@@ -126,12 +106,8 @@
             </div>
             <div>
                 <select name="system.upgrades.materials">
-                    {{#select item.system.upgrades.materials}}
-                        <option value="none">{{localize "fantasycraft.noEntry"}}</option>
-                        {{#each config.materials as |name type|}}
-                            <option value="{{name}}">{{localize type}}</option>
-                        {{/each}}
-                    {{/select}}
+                    <option value="none">{{localize "fantasycraft.noEntry"}}</option>
+                    {{selectOptions config.materials selected=item.system.upgrades.materials localize=true}}
                 </select>
             </div>
         </div>

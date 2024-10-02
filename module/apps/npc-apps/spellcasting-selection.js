@@ -8,7 +8,7 @@ export default class Spellcasting extends Application   {
         this.actor = actor; 
     }
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "npc-spellcasting",
             classes: ["fantasycraft"],
             choices: {},

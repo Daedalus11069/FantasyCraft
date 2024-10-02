@@ -6,7 +6,7 @@ export default class TraitSelector extends FormApplication {
 
     /** @override */
       static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
         id: "trait-selector",
         classes: ["fantasycraft"],
         title: "Trait Selection",
@@ -36,11 +36,11 @@ export default class TraitSelector extends FormApplication {
     getData() {
   
       // Get current values
-      let attr = getProperty(this.object, this.attribute) || {};
+      let attr = foundry.utils.getProperty(this.object, this.attribute) || {};
       attr.value = attr.value || [];
   
       // Populate choices
-      const choices = duplicate(this.options.choices);
+      const choices = foundry.utils.duplicate(this.options.choices);
       for ( let [k, v] of Object.entries(choices) ) {
         choices[k] = {
           label: v,

@@ -13,6 +13,7 @@ import FCCharacterSheet from "./module/actors/Sheets/FCCharacterSheet.js";
 import FCNPCSheet from "./module/actors/Sheets/FCNPCSheet.js";
 import TraitSelector from "./module/apps/trait-selector.js";
 import Resistances from "./module/apps/resistances.js";
+import SelectFromCompendium from "./module/apps/select-item-from-compendium.js";
 import LevelUp from "./module/apps/level-up.js";
 
 import * as Chat from "./module/chat.js";
@@ -43,6 +44,7 @@ Hooks.once("init", function () {
 		{
 			TraitSelector,
 			Resistances,
+			SelectFromCompendium,
 			LevelUp
 		},
 		config: fantasycraft,
@@ -171,10 +173,6 @@ Hooks.once("init", function () {
 			return options.inverse(this);
 	});
 
-	Handlebars.registerHelper('collapse', function (collapsed, collapseId) {
-		return collapsed.has(collapseId) ? "open" : null;
-	});
-
 });
 
 
@@ -192,8 +190,8 @@ Hooks.once ('setup', function(){
 	{
 		effects.push({
 			id: effect.id,
-			label: effect.label,
-			icon: effect.icon,
+			label: effect.name,
+			icon: effect.img,
 		})
 	}
 
@@ -202,7 +200,7 @@ Hooks.once ('setup', function(){
 
 Hooks.once ('init', function()
 {
-	CONFIG.Item.compendiumIndexFields = ["system.classType", "system.baseAttack", "system.fortitude", "system.reflex", "system.will", "system.defense", "system.initiative", "system.lifeStyle", "system.legend"];
+	CONFIG.Item.compendiumIndexFields = ["system.classType", "system.vitality", "system.baseAttack", "system.fortitude", "system.reflex", "system.will", "system.defense", "system.initiative", "system.lifeStyle", "system.legend", "system.spellPoints"];
 });
 
 Hooks.once("ready", async () => 

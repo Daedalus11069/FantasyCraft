@@ -1,1 +1,8 @@
-2023/02/26-18:58:11.103 bffc Delete type=3 #1
+2024/10/01-22:40:49.801 e694 Recovering log #136
+2024/10/01-22:40:50.137 e694 Delete type=0 #136
+2024/10/01-22:40:50.137 e694 Delete type=3 #134
+2024/10/01-22:41:23.402 9e84 Level-0 table #142: started
+2024/10/01-22:41:23.402 9e84 Level-0 table #142: 0 bytes OK
+2024/10/01-22:41:23.566 9e84 Delete type=0 #140
+2024/10/01-22:41:23.733 9e84 Manual compaction at level-0 from '!items!05PsT0lAself6Ze5' @ 72057594037927935 : 1 .. '!items!zo3Dxljv1zMWQzO7' @ 0 : 0; will stop at (end)
+2024/10/01-22:41:23.733 9e84 Manual compaction at level-1 from '!items!05PsT0lAself6Ze5' @ 72057594037927935 : 1 .. '!items!zo3Dxljv1zMWQzO7' @ 0 : 0; will stop at (end)

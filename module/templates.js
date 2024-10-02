@@ -21,6 +21,7 @@ export const preloadHandlebarsTemplates = async function() {
       "systems/fantasycraft/templates/items/parts/spell-customization.handlebars",
       "systems/fantasycraft/templates/items/parts/durationInformation.handlebars",
       "systems/fantasycraft/templates/items/parts/path-step-part.hbs",
+      "systems/fantasycraft/templates/items/parts/path-step-customization-part.hbs",
 
       "systems/fantasycraft/templates/partials/item-part.hbs",
       "systems/fantasycraft/templates/partials/weapon-part.hbs",
@@ -28,8 +29,11 @@ export const preloadHandlebarsTemplates = async function() {
       "systems/fantasycraft/templates/partials/spell-table.hbs",
       "systems/fantasycraft/templates/partials/spell-part.hbs",
       "systems/fantasycraft/templates/partials/skill-table-part.hbs",
-      "systems/fantasycraft/templates/partials/class-choice.hbs",
-      "systems/fantasycraft/templates/chat/weapon-chat.hbs",
+      "systems/fantasycraft/templates/partials/app-path-part-information.hbs",
+      "systems/fantasycraft/templates/partials/level-up-partials/class-choice.hbs",
+      "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs",
+      "systems/fantasycraft/templates/partials/level-up-partials/summary-page.hbs",
+      "systems/fantasycraft/templates/chat/attack-chat.hbs",
       "systems/fantasycraft/templates/chat/natural-chat.hbs",
       "systems/fantasycraft/templates/chat/damage-chat.hbs",
       "systems/fantasycraft/templates/chat/spell-chat.hbs"

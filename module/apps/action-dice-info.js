@@ -6,7 +6,7 @@
 
    /** @override */
      static get defaultOptions() {
-       return mergeObject(super.defaultOptions, {
+       return foundry.utils.mergeObject(super.defaultOptions, {
          id: "action-dice-info",
        classes: ["fantasycraft"],
        title: "Action Dice Information",

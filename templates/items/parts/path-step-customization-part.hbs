@@ -1,0 +1,166 @@
+<div class="form-group item-customization-section">
+    <label><b>{{localize "fantasycraft.effect"}} 1</b></label>
+    <div class="extended">
+        <select class="clear-data" name="system.{{stepName}}.effect1" data-step="{{stepName}}" data-effect="1">
+            {{selectOptions config.pathEffects selected=step.effect1 localize=true}}
+        </select>
+
+        {{#compare step.effect1 "other" operator="!="}}
+
+            {{!-- If the effect is Class feature, NPC or Origin Feature, Feat, or Spell --}}
+            {{!-- Create a drag/drop area --}}
+            {{#if step.drop1}}
+                <span class="{{#if step.value1}} feature-container {{/if}} drop-zone" data-type="{{step.effect1}}" data-step="{{stepName}}" data-effect="1"> {{#if step.value1}} {{step.value1}}{{else}}Drop {{localize (lookup config.pathEffects step.effect1)}} Here.{{/if}}</span>
+                {{#if (eq step.effect1 "twoZeroLevels")}}
+                <span class="{{#if step.special}} feature-container {{/if}} drop-zone special" data-type="{{step.effect1}}" data-step="{{stepName}}" data-effect="1"> {{#if step.special}} {{step.special}}{{else}}Drop {{localize (lookup config.pathEffects step.special)}} Here.{{/if}}</span>
+                {{/if}}
+            {{/if}}
+
+            {{!-- Spell Information --}}
+            {{#if (eq step.effect1 "spell")}}
+                <select name="system.{{stepName}}.spell1Reset">
+                    {{selectOptions config.pathTimeResets selected=step.spell1Reset localize=true}}
+                </select>        
+            {{/if}}
+            
+            {{!-- Damage Immunity --}}
+            {{#if (eq step.effect1 "damageImmunity")}}
+                <select name="system.{{stepName}}.damageType1">
+                    {{selectOptions config.damageTypes selected=step.damageType1 localize=true}}
+                </select>
+            {{/if}}
+
+            {{!-- Resistances --}}
+            {{#if (or (eq step.effect1 "resistances") (eq step.effect1 "convertDamage"))}}
+                <select name="system.{{stepName}}.damageType1">
+                    {{#if (eq step.effect1 "resistances")}}
+                    {{selectOptions config.attackProficiency selected=step.damageType1 localize=true}}
+                    {{/if}}
+                    {{selectOptions config.damageTypes selected=step.damageType1 localize=true}}
+                    <option value="other">{{localize "fantasycraft.other"}}</option>
+                </select>
+            {{/if}}
+
+            {{!-- Skill Bonus --}}
+            {{#if (eq step.effect1 "skillBonus")}} 
+            <select name="system.{{stepName}}.target1">
+                {{selectOptions config.skills selected=step.target1 localize=true}}
+                <option value="knowledge">{{localize "fantasycraft.knowledge"}}</option>
+            </select>
+            {{/if}}
+
+            {{!-- Save Bonus --}}
+            {{#if (eq step.effect1 "saveBonus")}} 
+            <select name="system.{{stepName}}.target1">                            
+                {{selectOptions config.savingThrow selected=step.target1 localize=true}}
+                <option value="circumstantial">{{localize "fantasycraft.circumstantial"}}</option>
+            </select>
+            {{/if}}
+
+            {{!-- Attribute Bonus --}}
+            {{#if (eq step.effect1 "attributeBonus")}} 
+            <select name="system.{{stepName}}.target1">                            
+                {{selectOptions config.abilityScores selected=step.target1 localize=true}}
+            </select>
+            {{/if}}
+
+            {{!-- Input and Scaling Options --}}
+            {{#if step.requiresValueInput1}}
+                <input type="number" name="system.{{stepName}}.value1" value="{{step.value1}}">
+
+                <select name="system.{{stepName}}.effect1Scaling">
+                    {{selectOptions config.pathScaling selected=step.effect1Scaling localize=true}}
+                </select>
+            {{/if}}
+            
+        {{/compare}}
+
+        {{#if (eq step.effect1 "other")}}
+            <input type="text" name="system.{{stepName}}.value1" value="{{step.value1}}">
+        {{/if}}
+    </div>
+</div>
+{{!-- Effect 2 --}}
+<div class="form-group item-customization-section">
+    <label><b>{{localize "fantasycraft.effect"}} 2</b></label>
+    <div class="extended">
+        <select name="system.{{stepName}}.effect2">
+            <option value=""></option>
+            {{selectOptions config.pathEffects selected=step.effect2 localize=true}}
+        </select>
+
+        {{#compare step.effect2 "other" operator="!="}}
+
+            {{!-- If the effect is Class feature, NPC or Origin Feature, Feat, or Spell --}}
+            {{!-- Create a drag/drop area --}}
+            {{#if step.drop2}}
+                <span class="{{#if step.value2}} feature-container{{/if}} drop-zone" data-type="{{step.effect2}}" data-step="{{stepName}}" data-effect="2"> {{#if step.value2}} {{step.value2}}{{else}}Drop {{localize (lookup config.pathEffects step.effect2)}} Here.{{/if}}</span>
+                {{#if (eq step.effect2 "twoZeroLevels")}}
+                <span class="{{#if step.special}} feature-container {{/if}} drop-zone special" data-type="{{step.effect2}}" data-step="{{stepName}}" data-effect="1"> {{#if step.special}} {{step.special}}{{else}}And Here.{{/if}}</span>
+                {{/if}}
+            {{/if}}
+
+            {{!-- Spell Information --}}
+            {{#if (eq step.effect2 "spell")}}
+                <select name="system.{{stepName}}.spell2Reset">
+                    {{selectOptions config.pathTimeResets selected=step.spell2Reset localize=true}}
+                </select>        
+            {{/if}}
+            
+            {{!-- Damage Immunity --}}
+            {{#if (eq step.effect2 "damageImmunity")}}
+                <select name="system.{{stepName}}.damageType2">
+                    {{selectOptions config.damageTypes selected=step.damageType2 localize=true}}
+                </select>
+            {{/if}}
+
+            {{!-- Resistances --}}
+            {{#if (eq step.effect2 "resistances")}}
+            <select name="system.{{stepName}}.damageType2">
+                {{#if (eq step.effect2 "resistances")}}
+                {{selectOptions config.attackProficiency selected=step.damageType2 localize=true}}
+                {{/if}}
+                {{selectOptions config.damageTypes selected=step.damageType2 localize=true}}
+                <option value="other">{{localize "fantasycraft.other"}}</option>
+            </select>
+            {{/if}}
+
+            {{!-- Skill Bonus --}}
+            {{#if (eq step.effect2 "skillBonus")}} 
+            <select name="system.{{stepName}}.target2">
+                {{selectOptions config.skills selected=step.target2 localize=true}}
+                <option value="knowledge">{{localize "fantasycraft.knowledge"}}</option>
+            </select>
+            {{/if}}
+
+            {{!-- Save Bonus --}}
+            {{#if (eq step.effect2 "saveBonus")}} 
+            <select name="system.{{stepName}}.target2">                            
+                {{selectOptions config.savingThrow selected=step.target2 localize=true}}
+                <option value="circumstantial">{{localize "fantasycraft.circumstantial"}}</option>
+            </select>
+            {{/if}}
+
+            {{!-- Attribute Bonus --}}
+            {{#if (eq step.effect2 "attributeBonus")}} 
+            <select name="system.{{stepName}}.target2">                            
+                {{selectOptions config.abilityScores selected=step.target2 localize=true}}
+            </select>
+            {{/if}}
+
+            {{!-- Input and Scaling Options --}}
+            {{#if step.requiresValueInput2}}
+                <input type="number" name="system.{{stepName}}.value2" value="{{step.value2}}">
+
+                <select name="system.{{stepName}}.effect2Scaling">
+                    {{selectOptions config.pathScaling selected=step.effect2Scaling localize=true}}
+                </select>
+            {{/if}}
+            
+        {{/compare}}
+
+        {{#if (eq step.effect2 "other")}}
+            <input type="text" name="system.{{stepName}}.value2" value="{{step.value2}}">
+        {{/if}}
+    </div>
+</div>

@@ -5,7 +5,7 @@ export default class FCNPCSheet extends ActorSheetFC
 {
     static get defaultOptions()
 	{
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			template:"systems/fantasycraft/templates/sheets/npc-sheet.handlebars",
 			classes: ["fantasycraft", "sheet", "actor"],
 			width: 750,

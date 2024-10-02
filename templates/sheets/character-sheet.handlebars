@@ -5,7 +5,7 @@
 
         <section class="header-details flexrow">
             
-            <h1 class="charname">
+            <h1 class="title-name">
                 <input name="name" type="text" value="{{actor.name}}" placeholder="{{ localize 'fantasycraft.name' }}"/>
             </h1>
 
@@ -138,7 +138,7 @@
                     </footer>
                     <footer class="footer-text">
                         <div class="button">
-                            <a class="nextLevel" data-options="level-up" disabled="true">{{ localize "fantasycraft.levelUp" }}</a>
+                            {{!--<a class="nextLevel" data-options="level-up">{{ localize "fantasycraft.levelUp" }}</a>--}}
                         </div>
                     </footer>
                 </li>
@@ -146,7 +146,7 @@
         </section>
         <section class="flexcol" style="flex: 0 0 160px">
             <img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/>
-            <label style="text-align: center;">Level {{actor.system.careerLevel.value}} {{actor.system.ancestry}} </label>
+            <label style="text-align: center;">{{localize "fantasycraft.level"}} {{actor.system.careerLevel.value}} {{actor.system.ancestry}} </label>
             <span class="profile classLevels" style="text-align: center;">{{classNames}}</span>
         </section>
     </header>
@@ -203,44 +203,50 @@
                     {{! Skill Table}}
                     {{> "systems/fantasycraft/templates/partials/skill-table-part.hbs"}}
                             {{! knowledge}}
-                            <h4 class="category-label"> {{localize "fantasycraft.knowledge"}} </h4>
-                            <div class="flexrow">
-                                <ul class="flexrow remove-space" style="align-items: baseline"> 
-                                    <li>
-                                        <a class="roll-knowledge" data-roll-info='{{actor.system.knowledge.value}}'><i class="fas fa-dice-d20 fa-s"></i></a>
-                                    </li>
-                                    <li>
-                                        {{ localize "fantasycraft.knowledge" }}
-                                    </li>
-                                    <li>
-                                        <input type="number" class="calcBox largeBox" name="system.knowledge.value" value="{{actor.system.knowledge.value}}" disabled=true />
-                                        <footer>{{localize "fantasycraft.total"}}</footer>
-                                    </li> 
-                                    <li class="centreItems flex1">
-                                        <span> = </span>
-                                    </li>
-                                    <li class="centreItems flex3">
-                                        <input type="number" class="smallBox calcBox" name="system.abilityScores.intelligence.mod" value="{{actor.system.abilityScores.intelligence.mod}}" disabled=true />
-                                        <footer>{{localize "fantasycraft.ability"}}</footer>
-                                    </li> 
-                                    <li class="centreItems flex3">
-                                        <input type="number" class="smallBox calcBox" name="system.knowledge.studies" value="{{actor.system.knowledge.studies}}"disabled=true />
-                                        <footer>{{localize "fantasycraft.studies"}}</footer>
-                                    </li> 
-                                    <li class="centreItems flex3">
-                                        <input type="number" class="smallBox calcBox" name="system.knowledge.misc" value="{{actor.system.knowledge.misc}}" />
-                                        <footer>{{localize "fantasycraft.misc"}}</footer>
-                                    </li> 
-                                </ul>
+                        <div class="flexrow">
+                            <div>
+                                <h4 class="category-label"> {{localize "fantasycraft.knowledge"}} </h4>
                                 <div>
-                                    
+                                    <ul class="flexrow remove-space" style="align-items: baseline"> 
+                                        <li class="flex6" style="align-self: center;">
+                                            <a class="roll-knowledge" data-roll-info='{{actor.system.knowledge.value}}'>
+                                                <i class="fas fa-dice-d20 fa-s"></i>
+                                                {{ localize "fantasycraft.knowledge" }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <input type="number" class="calcBox largeBox" name="system.knowledge.value" value="{{actor.system.knowledge.value}}" disabled=true />
+                                            <footer>{{localize "fantasycraft.total"}}</footer>
+                                        </li> 
+                                        <li class="centreItems flex1">
+                                            <span> = </span>
+                                        </li>
+                                        <li class="centreItems flex3">
+                                            <input type="number" class="smallBox calcBox" name="system.abilityScores.intelligence.mod" value="{{actor.system.abilityScores.intelligence.mod}}" disabled=true />
+                                            <footer>{{localize "fantasycraft.ability"}}</footer>
+                                        </li> 
+                                        <li class="centreItems flex3">
+                                            <input type="number" class="smallBox calcBox" name="system.knowledge.studies" value="{{actor.system.knowledge.studies}}"disabled=true />
+                                            <footer>{{localize "fantasycraft.studies"}}</footer>
+                                        </li> 
+                                        <li class="centreItems flex3">
+                                            <input type="number" class="smallBox calcBox" name="system.knowledge.misc" value="{{actor.system.knowledge.misc}}" />
+                                            <footer>{{localize "fantasycraft.misc"}}</footer>
+                                        </li> 
+                                    </ul>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="category-label"> {{localize "fantasycraft.subplots"}} </h4>
+
+                                <div>
                                 </div>
                             </div>
                         </div>
                         {{! focuses and interests}}
                         <div class="traits flexrow">
                             <div>
-                            <h4 class="category-label"> {{localize "fantasycraft.interests"}} </h4>
+                                <h4 class="category-label"> {{localize "fantasycraft.interests"}} </h4>
                                 {{#each actor.system.interests as |name id|}}
                                 <div class="form-group">
                                     <section style="flex: 0 0 100%;">

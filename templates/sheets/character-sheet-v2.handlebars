@@ -1,0 +1,402 @@
+<form class="{{cssClass}} style" autocomplete="off">
+
+    <aside class="sidebar">
+        {{!-- Sidebar --}}
+        <section>
+            {{!-- Character Image --}}
+            <div>
+                <img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/> 
+            </div>
+
+            {{!-- Wounds --}}
+            <div class="diamond wounds">
+                <i class="fa-solid fa-droplet icon"></i>
+            </div>
+            <div class="empty-bar">
+                <div class="fill-bar wounds" style="--wounds-percentage: {{ wPercs }}%"></div>
+                <span>
+                    <input class="right" name="system.wounds.value" type="number" value="{{actor.system.wounds.value}}" data-dtype="Number">/{{actor.system.wounds.max}}
+                </span>
+            </div>
+            {{!-- Vitality --}}
+            <div class="diamond vitality icon">
+                <i class="fa-solid fa-shield-heart icon"></i>
+            </div>
+            <div class="empty-bar vitality">
+                <div class="fill-bar vitality" style="--vitality-percentage: {{ vPercs }}%">
+                </div>
+                <span>
+                    <input class="right" name="system.vitality.value" type="number" value="{{actor.system.vitality.value}}" data-dtype="Number">/<input name="system.vitality.max" type="number" value="{{actor.system.vitality.max}}" data-dtype="Number">
+                </span>
+            </div>
+            <div class="flexrow gap">
+                {{!-- Subdual --}}
+                <div>
+                    <h4 class="box-title">{{ localize "fantasycraft.subdual" }}</h4>
+                    <div class="attribute-value center-text">
+                        <input class="center-text" name="system.subdual" type="number" value="{{actor.system.subdual}}" placeholder="0" data-dtype="Number"/>
+                    </div>
+                    {{!-- fatigue --}}
+                    <span class="fatigue-shaken tooltip remove-background">
+                        <div class="tooltiptext delay absolute-position"> {{localize "fantasycraft.fatigued"}}
+                        </div>
+                        {{#each actor.system.fatigue as |fat key|}} 
+                        <a class="fatigueShaken" data-grade="{{key}}">{{#if fat}}<i class="fa-solid fa-circle" value="{{key}}"> {{else}}<i class="fa-regular fa-circle" value="{{key}}">{{/if}}</i></a>
+                        {{/each}}
+                    </span>
+                </div>
+                {{!-- Stress --}}
+                <div>
+                    <h4 class="box-title">{{ localize "fantasycraft.stress" }}</h4>
+                    <div class="attribute-value center-text">
+                        <input class="center-text" name="system.stress" type="number" value="{{actor.system.stress}}" placeholder="0" data-dtype="Number"/>
+                    </div>
+                    {{!-- fatigue --}}
+                    <span class="fatigue-shaken tooltip remove-background">
+                        <div class="tooltiptext delay absolute-position"> {{localize "fantasycraft.shaken"}}
+                        </div>
+                        {{#each actor.system.shaken as |fat key|}} 
+                        <a class="fatigueShaken" data-grade="{{key}}">{{#if fat}}<i class="fa-solid fa-circle" value="{{key}}"> {{else}}<i class="fa-regular fa-circle" value="{{key}}">{{/if}}</i></a>
+                        {{/each}}
+                    </span>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="flexrow small-gap">
+                {{!-- Defense --}}
+                <div class="attribute-value center-text">
+                    <h4 class="box-title">{{ localize "fantasycraft.defense" }}</h4>
+                    <div class="defense shield">
+                        <input name="system.defense.value" type="number" value="{{actor.system.defense.value}}" disabled="true"/>
+
+                        {{!-- flat-footed --}}
+                        <footer>
+                            <span class="flatfooted-input">
+                                <span class="remove-space">{{localize "fantasycraft.flatFooted"}}</span>
+                                <input name="system.flatFootedDefense" type="number" value="{{actor.system.flatFootedDefense}}" disabled="true"/>
+                            </span>
+                        </footer>
+                    </div>
+                </div>
+                {{!-- DR --}}
+                <div class="attribute-value center-text">
+                    <h4 class="box-title">{{ localize "fantasycraft.damageReduction" }}</h4>
+                    <div class="defense armour">
+                        <input name="system.dr" type="number" value="{{actor.system.dr}}" placeholder="0"/>
+                    </div>
+                </div>
+            </div>
+            {{!-- Equipped Armour --}}
+            <div class="center-text">
+                <label>{{localize "fantasycraft.armour"}}: </label>
+                <span class="{{#if equippedArmour}} editItem item {{/if}} armour-slot {{#if equippedArmour}} equipped{{/if}}" data-item-id="{{equippedArmour._id}}">
+                {{#if equippedArmour}}
+                    {{equippedArmour.name}}
+                {{else}}
+                    {{localize "fantasycraft.noArmourEquipped"}}
+                {{/if}}
+                </span>
+            </div>
+
+            {{!-- Resistances --}}
+            <div class="small-gap">
+                <h4 class="box-title">{{ localize "fantasycraft.resistances" }}</h4>
+                <div>
+                {{#each actor.system.resistances as |value resistance|}}
+                        <span class="capitalize">{{localize resistance}}</span>
+                        <span>
+                            {{value}} {{#unless @last}}, {{/unless}}
+                        </span>
+
+                {{/each}}
+                </div>
+            </div>
+
+            {{!-- Saves --}}
+            <div class="flexcol small-gap">
+                <h4 class="box-title capitalize"> {{localize "fantasycraft.saves"}}</h4>
+                <div class="flexrow">
+                {{#each actor.system.saves as |save key|}}
+                <div class="flexcol center-text saves">
+                    <label class="saving-throw-buttons">{{localize (lookup ../config.savingThrow key)}}</label>
+                    <a class="roll-save" data-roll-info='{{key}}'>
+                        <i class="fa-solid fa-dice-d20 fa-xl dice-icon"></i>
+                        <span>{{numberFormat save.value sign=true}}</span>
+                    </a>
+                </div>
+                {{/each}}
+                </div>
+            </div>
+            
+            {{!-- Knowledge --}}
+            <div class="flexcol small-gap"></div>
+                <h4 class="box-title capitalize"> {{localize "fantasycraft.knowledge"}}</h4>
+                <div class="flexcol gap">
+                    <a class="roll-knowledge center-text" data-roll-info='{{actor.system.knowledge.value}}'>
+                        <i class="fa-solid fa-dice-d20 fa-xl dice-icon"></i>
+                        <span>{{numberFormat actor.system.knowledge.value sign=true}}</span>
+                    </a>
+                    <footer>
+                        {{localize "fantasycraft.studies"}}:
+                    {{#each actor.system.interests.studies.array as |item id|}}
+                        {{item~}}{{~#unless @last}},{{/unless}}
+                    {{/each}}
+                    </footer>
+                </div>
+            </div>
+
+            {{!-- Experience and Level Up --}}
+            <div class="flexcol small-gap">
+                <h4 class="box-title capitalize"> {{localize "fantasycraft.progression"}}</h4>
+
+                <div class="attribute-value flexrow">
+                    <input name="system.experience.current" type="number" value="{{actor.system.experience.current}}" placeholder="0"/>
+                    <input name="system.experience.nextLevel" type="number" value="{{actor.system.experience.nextLevel}}" placeholder="600000" disabled="true"/>
+                </div>
+                <footer class="footer-text flexrow">
+                    <span>{{localize "fantasycraft.experience"}}</span>
+                    <span>{{localize "fantasycraft.nextLevel"}}</span>
+                </footer>
+                <div class="button">
+                    <a class="nextLevel" data-options="level-up">{{ localize "fantasycraft.levelUp" }}</a>
+                </div>
+            </div>
+        </section>
+    </aside>
+
+    {{!-- HEADER --}}
+    <header class="sheet-header flexrow">
+
+        {{!-- Character Name, Race, and Class --}}
+        <div class="flex3">
+            <div class="title-name">
+                <input name="name" type="text" value="{{actor.name}}">
+            </div>
+            <div class="footer-information">
+                {{localize "fantasycraft.level"}} {{actor.system.careerLevel.value}} {{actor.system.ancestry}}
+                {{classNames}}
+            </div>
+        </div>
+
+        {{!-- Action Dice and Saves --}}
+        <div class="right flexrow flex1" >
+            {{!-- Action Dice --}}
+            <div class="action-dice">
+                <div class="flexrow">
+                    <div class="flex6">
+                        <input name="system.actionDice" type="number" value="{{actor.system.actionDice}}" placeholder="3"/>
+                        <span class="footer-information">{{localize "fantasycraft.startingActionDice"}} {{actor.system.startingActionDice}}D{{#if (eq actor.system.actionDiceSize 2)}}4{{else}}{{actor.system.actionDiceSize}}{{/if}}</span>
+                    </div>
+                    <div class="flex5">
+                        <input name="system.bonusActionDice" type="number" value="{{actor.system.bonusActionDice}}" placeholder="0"/>
+                        <span class="footer-information">{{localize "fantasycraft.additionalActionDice"}}</span>
+                    </div>
+                </div>
+                <div class="center-text">
+                    <a class="roll-ad" data-dice-size={{actor.system.actionDiceSize}}><i class="action-dice-buttons fa-solid fa-dice-d{{#if (eq actor.system.actionDiceSize 2)}}4{{else}}{{actor.system.actionDiceSize}}{{/if}}"></i></a>
+                    <i class="action-dice-buttons fa-solid fa-dice-d20 tooltip">
+                        <span class="tooltiptext absolute-position ad-tooltip">
+                            <span class="center-text">{{localize "fantasycraft.additionalActionDice"}}</span>
+                            <div class="two-column">
+                                <div><a class="roll-ad" data-dice-size="4"> <i class="action-dice-buttons fa-solid fa-dice-d4"></i></a> <span>{{localize "fantasycraft.d4"}}</span></div>
+                                <div><a class="roll-ad" data-dice-size="6"> <i class="action-dice-buttons fa-solid fa-dice-d6"></i></a> <span>{{localize "fantasycraft.d6"}}</span></div>
+                                <div><a class="roll-ad" data-dice-size="8"> <i class="action-dice-buttons fa-solid fa-dice-d8"></i></a> <span>{{localize "fantasycraft.d8"}}</span></div>
+                                <div><a class="roll-ad" data-dice-size="10"><i class="action-dice-buttons fa-solid fa-dice-d10"></i></a><span> {{localize "fantasycraft.d10"}}</span></div>
+                                <div><a class="roll-ad" data-dice-size="12"><i class="action-dice-buttons fa-solid fa-dice-d12"></i></a><span> {{localize "fantasycraft.d12"}}</span></div>
+                                <div><a class="roll-ad" data-dice-size="20"><i class="action-dice-buttons fa-solid fa-dice-d20"></i></a><span> {{localize "fantasycraft.d20"}}</span></div>
+                            </div>
+                        </span>
+                    </i>
+                    <a class="action-dice-info" data-options="no-options" data-target="none"><i class="action-dice-buttons fa-solid fa-question"></i></a>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    {{!-- SHEET NAVIGATION --}}
+    <nav class="sheet-navigation sheet-tabs" data-group="primary">
+        
+        <a class="item active" data-tab="attributes-and-abilities">
+            <i class="fa-solid fa-user fa-xs"></i> {{ localize "fantasycraft.attributes" }}
+        </a>
+
+
+        <a class="item" data-tab="equipment-and-combat">
+            <i class="fa-solid fa-swords fa-xs"></i> {{ localize "fantasycraft.combat" }}
+        </a>
+        
+        
+        <a class="item" data-tab="features">
+            <i class="fa-solid fa-book-open fa-xs"></i> {{ localize "fantasycraft.features" }}
+        </a>
+        
+        
+        <a class="item" data-tab="items-and-reputation">
+            <i class="fa-solid fa-backpack fa-xs"></i> {{ localize "fantasycraft.itemsAndReputation" }}
+        </a>
+        
+        
+        {{#if actor.system.castingLevel}}<a class="item" data-tab="spellcasting">
+            <i class="fa-solid fa-wand-magic-sparkles fa-xs"></i> {{ localize "fantasycraft.spellcasting" }}
+        </a>{{/if}}
+        
+        
+        <a class="item" data-tab="characterInformation">
+            <i class="fa-solid fa-circle-info fa-xs"></i> {{ localize "fantasycraft.characterInformation" }}
+        </a>
+    </nav>
+
+
+    {{!-- BODY --}}
+    <section class="sheet-body">
+
+        {{!-- Main Body --}}
+        <div class="tab flexcol" data-group="primary" data-tab="attributes-and-abilities">
+            <div class="flexcol flex5 attributes-abilities">
+                <h4 class="category-label"> {{localize "fantasycraft.abilities"}} </h4>
+                <div class="flexrow ability-scores-v2">
+                    {{#each actor.system.abilityScores as |ability name|}}
+                    <div class="ability">
+                        <input class="score" name="system.abilityScores.{{name}}.value" type="number" value="{{ability.value}}" placeholder="10" {{!-- }} {{#unless edit-mode}}disabled="true"{{/unless}} {{--}}/>
+                        {{!-- }}<input class="mod" name="system.abilityScores.{{name}}.adjustment" type="number" value="{{numberFormat ability.adjustment decimals=0}}" placeholder="0"/>
+                        <input class="mod" name="modifier" type="text" value="{{numberFormat ability.mod decimals=0 sign=true}}" placeholder="0" disabled=true /> {{--}}
+                        <h4 class="ability-name-v2">{{localize ability.label}}</h4>
+                    </div>
+                    {{/each}}
+                </div>
+
+                {{! Skill Table}}
+                <h3 class="category-label" style="max-height: 20px;"> {{localize "fantasycraft.skills"}}</h3>
+                {{> "systems/fantasycraft/templates/partials/skill-table-part.hbs" skills=actor.system.skills abilityScores=actor.system.abilityScores }}
+                        {{! knowledge}}
+                    <div class="flexrow">
+                        <div class="flex2">
+                            <h4 class="category-label"> {{localize "fantasycraft.knowledge"}} </h4>
+                            <div>
+                                <ul class="flexrow" style="align-items: baseline"> 
+                                    <li class="flex100 center-text">
+                                        <a class="roll-knowledge" data-roll-info='{{actor.system.knowledge.value}}'>
+                                            <i class="fas fa-dice-d20 fa-lg"></i>
+                                            {{localize "fantasycraft.knowledge"}}
+                                            <i class="fas fa-dice-d20 fa-lg"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <input type="number" class="calcBox largeBox" name="system.knowledge.value" value="{{actor.system.knowledge.value}}" disabled=true />
+                                        <footer>{{localize "fantasycraft.total"}}</footer>
+                                    </li> 
+                                    <li class="centreItems flex1">
+                                        <span> = </span>
+                                    </li>
+                                    <li class="centreItems flex3">
+                                        <input type="number" class="smallBox calcBox" name="system.abilityScores.intelligence.mod" value="{{actor.system.abilityScores.intelligence.mod}}" disabled=true />
+                                        <footer>{{localize "fantasycraft.ability"}}</footer>
+                                    </li> 
+                                    <li class="centreItems flex3">
+                                        <input type="number" class="smallBox calcBox" name="system.knowledge.studies" value="{{actor.system.knowledge.studies}}"disabled=true />
+                                        <footer>{{localize "fantasycraft.studies"}}</footer>
+                                    </li> 
+                                    <li class="centreItems flex3">
+                                        <input type="number" class="smallBox calcBox" name="system.knowledge.misc" value="{{actor.system.knowledge.misc}}" />
+                                        <footer>{{localize "fantasycraft.misc"}}</footer>
+                                    </li> 
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="flex3">
+                            <h4 class="category-label"> {{localize "fantasycraft.subplots"}} </h4>
+
+                            <div class="flexrow">
+                                {{#each actor.system.subplots as |plot key|}}
+                                <div class="center-text flexrow flexhalf">
+                                    <div class="flex2">
+                                        <input class="underline" type="text" name="system.subplots.{{key}}.value" value="{{plot.value}}">
+                                        <footer style="font-size: 10px">{{localize "fantasycraft.plot"}}</footer>
+                                    </div>
+                                    <div>
+                                        <input class="med-checkbox" type="checkbox" name="system.subplots.{{key}}.completed" {{checked plot.completed}}/>
+                                        <footer style="font-size: 10px">{{localize "fantasycraft.complete"}}</footer>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                    {{! focuses and interests}}
+                    <div class="traits flexrow">
+                        <div>
+                            <h4 class="category-label"> {{localize "fantasycraft.interests"}} </h4>
+                            {{#each actor.system.interests as |name id|}}
+                            <div class="form-group stacked">
+                                <section>
+                                    <label>{{localize id}}</label>
+                                    <a class="addItem" data-type="{{id}}" data-target="system.interests.{{id}}">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                </section>
+                                <ul class="traits-list">
+                                {{#each name.array as |item iid|}}
+                                    <li class="tag {{iid}} bordered-text">{{item}}</li>
+                                {{/each}}
+                                </ul>
+                            </div>
+                            {{/each}}
+                        </div>
+                        <div>
+                            <h4 class="category-label"> {{localize "fantasycraft.focuses"}} </h4>
+                            <div class="form-group stacked">
+                                <section>
+                                    <label>{{localize "fantasycraft.craftingFocus"}}</label>
+                                    <a class="trait-selector" data-options="focusCrafting" data-target="system.focuses.craftingFocus">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </section>
+                                <ul class="traits-list flexrow">
+                                {{#each actor.system.focuses.craftingFocus.value as |v k|}}
+                                    <li class="tag {{k}} bordered-text">{{v}}</li>
+                                {{/each}}
+                                </ul>
+                            </div>
+                            <div class="form-group stacked">
+                                <section>
+                                    <label>{{localize "fantasycraft.rideFocus"}}</label>
+                                    <a class="trait-selector" data-options="focusRide" data-target="system.focuses.rideFocus">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </section>
+                                <ul class="traits-list flexrow">
+                                {{#each actor.system.focuses.rideFocus.value as |v k|}}
+                                    <li class="tag {{k}} bordered-text">{{localize (lookup ../config.focusRide v)}}</li>
+                                {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        {{! Other Tabs}}
+        <div class="tab attributes flexcol" data-group="primary" data-tab="equipment-and-combat">
+            {{> "systems/fantasycraft/templates/sheets/pages/combat-page.handlebars"}}
+        </div>
+        <div class="tab attributes flexcol" data-group="primary" data-tab="features">
+            {{> "systems/fantasycraft/templates/sheets/pages/features.handlebars"}}
+        </div>
+        <div class="tab attributes flexcol" data-group="primary" data-tab="items-and-reputation">
+            {{> "systems/fantasycraft/templates/sheets/pages/items-and-reputation.handlebars"}}
+        </div>
+        {{#if actor.system.castingLevel}}
+        <div class="tab attributes" data-group="primary" data-tab="spellcasting">
+            {{> "systems/fantasycraft/templates/sheets/pages/spellcasting.handlebars"}}
+        </div>
+        {{/if}}
+        <div class="tab attributes flexcol" data-group="primary" data-tab="characterInformation">
+            {{> "systems/fantasycraft/templates/sheets/pages/character-info.handlebars"}}
+        </div>
+    </section>
+
+</form>

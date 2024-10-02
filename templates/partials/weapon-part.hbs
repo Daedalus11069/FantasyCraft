@@ -1,26 +1,45 @@
 <li class="item ownedItem" data-item-id="{{id}}" data-item-name="{{name}}">
     <div class="flexrow">
-        <div class="flex2">
-            <a class="roll-weapon" data-roll-info='{{id}}'>
-                <i class="fas fa-dice-d20"></i>
-                <span><b>{{name}}</b> </span>
+        <div class="center-dice flex1">
+            {{#if system.readied}}<a class="roll-weapon dice-button" data-roll-info='{{id}}'>{{/if}}
+                <i class="{{#if system.readied}} {{else}}not-available {{/if}}fas fa-dice-d20 fa-xl"></i>
             </a>
         </div>
-        <div class="flex2">
-            {{system.damage}} {{system.damageType}}
+        <div class="flex3 flexcol">
+            <span {{#if system.readied}} {{else}}class="not-available"{{/if}}><b>{{name}}</b> </span>
+            <div class="damage-threat"><span>{{system.damage}} {{system.damageType}}</span> <span>-</span><span>{{localize "fantasycraft.threat"}} {{system.threatRange}} </span></div>
         </div>
-        <div class="flex1">
-            {{localize "fantasycraft.threat"}} {{system.threatRange}}  
-        </div>
-        <div class="flex6">
-            {{localize "fantasycraft.qualities"}}: 
+        <div class="flex5 flexcol">
+            <div>
             {{#each system.weaponProperties as |prop id|}}
                 {{#if prop}}
                     {{#compare prop "none" operator="!="}}
-                    {{id}}{{#if (isBool prop)}}{{else}} {{prop}}{{/if}}
+                    {{localize (lookup ../qualities id)}}{{#if (isBool prop)}}{{else}} {{prop}}{{/if}}
                     {{/compare}}
                 {{/if}}
             {{/each}}
+            </div>
+            {{#compare system.weaponCategory "bow" operator="=="}}
+            <div>
+                {{#each weapons as |weapon id|}}
+                    {{#compare weapon.system.weaponCategory "arrowsAndBolts" operator="=="}}
+                        <i>{{weapon.name}}:</i> {{weapon.system.quantity}}
+                    {{/compare}}
+                {{/each}} 
+            </div>
+            {{/compare}}
+            {{#compare system.weaponProficiency "blackPowder" operator="=="}}
+            <div>
+                <span><i>{{localize "fantasycraft.powderAndShot"}}: </i>
+                    {{#each weapons as |weapon id|}}
+                        {{#compare weapon.system.weaponCategory "powder" operator="=="}}
+                            {{weapon.system.quantity}}
+                        {{/compare}}
+                    {{/each}} 
+                </span>
+            </div>
+            {{/compare}}
+
         </div>
         <div class="flex1">
             <a class="readyWeapon">
@@ -38,27 +57,4 @@
             </a>
         </div>
     </div>
-    {{#compare system.weaponCategory "bow" operator="=="}}
-    <div style="margin-left: 40px">
-        {{#each weapons as |weapon id|}}
-            {{#compare weapon.system.weaponCategory "arrowsAndBolts" operator="=="}}
-                - {{weapon.name}}: {{weapon.system.quantity}}
-            {{/compare}}
-        {{/each}} 
-    </div>
-    <div>
-
-    </div>
-    {{/compare}}
-    {{#compare system.weaponProficiency "blackPowder" operator="=="}}
-    <div style="margin-left: 40px">
-        <span> - {{localize "fantasycraft.powderAndShot"}}: 
-            {{#each weapons as |weapon id|}}
-                {{#compare weapon.system.weaponCategory "powder" operator="=="}}
-                    {{weapon.system.quantity}}
-                {{/compare}}
-            {{/each}} 
-        </span>
-    </div>
-    {{/compare}}
 </li>

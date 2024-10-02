@@ -2,7 +2,7 @@
   "id": "fantasycraft",
   "title": "Fantasy Craft",
   "description": "A system for playing the Mastercraft system Fantasy Craft in the Foundry Virtual Tabletop environment.",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "authors": [
     {
       "name": "Nuaurpy",
@@ -10,8 +10,8 @@
     }
   ],
   "url": "https://github.com/nuaurpy/FantasyCraft",
-  "manifest": "http s://raw.githubusercontent.com/nuaurpy/FantasyCraft/main/system.json",
-  "download": "https://github.com/nuaurpy/FantasyCraft/archive/refs/tags/v1.2.4.zip",
+  "manifest": "https://github.com/nuaurpy/FantasyCraft/releases/download/v2.0.0/system.json",
+  "download": "https://github.com/nuaurpy/FantasyCraft/archive/refs/tags/v2.0.0.zip",
   "esmodules": [
     "fantasycraft.js"
   ],
@@ -207,7 +207,7 @@
         "feats",
         "specialty",
         "tricksandstances"
-      ]
+      ] 
     },
     {
       "name": "Magic",
@@ -237,11 +237,23 @@
       "flags": {}
     }
   ],
+  "media": [
+    {
+      "type": "cover",
+      "loop": false,
+      "flags": {}
+    },
+    {
+      "type": "setup",
+      "url": "systems/fantasycraft/assets/fantasycraft_cover_inkthinker.jpg",
+      "thumbnail": "systems/fantasycraft/assets/fantasycraft_cover_inkthinker_thumb.png"
+    }
+  ],
   "initiative": "1d20",
   "gridDistance": 5,
   "gridUnits": "ft",
   "compatibility": {
-    "minimum": "10.0",
-    "verified": "10.291"
+    "minimum": "12.0",
+    "verified": "12.330"
   }
 }

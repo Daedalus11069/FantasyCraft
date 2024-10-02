@@ -1,0 +1,77 @@
+        <div class="flexcol" name="classSelection">
+            <h3>{{localize "fantasycraft.class"}}</h3>
+            <div>
+                <div>
+                    <select class="classSelect">
+                        <option value=""></option>
+                        {{selectOptions classes valueAttr="_id" labelAttr="name" selected=nextLevel.class._id}}
+                    </select>
+                    <span>
+                        {{localize "fantasycraft.nextLevel"}}:
+                    </span>
+                    <span name="level">
+                        {{nextLevel.level}}
+                    </span>
+                </div>
+                <table name="classInformation">
+                    <tr>
+                        <th>
+                            {{localize "fantasycraft.attackBonus"}}
+                        </th>
+                        <th>
+                            {{localize "fantasycraft.fortitude"}}
+                        </th>
+                        <th>
+                            {{localize "fantasycraft.reflex"}}
+                        </th>
+                        <th>
+                            {{localize "fantasycraft.will"}}
+                        </th>
+                        <th>
+                            {{localize "fantasycraft.defense"}}
+                        </th>
+                        <th>
+                            {{localize "fantasycraft.initiative"}}
+                        </th>
+                        <th>
+                            {{localize "fantasycraft.lifeStyle"}}
+                        </th>
+                        <th>
+                            {{localize "fantasycraft.legend"}}
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="center-text">
+                            <input name="bab" type="text" value="{{nextLevel.classInformation.bab}}" disabled="true">
+                        </td>
+                        <td class="center-text">
+                            <input name="fort" type="text" value="{{nextLevel.classInformation.fort}}" disabled="true">
+                        </td>
+                        <td class="center-text">
+                            <input name="ref" type="text" value="{{nextLevel.classInformation.ref}}" disabled="true">
+                        </td>
+                        <td class="center-text">
+                            <input name="will" type="text" value="{{nextLevel.classInformation.will}}" disabled="true">
+                        </td>
+                        <td class="center-text">
+                            <input name="def" type="text" value="{{nextLevel.classInformation.def}}" disabled="true">
+                        </td>
+                        <td class="center-text">
+                            <input name="init" type="text" value="{{nextLevel.classInformation.init}}" disabled="true">
+                        </td>
+                        <td class="center-text">
+                            <input name="life" type="text" value="{{nextLevel.classInformation.life}}" disabled="true">
+                        </td>
+                        <td class="center-text">
+                            <input name="leg" type="text" value="{{nextLevel.classInformation.leg}}" disabled="true">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="flexrow">
+                {{!-- }} <img class="profile" name="classpic" src="{{actor.img}}" data-edit="img"/> {{ --}}
+                <div>
+                    {{!-- get class ability for this level --}}
+                </div>
+            </div>
+        </div>

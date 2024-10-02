@@ -23,7 +23,7 @@
                 </div>
                 {{!-- Abilities Tab --}}
                 <div class="tab attributes flexrow" data-group="primary" data-tab="class-abilities">
-                    {{{editor item.system.abilities target="system.abilities" button=true owner=owner editable=editable}}}
+                    {{{editor item.system.abilities target="system.abilities" button=true engine="prosemirror" editable=editable}}}
                 </div>
                 {{!-- Class Settings Tab --}}
                 <div class="tab attributes flexcol" data-group="primary" data-tab="class-settings">
@@ -39,22 +39,14 @@
                             <tr>
                                 <td>
                                     <select name="system.vitality"> 
-                                        {{#select item.system.vitality}}
-                                        {{#each config.classVitality as |name type|}}
-                                            <option value="{{name}}">{{localize type}}: {{name}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classVitality selected=item.system.vitality localize=true}}
                                     </select>
                                 </td>
                                 <td> <input name="system.proficiencies.value" type="text" value="{{numberFormat item.system.proficiencies.value decimals=0 sign=false}}" disabled=true/></td>
                                 <td> <input name="system.skillPoints" type="text" value="{{numberFormat item.system.skillPoints decimals=0 sign=false}}" disabled=true/></td>
                                 <td> 
                                     <select name="system.baseAttack">
-                                        {{#select item.system.baseAttack}}
-                                        {{#each config.classBAB as |name type|}}
-                                            <option value="{{type}}">{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classBAB selected=item.system.baseAttack localize=true}}
                                     </select>
                                 </td>
                             </tr>
@@ -67,38 +59,22 @@
                             <tr>
                                 <td> 
                                     <select name="system.fortitude">
-                                        {{#select item.system.fortitude}}
-                                        {{#each config.classSaves as |name type|}}
-                                            <option value="{{type}}">{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classSaves selected=item.system.fortitude localize=true}}
                                     </select>
                                 </td>
                                 <td> 
                                     <select name="system.reflex">
-                                        {{#select item.system.reflex}}
-                                        {{#each config.classSaves as |name type|}}
-                                            <option value="{{type}}">{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classSaves selected=item.system.reflex localize=true}}
                                     </select>
                                 </td>
                                 <td> 
                                     <select name="system.will">
-                                        {{#select item.system.will}}
-                                        {{#each config.classSaves as |name type|}}
-                                            <option value="{{type}}">{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classSaves selected=item.system.will localize=true}}
                                     </select>
                                 </td>
                                 <td> 
                                     <select name="system.defense">
-                                        {{#select item.system.defense}}
-                                        {{#each config.classDefense as |name type|}}
-                                            <option value='{{type}}'>{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classDefense selected=item.system.defense localize=true}}
                                     </select>
                                 </td>
                             </tr>
@@ -111,38 +87,22 @@
                             <tr>
                                 <td> 
                                     <select name="system.initiative">
-                                        {{#select item.system.initiative}}
-                                        {{#each config.classInitiative as |name type|}}
-                                            <option value='{{type}}'>{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classInitiative selected=item.system.initiative localize=true}}
                                     </select>
                                 </td>
                                 <td> 
                                     <select name="system.lifeStyle">
-                                        {{#select item.system.lifeStyle}}
-                                        {{#each config.classSaves as |name type|}}
-                                            <option value="{{type}}">{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classSaves selected=item.system.lifeStyle localize=true}}
                                     </select>
                                 </td>
                                 <td> 
                                     <select name="system.legend">
-                                        {{#select item.system.legend}}
-                                        {{#each config.classLegend as |name type|}}
-                                            <option value="{{type}}">{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classLegend selected=item.system.legend localize=true}}
                                     </select>
                                 </td>
                                 <td> 
                                     <select name="system.spellPoints">
-                                        {{#select item.system.spellPoints}}
-                                        {{#each config.classSpellPoints as |name type|}}
-                                            <option value="{{type}}">{{localize type}}</option>
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions config.classSpellPoints selected=item.system.spellPoints localize=true}}
                                     </select>
                                 </td>
                             </tr>
@@ -151,11 +111,7 @@
                     <div>
                         <label>{{localize "fantasycraft.classType"}}</label>
                         <select name="system.classType">
-                            {{#select item.system.classType}}
-                                <option value="base">{{localize "fantasycraft.baseClass"}}</option>
-                                <option value="expert">{{localize "fantasycraft.expertClass"}}</option>
-                                <option value="master">{{localize "fantasycraft.masterClass"}}</option>
-                            {{/select}}
+                            {{selectOptions config.classType selected=item.system.classType localize=true}}
                         </select>
                     </div>
                     {{!-- Class Skills --}}

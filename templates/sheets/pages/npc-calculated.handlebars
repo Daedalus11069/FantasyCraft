@@ -1,70 +1,84 @@
 <div class="tab attributes flexcol" data-group="primary" data-tab="calculated">
-    <section>
-        <strong>{{actor.name}} ({{actor.system.size}} {{actor.system.type.value}} {{actor.system.primaryMovement}} - {{actor.system.xp}} {{localize "fantasycraft.xp"}}): 
-            TL: {{actor.system.threat}} </strong>
-        <br>
-        {{localize "fantasycraft.size"}}: {{actor.system.size}} ({{actor.system.footprint.width}}×{{actor.system.footprint.height}}); 
-        {{localize "fantasycraft.reach"}}: {{actor.system.reach}}; 
-        {{localize "fantasycraft.speed"}}: 
-            {{#if actor.system.movement.ground.value}} {{localize "fantasycraft.ground"}}: {{actor.system.movement.ground.value}} {{/if}}
-            {{#if actor.system.movement.fly.value}} {{localize "fantasycraft.fly"}}: {{actor.system.movement.fly.value}} {{/if}}
-            {{#if actor.system.movement.swim.value}} {{localize "fantasycraft.swim"}}: {{actor.system.movement.swim.value}} {{/if}}
-            {{#if actor.system.movement.burrow.value}} {{localize "fantasycraft.burrow"}}: {{actor.system.movement.burrow.value}} {{/if}}
-        <br>
-        <strong>{{localize "fantasycraft.str"}}:</strong> {{actor.system.abilityScores.strength.value}}/{{actor.system.abilityScores.strength.mod}}; 
-        <strong>{{localize "fantasycraft.dex"}}:</strong> {{actor.system.abilityScores.dexterity.value}}/{{actor.system.abilityScores.dexterity.mod}}; 
-        <strong>{{localize "fantasycraft.con"}}:</strong> {{actor.system.abilityScores.constitution.value}}/{{actor.system.abilityScores.constitution.mod}}; 
-        <strong>{{localize "fantasycraft.int"}}:</strong> {{actor.system.abilityScores.intelligence.value}}/{{actor.system.abilityScores.intelligence.mod}}; 
-        <strong>{{localize "fantasycraft.wis"}}:</strong> {{actor.system.abilityScores.wisdom.value}}/{{actor.system.abilityScores.wisdom.mod}}; 
-        <strong>{{localize "fantasycraft.cha"}}:</strong> {{actor.system.abilityScores.charisma.value}}/{{actor.system.abilityScores.charisma.mod}}; 
-        <br>
-        <p></p>
-        <div class="flexrow">
-            <div class="flexcol">
-                <span>
-                    <span><b>{{localize actor.system.traits.initiative.label}}: </b></span>
-                    <span>{{actor.system.traits.initiative.total}} =</span> 
-                    <span class="tooltip" style="text-align: center;"> <div>{{actor.system.traits.initiative.value}}</div><div class="tooltiptext relative-position">{{localize "fantasycraft.grade"}}</div></span>
-                    {{#if actor.system.mastersArt}}
-                        <span style="text-align:center;">{{#if actor.system.defense.attributePositive}}+{{else}}-{{/if}}</span>
-                        <span class="tooltip" style="text-align: center;"> 
-                            <div>{{actor.system.defense.attributeNormalized}}</div>
-                            <div class="tooltiptext relative-position">{{localize (lookup config.abilityScores actor.system.defense.defenseAttribute)}}</div>
-                        {{else}}
-                        <span style="text-align:center;">{{#if actor.system.defense.dexPositive}}+{{else}}-{{/if}}</span>
-                        <span class="tooltip" style="text-align: center;"> 
-                            <div>{{actor.system.defense.dexNormalized}}</div>
-                            <div class="tooltiptext relative-position">{{localize "fantasycraft.dexterity"}}</div>
+    <section class="two-column">
+        {{! Name, size/reach, speed, and attributes}}
+        <div>
+            <strong class="title-font">{{actor.name}} </strong>
+            <footer class="npc-footer">{{actor.system.size}} {{actor.system.type.value}} {{actor.system.primaryMovement}} - {{actor.system.xp}} {{localize "fantasycraft.xp"}} - TL: {{actor.system.threat}} </footer>
+            <strong>{{localize "fantasycraft.size"}}:</strong> {{actor.system.size}} ({{actor.system.footprint.width}}×{{actor.system.footprint.height}}); 
+            <strong>{{localize "fantasycraft.reach"}}:</strong> {{actor.system.reach}}; 
+            <br>
+            <strong>{{localize "fantasycraft.speed"}}:</strong> 
+                {{#if actor.system.movement.ground.value}} {{localize "fantasycraft.ground"}}: {{actor.system.movement.ground.value}} {{/if}}
+                {{#if actor.system.movement.fly.value}} {{localize "fantasycraft.fly"}}: {{actor.system.movement.fly.value}} {{/if}}
+                {{#if actor.system.movement.swim.value}} {{localize "fantasycraft.swim"}}: {{actor.system.movement.swim.value}} {{/if}}
+                {{#if actor.system.movement.burrow.value}} {{localize "fantasycraft.burrow"}}: {{actor.system.movement.burrow.value}} {{/if}}
+            <br>
+            <strong>{{localize "fantasycraft.str"}}:</strong> {{actor.system.abilityScores.strength.value}}/{{actor.system.abilityScores.strength.mod}}; 
+            <strong>{{localize "fantasycraft.dex"}}:</strong> {{actor.system.abilityScores.dexterity.value}}/{{actor.system.abilityScores.dexterity.mod}}; 
+            <strong>{{localize "fantasycraft.con"}}:</strong> {{actor.system.abilityScores.constitution.value}}/{{actor.system.abilityScores.constitution.mod}}; 
+            <strong>{{localize "fantasycraft.int"}}:</strong> {{actor.system.abilityScores.intelligence.value}}/{{actor.system.abilityScores.intelligence.mod}}; 
+            <strong>{{localize "fantasycraft.wis"}}:</strong> {{actor.system.abilityScores.wisdom.value}}/{{actor.system.abilityScores.wisdom.mod}}; 
+            <strong>{{localize "fantasycraft.cha"}}:</strong> {{actor.system.abilityScores.charisma.value}}/{{actor.system.abilityScores.charisma.mod}}; 
+            <br>
+            <p class="separator-border"></p>
+            {{! Initiative, Health, Attack Bonuses, and Defense}}
+            <div class="two-column">
+                <div>
+                    <span class="flex">
+                        <span class="top-align"><b>{{localize actor.system.traits.initiative.label}}: </b></span>
+                        <span class="top-align">{{actor.system.traits.initiative.total}} =</span> 
+                        <span class="tooltip" style="text-align: center;"> <div>{{actor.system.traits.initiative.value}}</div><div class="tooltiptext relative-position">{{localize "fantasycraft.grade"}}</div></span>
+                        {{#if actor.system.mastersArt}}
+                            <span class="top-align" style="text-align:center;">{{#if actor.system.defense.attributePositive}}+{{else}}-{{/if}}</span>
+                            <span class="tooltip" style="text-align: center;"> 
+                                <div>{{actor.system.defense.attributeNormalized}}</div>
+                                <div class="tooltiptext relative-position">{{localize (lookup config.abilityScores actor.system.defense.defenseAttribute)}}</div>
+                            {{else}}
+                            <span class="top-align" style="text-align:center;">{{#if actor.system.defense.dexPositive}}+{{else}}-{{/if}}</span>
+                            <span class="tooltip" style="text-align: center;"> 
+                                <div>{{actor.system.defense.dexNormalized}}</div>
+                                <div class="tooltiptext relative-position">{{localize "fantasycraft.dexterity"}}</div>
+                        {{/if}}
+                        </span>
+                    </span>
+                    <span class="flex"><b>{{localize actor.system.traits.health.label}}:</b> 
+                    {{#if actor.system.isSpecial}}
+                        {{actor.system.vitality.max}}/{{actor.system.wounds.max}}
+                    {{else}}
+                        {{actor.system.traits.health.total}} = {{actor.system.traits.health.value}} + {{actor.system.abilityScores.constitution.mod}}({{localize "fantasycraft.con"}})
                     {{/if}}
                     </span>
-                </span>
-                {{#if actor.system.isSpecial}}
-                    <span><b>{{localize actor.system.traits.health.label}}:</b> {{actor.system.vitality.max}}/{{actor.system.wounds.max}}</span>
-                {{else}}
-                    <span><b>{{localize actor.system.traits.health.label}}:</b> {{actor.system.traits.health.total}} = {{actor.system.traits.health.value}} + {{actor.system.abilityScores.constitution.mod}}({{localize "fantasycraft.con"}})</span>
-                {{/if}}
-                <span class="flexrow">
-                    <span><b>{{localize "fantasycraft.defense"}}:</b> </span>
-                    <span class="flex2">{{actor.system.traits.defense.total}} = </span>
-                    <span>10</span>
-                    <span>+</span>
-                    <div class="tooltip" style="text-align:center;"> <div>{{actor.system.traits.defense.value}}</div><div class="tooltiptext relative-position">{{localize "fantasycraft.grade"}}</div></div>
-                    <div style="text-align:center;">{{#if actor.system.defense.attributePositive}}+{{else}}-{{/if}}</div>
-                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.attributeNormalized}}</span> <div class="tooltiptext relative-position">{{localize (lookup config.abilityScores actor.system.defense.defenseAttribute)}}</div></div>
-                    <div style="text-align:center;">+</div>
-                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.size}}</span> <div class="tooltiptext relative-position">{{localize "fantasycraft.size"}}</div></div>
-                    <div style="text-align:center;">+</div>
-                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.guard}}</span><div class="tooltiptext relative-position">{{localize "fantasycraft.guard"}}</div></div>
-                    <div style="text-align:center;">-</div>
-                    <div class="tooltip" style="text-align:center;"> {{actor.system.defense.penalty}}</span><div class="tooltiptext relative-position">{{localize "fantasycraft.defensePenalty"}}</div></div>
-                    <span> </span>
-                </span>
+                    <div>
+                        <span><b>{{localize "fantasycraft.melee"}}:</b> {{actor.system.traits.attack.meleeTotal}} = {{actor.system.traits.attack.value}} + {{actor.system.abilityScores.strength.mod}} ({{localize "fantasycraft.str"}})</span>
+                    </div>
+                    <div>
+                        <span><b>{{localize "fantasycraft.ranged"}}:</b> {{actor.system.traits.attack.rangedTotal}} = {{actor.system.traits.attack.value}} + {{actor.system.abilityScores.dexterity.mod}} ({{localize "fantasycraft.dex"}})</span>
+                    </div>
+                </div>
+                <div class="webkit-flex">
+                    <div class="defense-shield">{{actor.system.traits.defense.total}}</div>
+                     <span class="flex center-flex">
+                        <span>10</span>
+                        <span>+</span>
+                        <div class="tooltip" style="text-align:center;"> <div>{{actor.system.traits.defense.value}}</div><div class="tooltiptext relative-position">{{localize "fantasycraft.grade"}}</div></div>
+                        <div style="text-align:center;">{{#if actor.system.defense.attributePositive}}+{{else}}-{{/if}}</div>
+                        <div class="tooltip" style="text-align:center;"> {{actor.system.defense.attributeNormalized}}</span> <div class="tooltiptext relative-position">{{localize (lookup config.abilityScores actor.system.defense.defenseAttribute)}}</div></div>
+                        <div style="text-align:center;">+</div>
+                        <div class="tooltip" style="text-align:center;"> {{actor.system.defense.size}}</span> <div class="tooltiptext relative-position">{{localize "fantasycraft.size"}}</div></div>
+                        <div style="text-align:center;">+</div>
+                        <div class="tooltip" style="text-align:center;"> {{actor.system.defense.guard}}</span><div class="tooltiptext relative-position">{{localize "fantasycraft.guard"}}</div></div>
+                        <div style="text-align:center;">-</div>
+                        <div class="tooltip" style="text-align:center;"> {{actor.system.defense.penalty}}</span><div class="tooltiptext relative-position">{{localize "fantasycraft.defensePenalty"}}</div></div>
+                        <span> </span>
+                    </span>
+                    <footer><b>{{localize "fantasycraft.defense"}}</b> </footer>
+                </div>
             </div>
-            <div class="flexcol">
-                <span><b>{{localize "fantasycraft.melee"}}:</b> {{actor.system.traits.attack.meleeTotal}} = {{actor.system.traits.attack.value}} + {{actor.system.abilityScores.strength.mod}} ({{localize "fantasycraft.str"}})</span>
-                <span><b>{{localize "fantasycraft.ranged"}}:</b> {{actor.system.traits.attack.rangedTotal}} = {{actor.system.traits.attack.value}} + {{actor.system.abilityScores.dexterity.mod}} ({{localize "fantasycraft.dex"}})    </span>
-                <span><button class="roll-competence smallButton" data-roll-info="competence">{{localize actor.system.traits.competence.label}}</button> {{actor.system.traits.competence.value}}</span>
-            </div>
+            <h4>
+                <p class="separator-border center-text capitalize">
+                    {{localize "fantasycraft.saves"}}
+                </p>
+            </h4>
             <div class="flexcol">
                 <span> <button class="roll-save smallButton" data-roll-info="fortitude">
                 {{localize actor.system.saves.fortitude.label}}</button> {{actor.system.saves.fortitude.total}} = {{actor.system.traits.resilience.value}} + {{actor.system.abilityScores.constitution.mod}} ({{localize "fantasycraft.con"}})</span>
@@ -72,139 +86,181 @@
                     {{localize actor.system.saves.reflex.label}}</button> {{actor.system.saves.reflex.total}} = {{actor.system.traits.resilience.value}} + {{actor.system.abilityScores.dexterity.mod}} ({{localize "fantasycraft.dex"}})</span>
                 <span><button class="roll-save smallButton" data-roll-info="will">{{localize actor.system.saves.will.label}}</button> {{actor.system.saves.will.total}} = {{actor.system.traits.resilience.value}} + {{actor.system.abilityScores.wisdom.mod}} ({{localize "fantasycraft.wis"}})</span>
             </div>
-        </div>
-        <div class="flexrow">
-            <i class="flex1">{{localize "fantasycraft.skills"}}:</i>
-            {{#each actor.system.signatureSkills as |skill name|}}
-            <div class="flex3" data-skill={{name}}>
-                <button class="roll-skill smallButton" data-roll-info={{name}}>{{localize (lookup ../config.skills skill.skillName)}}</button> {{skill.total}} = {{skill.skillBonus}} + {{skill.attributeBonus}}
-            </div>
-            {{/each}} 
-        </div>
-        <br>
-        {{#if actor.system.spellcasting.grade}}
-            <button class="roll-skill smallButton" data-skill="spellcasting">{{localize "fantasycraft.spellcasting"}}</button>
-            {{actor.system.spellcasting.total}} = 
-            {{actor.system.spellcasting.value}} + {{actor.system.abilityScores.intelligence.mod}};
-            
-            {{localize "fantasycraft.spells"}}: {{#each spells as |spell id|}} <a class="spellCard" data-spell={{spell._id}}><b>{{spell.name}}</b></a>{{#unless @last}},{{/unless}}{{#if @last}};{{/if}}{{/each}}
-        {{/if}}
-        <br>
-        <i>{{localize "fantasycraft.qualities"}}:</i> {{#each featuresList as |quality id|}} <span> {{quality}}{{#unless @last}}, {{/unless}} </span> {{/each}}
-        {{!Attacks}}
-        <br>
-        <i>{{localize "fantasycraft.attacks"}}:</i> 
-        {{#each weapons as |weapon id|}}
-        {{#compare weapon.system.weaponCategory "arrowsAndBolts" operator="!="}}
-            <span class="item" data-item-id="{{_id}}" data-name="{{weapon.name}}" data-item-name="{{weapon.name}}">
-                <label class="item" {{#if weapon.system.readied}}{{else}}style="color: grey"{{/if}} data-item-id="{{weapon._id}}">{{#if weapon.system.readied}}<a class="roll-weapon">{{/if}}<b>{{weapon.name}}</b>{{#if weapon.system.readied}}</a>{{/if}}</label> 
-                <a class="readyWeapon">
-                    {{#if weapon.system.readied}}
-                    <i class="fa fa-swords"></i>
-                    {{else}}
-                    <i class="fa-light fa-swords"></i>
-                    {{/if}}
-                </a>
-                <span>({{weapon.system.damage}},
-                    {{localize "fantasycraft.threatRange"}}: {{weapon.system.threatRange}}
-                    {{~#compare "none" weapon.system.upgrades.customization operator="!="}}, {{localize weapon.system.upgrades.customization~}} {{/compare}}
-                    {{~#compare "none" weapon.system.upgrades.materials operator="!="}}, {{localize weapon.system.upgrades.materials~}} {{/compare}}
 
-                    {{~#each ../config.numericWeaponProperties as |prop id|~}}
-                        {{~#if (lookup weapon.system.weaponProperties id)~}}
-                            , {{localize prop}} {{lookup weapon.system.weaponProperties id~}}
+            <h4>
+                <p class="separator-border center-text capitalize">
+                    {{localize "fantasycraft.saves"}}
+                </p>
+            </h4>
+            <div class="two-column groove-border" style="min-height: 28px">
+                <span>{{localize actor.system.traits.competence.label}}: {{actor.system.traits.competence.value}}</span>
+                <div>
+                    <button class="roll-competence smaller-button" data-roll-info="strength">{{localize "fantasycraft.str"}}</button>
+                    <button class="roll-competence smaller-button" data-roll-info="dexterity">{{localize "fantasycraft.dex"}}</button>
+                    <button class="roll-competence smaller-button" data-roll-info="constitution">{{localize "fantasycraft.con"}}</button>
+                    <button class="roll-competence smaller-button" data-roll-info="intelligence">{{localize "fantasycraft.int"}}</button>
+                    <button class="roll-competence smaller-button" data-roll-info="wisdom">{{localize "fantasycraft.wis"}}</button>
+                    <button class="roll-competence smaller-button" data-roll-info="charisma">{{localize "fantasycraft.cha"}}</button>
+                </div>
+            </div>
+            <div class="flexcol wrap" style="height: 81px;">
+                {{#each actor.system.signatureSkills as |skill name|}}
+                <div data-skill={{name}}>
+                    <button class="roll-skill smallButton" data-roll-info={{name}}>{{localize (lookup ../config.skills skill.skillName)}}</button> {{skill.total}} = {{skill.skillBonus}} + {{skill.attributeBonus}}
+                </div>
+                {{/each}} 
+            </div>
+        </div>
+
+        <div>
+            {{!Qualities}}
+            <i>{{localize "fantasycraft.qualities"}}:</i> {{#each featuresList as |quality id|}} <span> {{quality}}{{#unless @last}}, {{/unless}} </span> {{/each}}
+            
+            {{!Attacks}}
+            <br>
+            <h4>
+                <p class="separator-border center-text capitalize">
+                    {{localize "fantasycraft.weapons"}}
+                </p>
+            </h4>
+            {{#each weapons as |weapon id|}}
+            {{#compare weapon.system.weaponCategory "arrowsAndBolts" operator="!="}}
+                <span class="item" data-item-id="{{_id}}" data-name="{{weapon.name}}" data-item-name="{{weapon.name}}">
+                    <label class="item" {{#if weapon.system.readied}}{{else}}style="color: grey"{{/if}} data-item-id="{{weapon._id}}">{{#if weapon.system.readied}}<a class="roll-weapon">{{/if}}<b>{{weapon.name}}</b>{{#if weapon.system.readied}}</a>{{/if}}</label>
+                    <a class="readyWeapon">
+                        {{#if weapon.system.readied}}
+                        <i class="fa fa-swords"></i>
+                        {{else}}
+                        <i class="fa-light fa-swords"></i>
                         {{/if}}
-                    {{/each}}
-                    {{~#each ../config.weaponProperties as |prop id|~}}
-                        {{~#if (lookup weapon.system.weaponProperties id)~}}
-                            , {{localize prop~}}
-                        {{/if}}
-                    {{/each}}
-                ),
+                    </a>
+                    <span>{{weapon.system.damage}} {{weapon.system.damageType}}
+                        {{localize "fantasycraft.threatRange"}}: {{weapon.system.threatRange}}
+                        {{~#compare "none" weapon.system.upgrades.customization operator="!="}}, {{localize weapon.system.upgrades.customization~}} {{/compare}}
+                        {{~#compare "none" weapon.system.upgrades.materials operator="!="}}, {{localize weapon.system.upgrades.materials~}} {{/compare}}
+
+                        {{~#each ../config.numericWeaponProperties as |prop id|~}}
+                            {{~#if (lookup weapon.system.weaponProperties id)~}}
+                                , {{localize prop}} {{lookup weapon.system.weaponProperties id~}}
+                            {{/if}}
+                        {{/each}}
+                        {{~#each ../config.weaponProperties as |prop id|~}}
+                            {{~#if (lookup weapon.system.weaponProperties id)~}}
+                                , {{localize prop~}}
+                            {{/if}}
+                        {{/each}}
+                    <br>
+                    </span>
                 </span>
-            </span>
-        {{/compare}}
-        {{/each}}
-        {{#each attacks as |attack id|}}
-                <label class="item" data-item-id="{{attack._id}}"><a class="roll-natural-attack"><b>{{attack.name}}</b></a></label> 
-                <span>(
-                {{#compare attack.system.attackType "naturalAttack" operator="=="}}
-                    {{! Bite V (2d8 Fire Damage Threat 18-20) Trip }}
-                    {{attack.system.damage.diceNum}}d{{attack.system.damage.diceSize}} {{attack.system.damageType}} {{localize "fantasycraft.damage"}},
-                    {{localize "fantasycraft.threatRange"}}: {{#if attack.system.threat}}{{attack.system.threat}}{{else}}-{{/if}}
-                    {{#each attack.system.naturalUpgrades as |prop id|}}{{#if prop}}, {{id}} {{prop}} {{/if}} {{/each}}
-                {{/compare}}
-                {{#compare attack.system.attackType "extraDamage" operator="=="}}
-                    [{{attack.system.damage.value}}/{{attack.system.threat}}] ({{localize attack.system.attackDescription}} {{attack.system.attackGrade}}: 
-                    {{attack.system.area.shape}} {{attack.system.area.totalRange}}{{localize "fantasycraft.ft"}} {{localize "fantasycraft.range"}};
-                    {{localize "fantasycraft.damageType"}}: {{localize attack.system.damageType}})
-                {{/compare}}
-                {{#compare attack.system.attackType "extraSave" operator="=="}}
-                    [{{localize "fantasycraft.dc"}} {{attack.system.saveDC}}] ({{localize (lookup ../config.extraordinarySaveDescription attack.system.attackDescription)}} {{attack.system.attackGrade}}
-                    {{~#compare attack.system.saveUpgrade "none" operator="!="}}: 
-                        {{localize attack.system.area.shape}} 
-                        {{#compare attack.system.area.shape "gaze" operator="!="}}
-                        {{attack.system.area.totalRange}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.range"}}
-                        {{/compare}}
-                    {{/compare}})
-                {{/compare}}
-                ){{#unless @last}}, {{/unless}}</span>
-        {{/each}}
-        {{#if stances}}
-        <br>
-        <span><i>{{localize "fantasycraft.stances"}}:</i></span>
-            {{#each stances as |stance id|}}
-            <span class="item ownnedItem" data-item-id="{{_id}}" data-item-name="{{stance.name}}">
-                <label class="flex5"> {{#if system.inStance}}<b>{{/if}} {{stance.name}}{{#if system.inStance}}</b>{{/if}}</label>
-                <a class="adoptStance">
-                    {{#if system.inStance}}
-                    <i class="fas fa-chess"></i>
-                    {{else}}
-                    <i class="fa-light fa-chess"></i>
-                    {{/if}}                    
-                </a>
-            </span>
+            {{/compare}}
             {{/each}}
-        {{/if}}
-        {{!gear}}
-        {{#if mounts}} 
-        <br>
-        <i>{{localize "fantasycraft.mounts"}}:</i> {{#each mounts as |mount id|}}
-        <span>{{mount.name}} (
-            {{#if mount.system.movement.ground.value}} {{localize "fantasycraft.spd"}} {{mount.system.movement.ground.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.ground"}} 
-            ({{localize "fantasycraft.run"}} {{mount.system.movement.ground.run}} {{localize "fantasycraft.ft"}}){{/if}}
-            {{#if mount.system.movement.fly.value}} {{localize "fantasycraft.spd"}} {{mount.system.movement.fly.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.fly"}} 
-            ({{localize "fantasycraft.run"}} {{mount.system.movement.fly.run}} {{localize "fantasycraft.ft"}}){{/if}}
-            {{#if mount.system.movement.swim.value}} {{localize "fantasycraft.spd"}} {{mount.system.movement.swim.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.swim"}} 
-            ({{localize "fantasycraft.run"}} {{mount.system.movement.swim.run}} {{localize "fantasycraft.ft"}}){{/if}}
-            {{#if mount.system.movement.burrow.value}} {{localize "fantasycraft.spd"}} {{mount.system.movement.burrow.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.burrow"}} 
-            ({{localize "fantasycraft.run"}} {{mount.system.movement.burrow.run}} {{localize "fantasycraft.ft"}}){{/if}}
-            {{localize "fantasycraft.travel"}} {{mount.system.movement.ground.travel}}; SZ/Def {{mount.system.size}}/{{mount.system.traits.defense.grade}})
-        </span> {{/each}} {{/if}}
-        <br>
-        <i>{{localize "fantasycraft.gear"}}:</i> {{!each gear loop}}
-        {{#each armour as |armour id|}} <label>{{localize armour.system.armourCoverage}} {{armour.name}}</label>  
-        <span>{{localize "fantasycraft.dr"}}: {{armour.system.damageReduction}} {{#each armour.system.resistances as |resistance  id|}}
-            {{#compare resistance.value "0" operator="!="}}
-            , {{resistance.name}}: {{resistance.value}} 
-            {{/compare}} {{/each}} 
-        {{#each armour.system.upgrades as |upgrade id|}}{{#if upgrade}} {{id}} {{prop}} {{/if}} {{/each}} </span> 
-        {{#unless @last}}, {{/unless}}
-        {{/each}} 
-        {{#each general as |item id|}} <label>{{item.name}}</label> <span>{{item.system.quantity}}</span> {{/each}}
-        {{!Treasure}}
-        <br>
-        <a class="roll-treasure"><i>{{localize "fantasycraft.treasure"}}:</i></a>{{#each actor.system.treasure as |treas name|}}{{#if treas.value}}{{treas.value}}{{treas.shorthand}}{{#unless @last}},{{/unless}} {{/if}} {{/each}}    
-        <br>
-        <select name="system.treasureRollMod">
-            {{#select actor.system.treasureRollMod}}
-                <option value="0"></option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-            {{/select}}
-        </select>
+            <h4>
+                <p class="separator-border center-text capitalize">
+                    {{localize "fantasycraft.attacks"}}
+                </p>
+            </h4>
+            {{#each attacks as |attack id|}}
+                    <label class="item" data-item-id="{{attack._id}}"><a class="roll-natural-attack"><b>{{attack.name}}</b></a></label> 
+                    <span>
+                    {{#compare attack.system.attackType "naturalAttack" operator="=="}}
+                        {{! Bite V (2d8 Fire Damage Threat 18-20) Trip }}
+                        {{attack.system.damage.diceNum}}d{{attack.system.damage.diceSize}} {{attack.system.damageType}} {{localize "fantasycraft.damage"}},
+                        {{localize "fantasycraft.threatRange"}}: {{#if attack.system.threat}}{{attack.system.threat}}{{else}}-{{/if}}
+                        {{#each attack.system.naturalUpgrades as |prop id|}}{{#if prop}}, {{id}} {{prop}} {{/if}} {{/each}}
+                    {{/compare}}
+                    {{#compare attack.system.attackType "extraDamage" operator="=="}}
+                        [{{attack.system.damage.value}}/{{attack.system.threat}}] {{localize attack.system.attackDescription}} {{attack.system.attackGrade}}: 
+                        {{attack.system.area.shape}} {{attack.system.area.totalRange}}{{localize "fantasycraft.ft"}} {{localize "fantasycraft.range"}};
+                        {{localize "fantasycraft.damageType"}}: {{localize attack.system.damageType}}
+                    {{/compare}}
+                    {{#compare attack.system.attackType "extraSave" operator="=="}}
+                        [{{localize "fantasycraft.dc"}} {{attack.system.saveDC}}] {{localize (lookup ../config.extraordinarySaveDescription attack.system.attackDescription)}} {{attack.system.attackGrade}}
+                        {{~#compare attack.system.saveUpgrade "none" operator="!="}}: 
+                            {{localize attack.system.area.shape}} 
+                            {{#compare attack.system.area.shape "gaze" operator="!="}}
+                            {{attack.system.area.totalRange}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.range"}}
+                            {{/compare}}
+                        {{/compare}}
+                    {{/compare}}
+                    {{#unless @last}}<br> {{/unless}}</span>
+            {{/each}}
+
+            {{!Spellcasting}}
+            {{#if actor.system.spellcasting.grade}}
+            <h4>
+                <p class="separator-border center-text capitalize">
+                    {{localize "fantasycraft.spellcasting"}}
+                </p>
+            </h4>
+                <button class="roll-skill smallButton" data-skill="spellcasting">{{localize "fantasycraft.spellcasting"}}</button>
+                {{actor.system.spellcasting.total}} = 
+                {{actor.system.spellcasting.value}} + {{actor.system.abilityScores.intelligence.mod}};
+                <br>
+                <div class="flexcol wrap" style="height: 112px;">
+                    {{#each spells as |spell id|}} <a class="spellCard spell-margin" data-item-id={{spell._id}}><i class="fa-regular fa-fire"></i><b>{{spell.name}}</b></a>{{#unless @last}}{{/unless}}{{#if @last}}{{/if}}{{/each}}
+                </div>
+            <br>
+            {{/if}}
+            {{#if stances}}
+            <span><i>{{localize "fantasycraft.stances"}}:</i></span>
+                {{#each stances as |stance id|}}
+                <span class="item ownnedItem" data-item-id="{{_id}}" data-item-name="{{stance.name}}">
+                    <label class="flex5"> {{#if system.inStance}}<b>{{/if}} {{stance.name}}{{#if system.inStance}}</b>{{/if}}</label>
+                    <a class="adoptStance">
+                        {{#if system.inStance}}
+                        <i class="fas fa-chess"></i>
+                        {{else}}
+                        <i class="fa-light fa-chess"></i>
+                        {{/if}}                    
+                    </a>
+                </span>
+                {{/each}}
+            <br>
+            {{/if}}
+            {{!gear}}
+            {{#if mounts}} 
+            <i>{{localize "fantasycraft.mounts"}}:</i> 
+            {{#each mounts as |mount id|}}
+                <span>{{mount.name}} (
+                    {{#if mount.system.movement.ground.value}} {{localize "fantasycraft.spd"}} {{mount.system.movement.ground.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.ground"}} 
+                    ({{localize "fantasycraft.run"}} {{mount.system.movement.ground.run}} {{localize "fantasycraft.ft"}}){{/if}}
+                    {{#if mount.system.movement.fly.value}} {{localize "fantasycraft.spd"}} {{mount.system.movement.fly.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.fly"}} 
+                    ({{localize "fantasycraft.run"}} {{mount.system.movement.fly.run}} {{localize "fantasycraft.ft"}}){{/if}}
+                    {{#if mount.system.movement.swim.value}} {{localize "fantasycraft.spd"}} {{mount.system.movement.swim.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.swim"}} 
+                    ({{localize "fantasycraft.run"}} {{mount.system.movement.swim.run}} {{localize "fantasycraft.ft"}}){{/if}}
+                    {{#if mount.system.movement.burrow.value}} {{localize "fantasycraft.spd"}} {{mount.system.movement.burrow.value}} {{localize "fantasycraft.ft"}} {{localize "fantasycraft.burrow"}} 
+                    ({{localize "fantasycraft.run"}} {{mount.system.movement.burrow.run}} {{localize "fantasycraft.ft"}}){{/if}}
+                    {{localize "fantasycraft.travel"}} {{mount.system.movement.ground.travel}}; SZ/Def {{mount.system.size}}/{{mount.system.traits.defense.grade}})
+                </span> 
+            {{/each}} 
+            <br>
+            {{/if}}
+            <i>{{localize "fantasycraft.gear"}}:</i> {{!each gear loop}}
+            {{#each armour as |armour id|}} <label>{{localize armour.system.armourCoverage}} {{armour.name}}</label>  
+            <span>{{localize "fantasycraft.dr"}}: {{armour.system.damageReduction}} {{#each armour.system.resistances as |resistance  id|}}
+                {{#compare resistance.value "0" operator="!="}}
+                , {{resistance.name}}: {{resistance.value}} 
+                {{/compare}} {{/each}} 
+            {{#each armour.system.upgrades as |upgrade id|}}{{#if upgrade}} {{id}} {{prop}} {{/if}} {{/each}} </span> 
+            {{#unless @last}}, {{/unless}}
+            {{/each}} 
+            {{#each general as |item id|}} <label>{{item.name}}</label> <span>{{item.system.quantity}}</span> {{/each}}
+            <br>
+            {{!Treasure}}
+            <a class="roll-treasure"><i>{{localize "fantasycraft.treasure"}}:</i></a>{{#each actor.system.treasure as |treas name|}}{{#if treas.value}}{{treas.value}}{{treas.shorthand}}{{#unless @last}},{{/unless}} {{/if}} {{/each}}    
+            <br>
+            <select name="system.treasureRollMod">
+                {{#select actor.system.treasureRollMod}}
+                    <option value="0"></option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                {{/select}}
+            </select>
+        </div>
+
     </section>
+
 </div>

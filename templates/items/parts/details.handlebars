@@ -7,11 +7,7 @@
             {{!Ability change area with fields to change 1 Ability.}}
             {{#if item.system.changeAbility}}
             <select name="system.ability.ability"> 
-                {{#select item.system.ability.ability}}
-                {{#each config.abilityScores as |name type|}}
-                    <option value="{{name}}">{{localize name}}</option>
-                {{/each}}
-                {{/select}}
+                {{selectOptions config.abilityScores selected=item.system.ability.ability localize=true}}
             </select>
             <input class="narrowField minimal-flex" type="number" name="system.ability.value" value="{{item.system.ability.value}}" />
             {{/if}}
@@ -22,12 +18,8 @@
         {{!Save change area with fields to change 1 saving throw.}}
         {{#if item.system.changeSave}}
         <select name="system.save.save"> 
-            {{#select item.system.save.save}}
-            {{#each config.savingThrow as |name type|}}
-                <option value="{{name}}">{{localize name}}</option>
-            {{/each}}
-                <option value="all">{{localize "fantasycraft.all"}}</option>
-            {{/select}}
+            {{selectOptions config.savingThrow selected=item.system.save.save localize=true}}
+            <option value="all">{{localize "fantasycraft.all"}}</option>
         </select>
 
         <input class="narrowField minimal-flex" type="number" name="system.save.value" value="{{item.system.save.value}}" />
@@ -47,11 +39,7 @@
         <input class="narrowField minimal-flex" type="number" name="system.skill.value" value="{{item.system.skill.value}}" placeholder="0"/>
         
         <select name="system.skill.skill1"> 
-            {{#select item.system.skill.skill1}}
-            {{#each config.skills as |name type|}}
-                <option value="{{name}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.skill.skill1 localize=true}}
         </select>
         <span style="flex: 0 0 75px;"> {{localize "fantasycraft.threat"}}:
         <input class="narrowField minimal-flex" type="number" name="system.skill.skill1Threat" value="{{item.system.skill.skill1Threat}}"  placeholder="20"/>
@@ -60,32 +48,24 @@
         <label>{{localize "fantasycraft.skillBonus"}}:</label> 
         <input class="narrowField minimal-flex" type="number" name="system.skill.value2" value="{{item.system.skill.value2}}"  placeholder="0"/>
         <select name="system.skill.skill2"> 
-            {{#select item.system.skill.skill2}}
-            {{#each config.skills as |name type|}}
-                <option value="{{name}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.skill.skill2 localize=true}}
         </select>
         <span style="flex: 0 0 75px;"> {{localize "fantasycraft.threat"}}:
         <input class="narrowField minimal-flex" type="number" name="system.skill.skill2Threat" value="{{item.system.skill.skill2Threat}}"  placeholder="20"/>
         </span>
     </div>
     <div class="form-group item-customization-section">
-        <div style="flex: 50%">
+        <div class="flex05">
             <label>{{localize "fantasycraft.skillBonus"}}:</label> 
             <input class="narrowField minimal-flex" type="number" name="system.skill.value3" value="{{item.system.skill.value3}}"  placeholder="0"/>
             <select name="system.skill.skill3" style="font-size: 16px"> 
-                {{#select item.system.skill.skill3}}
-                {{#each config.skills as |name type|}}
-                    <option value="{{name}}">{{localize name}}</option>
-                {{/each}}
-                {{/select}}
+                {{selectOptions config.skills selected=item.system.skill.skill3 localize=true}}
             </select>
             <span style="flex: 0 0 75px;"> {{localize "fantasycraft.threat"}}:
             <input class="narrowField minimal-flex" type="number" name="system.skill.skill3Threat" value="{{item.system.skill.skill3Threat}}"  placeholder="20"/>
             </span>
         </div>
-        <div style="flex: 50%">
+        <div class="flex05">
             
         </div>
     </div>
@@ -97,11 +77,7 @@
         <input type="checkbox" name="system.changeSpeed" data-dtype="Boolean" {{checked item.system.changeSpeed}} />
         {{#if item.system.changeSpeed}}
         <select name="system.movement.movementType"> 
-            {{#select item.system.movement.movementType}}
-            {{#each config.moveType as |name type|}}
-                <option value="{{name}}">{{localize type}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.moveType selected=item.system.movement.movementType localize=true}}
         </select>
         <input class="narrowField minimal-flex" type="number" name="system.movement.value" value="{{item.system.movement.value}}" />
         {{/if}}
@@ -111,11 +87,7 @@
         <input type="checkbox" name="system.changeLifestyle" data-dtype="Boolean" {{checked item.system.changeLifestyle}} />
         {{#if item.system.changeLifestyle}}
         <select name="system.lifestyle.lifestyleType"> 
-            {{#select item.system.lifestyle.lifestyleType}}
-            {{#each config.lifestyle as |name type|}}
-                <option value="{{name}}">{{localize type}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.lifestyle selected=item.system.lifestyle.lifestyleType localize=true}}
         </select>
         <span>{{localize "fantasycraft.bonus"}}: </span>
         <input class="narrowField minimal-flex" type="number" name="system.lifestyle.value" value="{{item.system.lifestyle.value}}" />
@@ -128,11 +100,7 @@
         <input type="checkbox" name="system.grantsNaturalAttack" data-dtype="Boolean" {{checked item.system.grantsNaturalAttack}} />
         {{#if item.system.grantsNaturalAttack}}
         <select name="system.naturalAttack.naturalAttackType"> 
-            {{#select item.system.naturalAttack.naturalAttackType}}
-            {{#each config.naturalAttack as |name type|}}
-                <option value="{{name}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.naturalAttack selected=item.system.naturalAttack.naturalAttackType localize=true}}
         </select>
         <input class="narrowField minimal-flex" type="number" name="system.naturalAttack.grade" value="{{item.system.naturalAttack.grade}}" />
         {{/if}}
@@ -142,21 +110,13 @@
         <input type="checkbox" name="system.grantsResistance" data-dtype="Boolean" {{checked item.system.grantsResistance}} />
         {{#if item.system.grantsResistance}}
         <select name="system.resistances.resistance1"> 
-            {{#select item.system.resistances.resistance1}}
             <option value=""></option>
-            {{#each config.damageResistanceArmour as |name type|}}
-                <option value="{{type}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.damageResistanceArmour selected=item.system.resistances.resistance1 localize=true}}
         </select>
         <input class="narrowField minimal-flex" type="number" name="system.resistances.value1" value="{{item.system.resistances.value1}}" />
         <select name="system.resistances.resistance2"> 
-            {{#select item.system.resistances.resistance2}}
             <option value=""></option>
-            {{#each config.damageResistanceArmour as |name type|}}
-                <option value="{{type}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.damageResistanceArmour selected=item.system.resistances.resistance2 localize=true}}
         </select>
         <input class="narrowField minimal-flex" type="number" name="system.resistances.value2" value="{{item.system.resistances.value2}}" />
         {{/if}}

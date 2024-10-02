@@ -1,18 +1,19 @@
 <form class="{{cssClass}} item-form flexcol" autocomplete="off">
 
     {{!-- Sheet Header --}}
-    <header class="sheet-header large-header" style="flex: 0 0 60px; border-bottom: none;">
+    <header class="sheet-header dark large-header">
         <div class="flexcol">
             <section>
                 {{#if isGM}}
                 <div class="flex1">
-                    <a class="open-gm-screen" style="float: center">GM</a>
+                    <a class="open-gm-screen">GM</a>
                 </div>
                 {{/if}}
             </section>
-            <section class="flexrow" style="text-align: center;">
-                <h1 class="charname">
-                    <input style="padding: 0px; margin-top: 0px" name="name" type="text" value="{{actor.name}}" placeholder="{{ localize 'fantasycraft.name' }}"/>
+
+            <section class="flexrow">
+                <h1 class="title-name remove-space center-text">
+                    <input class="npc-name remove-space" name="name" type="text" value="{{actor.name}}" placeholder="{{ localize 'fantasycraft.name' }}"/>
                 </h1>
             </section>
             {{!-- If Standard - Damage Taken / If Special - Vitality and Wounds - Subdual and Stress --}}
@@ -62,8 +63,8 @@
                         </footer>
                     </li>
                 {{else}}
-                <li class="attribute">
-                    <div style="text-align: center;">
+                <li class="attribute" style="min-height: 76px">
+                    <div class="center-text">
                         <h4 class="box-title">{{ localize "fantasycraft.damage" }}</h4>
                         {{!damage taken}}
                         <input type="number" style="max-width: 150px;" name="system.damageTaken" value="{{actor.system.damageTaken}}">
@@ -90,7 +91,7 @@
 
 
     {{!-- Navigation --}}
-    <nav class="sheet-navigation sheet-tabs" data-group="primary">
+    <nav class="sheet-navigation dark sheet-tabs" data-group="primary">
         <a class="item active" data-tab="stat-block">{{ localize "fantasycraft.statBlock" }}</a>
         <a class="item" data-tab="calculated">{{ localize "fantasycraft.calculated" }}</a>
     </nav>
@@ -105,11 +106,7 @@
                 <div class="flex4">        
                 <span>{{localize "fantasycraft.size"}}: </span>
                     <select name="system.size"> 
-                        {{#select actor.system.size}}
-                        {{#each config.size as |v k|}}
-                            <option value="{{k}}">{{localize v}}</option>
-                        {{/each}}
-                        {{/select}}
+                        {{selectOptions config.size selected=actor.system.size localize=true}}
                     </select>
                 </div>
                 <div class="flex4">
@@ -164,12 +161,8 @@
                     <div>
                         <span> {{localize trait.label}}: </span>
                         <select name="system.traits.{{name}}.grade">
-                            {{#select trait.grade}}
                             {{#if @last}}<option value="-"></option>{{/if}}
-                            {{#each ../config.npcAttack as |cName id|}}
-                            <option value="{{id}}">{{id}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions ../config.npcAttack selected=trait.grade localize=true}}
                         </select>
                     </div>
                     {{/each}}
@@ -195,11 +188,7 @@
                 {{#if actor.system.martialArts}}
                     <label>{{localize "fantasycraft.martialArts"}}: </label>
                     <select name="system.defense.defenseAttribute">
-                        {{#select actor.system.defense.defenseAttribute}}
-                        {{#each config.abilityScores as |v k|}}
-                            <option value="{{k}}">{{localize v}}</option>
-                        {{/each}}
-                        {{/select}}
+                        {{selectOptions config.abilityScores selected=actor.system.defense.defenseAttribute localize=true}}
                     </select>
                 {{/if}}
             </section>

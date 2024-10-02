@@ -7,12 +7,8 @@
 {{!Determine the type of essence}}
 <div class="flexrow">
     <select class="flex 2 essenceSelecter" name="system.essences.essence1.ability">
-        {{#select item.system.essences.essence1.ability}}
-            {{#each config.magicItemEssences as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.magicItemEssences selected=item.system.essences.essence1.ability localize=true}}
+</select>
 
     {{! Is the essence a greater or Lesser essence?}}
     {{#if item.system.essences.essence1.canBeGreater}}
@@ -22,33 +18,21 @@
     {{! If the essence is DamageAura, Select field for the Aura damage it affects}}
     {{#compare item.system.essences.essence1.ability "damageAura" operator="=="}}
     <select name="system.essences.essence1.target">
-        {{#select item.system.essences.essence1.target}}
-            {{#each config.damageAuraTypes as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.damageAuraTypes selected=item.system.essences.essence1.target localize=true}}
+</select>
     {{/compare}}
 
     {{! If the essence is Damage Resistance, Select field for the creature Type}}
     {{#compare item.system.essences.essence1.ability "damageResistance" operator="=="}}
     <select name="system.essences.essence1.target">
-        {{#select item.system.essences.essence1.target}}
-            {{#each config.damageTypes as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.damageTypes selected=item.system.essences.essence1.target localize=true}}
+</select>
     {{/compare}}
 
     {{! Exotic Damage: Select Field}}
     {{#compare item.system.essences.essence1.ability "exoticDamage" operator="=="}}
         <select name="system.essences.essence1.target">
-            {{#select item.system.essences.essence1.target}}
-                {{#each config.damageTypes as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.damageTypes selected=item.system.essences.essence1.target localize=true}}
         </select>
         <select name="system.essences.essence1.attackType">
             {{#select item.system.essences.essence1.attackType}}
@@ -76,11 +60,7 @@
     {{! Class Enhancement: Dropdown Field}}
     {{#compare item.system.essences.essence1.ability "classEnhancement" operator="=="}}
         <select name="system.essences.essence1.target">
-            {{#select item.system.essences.essence1.target}}
-                {{#each config.classes as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.classes selected=item.system.essences.essence1.target localize=true}}
         </select>
     {{/compare}}
 
@@ -105,19 +85,11 @@
     {{#compare item.system.essences.essence1.ability "npcQuality" operator="=="}}
     {{#if item.system.essences.essence1.greater}}
         <select name="system.essences.essence1.target">
-            {{#select item.system.essences.essence1.target}}
-                {{#each config.npcQualityGreater as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.npcQualityGreater selected=item.system.essences.essence1.target localize=true}}
         </select>
     {{else}}
         <select name="system.essences.essence1.target">
-            {{#select item.system.essences.essence1.target}}
-                {{#each config.npcQualityLesser as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.npcQualityLesser selected=item.system.essences.essence1.target localize=true}}
         </select>
     {{/if}}
     {{/compare}}
@@ -125,11 +97,7 @@
     {{! Dropdown }}
     {{#compare item.system.essences.essence1.ability "proficiency" operator="=="}}
         <select name="system.essences.essence1.target">
-            {{#select item.system.essences.essence1.target}}
-                {{#each config.attackProficiency as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.attackProficiency selected=item.system.essences.essence1.target localize=true}}
         </select>
     {{/compare}}
     
@@ -157,11 +125,7 @@
     {{! Dropdown }}
     {{#compare item.system.essences.essence1.ability "trainedSkill" operator="=="}}
         <select name="system.essences.essence1.target">
-            {{#select item.system.essences.essence1.target}}    
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.essences.essence1.target localize=true}}
         </select>
     {{/compare}}
 
@@ -180,12 +144,8 @@
     {{! Input }}
     {{#compare item.system.essences.essence1.ability "saveBonus" operator="=="}}
     <select name="system.essences.essence1.target">
-        {{#select item.system.essences.essence1.target}}
-        {{#each config.savingThrow as |v k|}}
-            <option value="{{k}}"> {{localize v}}</option>
-        {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.savingThrow selected=item.system.essences.essence1.target localize=true}}
+</select>
     {{/compare}}
     </div>
 
@@ -196,12 +156,8 @@
 {{!Determine the type of essence}}
 <div class="flexrow">
     <select class="flex 2 essenceSelecter" name="system.essences.essence2.ability">
-        {{#select item.system.essences.essence2.ability}}
-            {{#each config.magicItemEssences as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.magicItemEssences selected=item.system.essences.essence2.ability localize=true}}
+</select>
 
     {{! Is the essence a greater or Lesser essence?}}
     {{#if item.system.essences.essence2.canBeGreater}}
@@ -211,33 +167,21 @@
     {{! If the essence is DamageAura, Select field for the Aura damage it affects}}
     {{#compare item.system.essences.essence2.ability "damageAura" operator="=="}}
     <select name="system.essences.essence2.target">
-        {{#select item.system.essences.essence2.target}}
-            {{#each config.damageAuraTypes as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.damageAuraTypes selected=item.system.essences.essence2.target localize=true}}
+</select>
     {{/compare}}
 
     {{! If the essence is Damage Resistance, Select field for the creature Type}}
     {{#compare item.system.essences.essence2.ability "damageResistance" operator="=="}}
     <select name="system.essences.essence2.target">
-        {{#select item.system.essences.essence2.target}}
-            {{#each config.damageTypes as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.damageTypes selected=item.system.essences.essence2.target localize=true}}
+</select>
     {{/compare}}
 
     {{! Exotic Damage: Select Field}}
     {{#compare item.system.essences.essence2.ability "exoticDamage" operator="=="}}
         <select name="system.essences.essence2.target">
-            {{#select item.system.essences.essence2.target}}
-                {{#each config.damageTypes as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.damageTypes selected=item.system.essences.essence2.target localize=true}}
         </select>
         <select name="system.essences.essence2.attackType">
             {{#select item.system.essences.essence2.attackType}}
@@ -265,11 +209,7 @@
     {{! Class Enhancement: Dropdown Field}}
     {{#compare item.system.essences.essence2.ability "classEnhancement" operator="=="}}
         <select name="system.essences.essence2.target">
-            {{#select item.system.essences.essence2.target}}
-                {{#each config.classes as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.classes selected=item.system.essences.essence2.target localize=true}}
         </select>
     {{/compare}}
 
@@ -294,19 +234,11 @@
     {{#compare item.system.essences.essence2.ability "npcQuality" operator="=="}}
     {{#if item.system.essences.essence2.greater}}
         <select name="system.essences.essence2.target">
-            {{#select item.system.essences.essence2.target}}
-                {{#each config.npcQualityGreater as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.npcQualityGreater selected=item.system.essences.essence2.target localize=true}}
         </select>
     {{else}}
         <select name="system.essences.essence2.target">
-            {{#select item.system.essences.essence2.target}}
-                {{#each config.npcQualityLesser as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.npcQualityLesser selected=item.system.essences.essence2.target localize=true}}
         </select>
     {{/if}}
     {{/compare}}
@@ -314,11 +246,7 @@
     {{! Dropdown }}
     {{#compare item.system.essences.essence2.ability "proficiency" operator="=="}}
         <select name="system.essences.essence2.target">
-            {{#select item.system.essences.essence2.target}}
-                {{#each config.attackProficiency as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.attackProficiency selected=item.system.essences.essence2.target localize=true}}
         </select>
     {{/compare}}
     
@@ -334,11 +262,7 @@
         </select>
         {{#compare item.system.essences.essence2.attackType "skill" operator="=="}}
         <select name="system.essences.essence2.target">
-            {{#select item.system.essences.essence2.target}}
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.essences.essence2.target localize=true}}
         </select>
         {{/compare}}
     {{/compare}}
@@ -346,11 +270,7 @@
     {{! Dropdown }}
     {{#compare item.system.essences.essence2.ability "trainedSkill" operator="=="}}
         <select name="system.essences.essence2.target">
-            {{#select item.system.essences.essence2.target}}    
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.essences.essence2.target localize=true}}
         </select>
     {{/compare}}
 
@@ -369,12 +289,8 @@
     {{! Input }}
     {{#compare item.system.essences.essence2.ability "saveBonus" operator="=="}}
     <select name="system.essences.essence2.target">
-        {{#select item.system.essences.essence2.target}}
-        {{#each config.savingThrow as |v k|}}
-            <option value="{{k}}"> {{localize v}}</option>
-        {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.savingThrow selected=item.system.essences.essence2.target localize=true}}
+</select>
     {{/compare}}
     </div>
 
@@ -385,12 +301,8 @@
 {{!Determine the type of essence}}
 <div class="flexrow">
     <select class="flex 2 essenceSelecter" name="system.essences.essence3.ability">
-        {{#select item.system.essences.essence3.ability}}
-            {{#each config.magicItemEssences as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.magicItemEssences selected=item.system.essences.essence3.ability localize=true}}
+</select>
 
     {{! Is the essence a greater or Lesser essence?}}
     {{#if item.system.essences.essence3.canBeGreater}}
@@ -400,33 +312,21 @@
     {{! If the essence is DamageAura, Select field for the Aura damage it affects}}
     {{#compare item.system.essences.essence3.ability "damageAura" operator="=="}}
     <select name="system.essences.essence3.target">
-        {{#select item.system.essences.essence3.target}}
-            {{#each config.damageAuraTypes as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.damageAuraTypes selected=item.system.essences.essence3.target localize=true}}
+</select>
     {{/compare}}
 
     {{! If the essence is Damage Resistance, Select field for the creature Type}}
     {{#compare item.system.essences.essence3.ability "damageResistance" operator="=="}}
     <select name="system.essences.essence3.target">
-        {{#select item.system.essences.essence3.target}}
-            {{#each config.damageTypes as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.damageTypes selected=item.system.essences.essence3.target localize=true}}
+</select>
     {{/compare}}
 
     {{! Exotic Damage: Select Field}}
     {{#compare item.system.essences.essence3.ability "exoticDamage" operator="=="}}
         <select name="system.essences.essence3.target">
-            {{#select item.system.essences.essence3.target}}
-                {{#each config.damageTypes as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.damageTypes selected=item.system.essences.essence3.target localize=true}}
         </select>
         <select name="system.essences.essence3.attackType">
             {{#select item.system.essences.essence3.attackType}}
@@ -454,11 +354,7 @@
     {{! Class Enhancement: Dropdown Field}}
     {{#compare item.system.essences.essence3.ability "classEnhancement" operator="=="}}
         <select name="system.essences.essence3.target">
-            {{#select item.system.essences.essence3.target}}
-                {{#each config.classes as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.classes selected=item.system.essences.essence3.target localize=true}}
         </select>
     {{/compare}}
 
@@ -483,19 +379,11 @@
     {{#compare item.system.essences.essence3.ability "npcQuality" operator="=="}}
     {{#if item.system.essences.essence3.greater}}
         <select name="system.essences.essence3.target">
-            {{#select item.system.essences.essence3.target}}
-                {{#each config.npcQualityGreater as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.npcQualityGreater selected=item.system.essences.essence3.target localize=true}}
         </select>
     {{else}}
         <select name="system.essences.essence3.target">
-            {{#select item.system.essences.essence3.target}}
-                {{#each config.npcQualityLesser as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.npcQualityLesser selected=item.system.essences.essence3.target localize=true}}
         </select>
     {{/if}}
     {{/compare}}
@@ -503,11 +391,7 @@
     {{! Dropdown }}
     {{#compare item.system.essences.essence3.ability "proficiency" operator="=="}}
         <select name="system.essences.essence3.target">
-            {{#select item.system.essences.essence3.target}}
-                {{#each config.attackProficiency as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.attackProficiency selected=item.system.essences.essence3.target localize=true}}
         </select>
     {{/compare}}
     
@@ -523,11 +407,7 @@
         </select>
         {{#compare item.system.essences.essence3.attackType "skill" operator="=="}}
         <select name="system.essences.essence3.target">
-            {{#select item.system.essences.essence3.target}}
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.essences.essence3.target localize=true}}
         </select>
         {{/compare}}
     {{/compare}}
@@ -535,11 +415,7 @@
     {{! Dropdown }}
     {{#compare item.system.essences.essence3.ability "trainedSkill" operator="=="}}
         <select name="system.essences.essence3.target">
-            {{#select item.system.essences.essence3.target}}    
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.essences.essence3.target localize=true}}
         </select>
     {{/compare}}
 
@@ -558,12 +434,8 @@
     {{! Input }}
     {{#compare item.system.essences.essence3.ability "saveBonus" operator="=="}}
     <select name="system.essences.essence3.target">
-        {{#select item.system.essences.essence3.target}}
-        {{#each config.savingThrow as |v k|}}
-            <option value="{{k}}"> {{localize v}}</option>
-        {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.savingThrow selected=item.system.essences.essence3.target localize=true}}
+</select>
     {{/compare}}
     </div>
 
@@ -574,12 +446,8 @@
 {{!Determine the type of essence}}
 <div class="flexrow">
     <select class="flex 2 essenceSelecter" name="system.essences.essence4.ability">
-        {{#select item.system.essences.essence4.ability}}
-            {{#each config.magicItemEssences as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.magicItemEssences selected=item.system.essences.essence4.ability localize=true}}
+</select>
 
     {{! Is the essence a greater or Lesser essence?}}
     {{#if item.system.essences.essence4.canBeGreater}}
@@ -589,33 +457,21 @@
     {{! If the essence is DamageAura, Select field for the Aura damage it affects}}
     {{#compare item.system.essences.essence4.ability "damageAura" operator="=="}}
     <select name="system.essences.essence4.target">
-        {{#select item.system.essences.essence4.target}}
-            {{#each config.damageAuraTypes as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.damageAuraTypes selected=item.system.essences.essence4.target localize=true}}
+</select>
     {{/compare}}
 
     {{! If the essence is Damage Resistance, Select field for the creature Type}}
     {{#compare item.system.essences.essence4.ability "damageResistance" operator="=="}}
     <select name="system.essences.essence4.target">
-        {{#select item.system.essences.essence4.target}}
-            {{#each config.damageTypes as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
+        {{selectOptions config.damageTypes selected=item.system.essences.essence4.target localize=true}}
+</select>
     {{/compare}}
 
     {{! Exotic Damage: Select Field}}
     {{#compare item.system.essences.essence4.ability "exoticDamage" operator="=="}}
         <select name="system.essences.essence4.target">
-            {{#select item.system.essences.essence4.target}}
-                {{#each config.damageTypes as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.damageTypes selected=item.system.essences.essence4.target localize=true}}
         </select>
         <select name="system.essences.essence4.attackType">
             {{#select item.system.essences.essence4.attackType}}
@@ -643,11 +499,7 @@
     {{! Class Enhancement: Dropdown Field}}
     {{#compare item.system.essences.essence4.ability "classEnhancement" operator="=="}}
         <select name="system.essences.essence4.target">
-            {{#select item.system.essences.essence4.target}}
-                {{#each config.classes as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.classes selected=item.system.essences.essence4.target localize=true}}
         </select>
     {{/compare}}
 
@@ -672,19 +524,11 @@
     {{#compare item.system.essences.essence4.ability "npcQuality" operator="=="}}
     {{#if item.system.essences.essence4.greater}}
         <select name="system.essences.essence4.target">
-            {{#select item.system.essences.essence4.target}}
-                {{#each config.npcQualityGreater as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.npcQualityGreater selected=item.system.essences.essence4.target localize=true}}
         </select>
     {{else}}
         <select name="system.essences.essence4.target">
-            {{#select item.system.essences.essence4.target}}
-                {{#each config.npcQualityLesser as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.npcQualityLesser selected=item.system.essences.essence4.target localize=true}}
         </select>
     {{/if}}
     {{/compare}}
@@ -692,11 +536,7 @@
     {{! Dropdown }}
     {{#compare item.system.essences.essence4.ability "proficiency" operator="=="}}
         <select name="system.essences.essence4.target">
-            {{#select item.system.essences.essence4.target}}
-                {{#each config.attackProficiency as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.attackProficiency selected=item.system.essences.essence4.target localize=true}}
         </select>
     {{/compare}}
     
@@ -712,11 +552,7 @@
         </select>
         {{#compare item.system.essences.essence4.attackType "skill" operator="=="}}
         <select name="system.essences.essence4.target">
-            {{#select item.system.essences.essence4.target}}
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.essences.essence4.target localize=true}}
         </select>
         {{/compare}}
     {{/compare}}
@@ -724,11 +560,7 @@
     {{! Dropdown }}
     {{#compare item.system.essences.essence4.ability "trainedSkill" operator="=="}}
         <select name="system.essences.essence4.target">
-            {{#select item.system.essences.essence4.target}}    
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions config.skills selected=item.system.essences.essence4.target localize=true}}
         </select>
     {{/compare}}
 
@@ -747,11 +579,7 @@
     {{! Input }}
     {{#compare item.system.essences.essence4.ability "saveBonus" operator="=="}}
     <select name="system.essences.essence4.target">
-        {{#select item.system.essences.essence4.target}}
-        {{#each config.savingThrow as |v k|}}
-            <option value="{{k}}"> {{localize v}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.savingThrow selected=item.system.essences.essence4.target localize=true}}
     </select>
     {{/compare}}
     </div>

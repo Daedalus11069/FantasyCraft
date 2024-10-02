@@ -1,45 +1,24 @@
-<div class="">
+<div>
     <div class="flexcol">
+        
         <div class="flexrow">
             <h4 class="category-label"> {{localize "fantasycraft.castingInformation"}}</h4>
         </div>
-        <section class="flexrow category-body right-border" style="min-height: 50px">
-        {{! Spell save DC}}
-            <ul class="flexrow remove-space"> 
-                <li class="centreItems flex4">
-                    <span>{{localize "fantasycraft.traitSave"}} {{localize "fantasycraft.dc"}}</span>
-                </li>
-                <li class="centreItems flex4">
-                    <input type="number" class="largeBox calcBox" name="system.spellSave" value="{{actor.system.spellSave}}"disabled=true />
-                    <footer>{{localize "fantasycraft.total"}}</footer>
-                </li> 
-                <li class="centreItems flex1">
-                    <span>=</span>
-                </li>
-                <li class="centreItems flex3">
-                    <span> 10 </span>
-                </li>
-                <li class="centreItems flex1" style="line-height: 30px">
-                    <span>+</span>
-                </li>
-                <li class="centreItems flex4">
-                    <input type="number" class="smallBox calcBox" name="system.abilityScores.charisma.mod" value="{{actor.system.abilityScores.charisma.mod}}" disabled=true />
-                    <footer>{{localize "fantasycraft.ability"}}</footer>
-                </li> 
-                <li class="centreItems flex1">
-                    <span> + </span> 
-                </li>
-                <li class="centreItems flex4">
-                    <input type="number" class="smallBox calcBox" name="system.castingFeats" value="{{actor.system.castingFeats}}" disabled=true />
-                    <footer>{{localize "fantasycraft.feats"}}</footer>
-                </li> 
-            </ul>
-            {{! Casting Level}}
-            <div class="flexcol category-body" style="text-align:center; min-height: 50px">
-                <div>
-                    <input type="number" class="largeBox calcBox" name="system.castingLevel" value="{{numberFormat actor.system.castingLevel}}" disabled=true />
-                    <footer> {{localize "fantasycraft.castingLevel"}}</footer>
+        <section class="flexrow remove-space right-border">
+        {{!-- Spell save DC and Casting Level --}}
+            <div class="flexcol flex4 category-body"> 
+                <div class="flexrow center-text">
+                    <div class="centreItems">
+                        <input type="number" class="largeBox calcBox" name="system.spellSave" value="{{actor.system.spellSave}}"disabled=true />
+                        <footer>{{localize "fantasycraft.traitSave"}} {{localize "fantasycraft.dc"}}</footer>
+                    </div> 
+                    <div>
+                        <input type="number" class="largeBox calcBox" name="system.castingLevel" value="{{numberFormat actor.system.castingLevel}}" disabled=true />
+                        <footer> {{localize "fantasycraft.castingLevel"}}</footer>
+                    </div>
                 </div>
+                {{!-- if 'Corrupting Magic' is in use --}}
+                {{!-- Tainted grades --}}
                 {{#if corrupting}}
                 <div>
                     <footer class="footer-text">
@@ -52,158 +31,18 @@
                 </div>
                 {{/if}}
             </div>
-            <div class="category-body" style="text-align:center; min-height: 50px">
-                {{#if actor.system.isDivine}}
-                {{! TODO: Once paths are improved to actually add spells add spell uses here}}
-                {{/if}}
-                {{#if actor.system.isArcane}}
-                <div class="flexrow">
-                    <h4 class="skill-name">
-                        <div class="button">
-                        <a class="roll-skill">{{localize "fantasycraft.spellcasting"}}</a>
-                        </div>
-                    </h4>
-                    <div>
-                        <span>{{actor.system.arcane.spellcasting.value}}</span>
-                        <footer> {{localize "fantasycraft.bonus"}} </footer>
-                    </div>
-                 </div>
-                <ul class="flexrow" style="padding-left: 5px; text-align: center">
-                    <li class="flex3"><h4 class="skill-name">{{localize "fantasycraft.spellPoints"}}</h4></li>
-                    <li>
-                        <input class="wideBox calcBox" type="number" name="system.arcane.spellPoints" value="{{actor.system.arcane.spellPoints}}"/>
-                        <footer> {{localize "current"}}</footer>
-                    </li>
-                    <li><span>/</span></li>
-                    <li>
-                        <span>{{actor.system.arcane.spellPointMax}} </span>
-                        <footer> {{localize "fantasycraft.max"}}</footer>
-                    </li>
-                </ul>
-                {{/if}}
-            </div>
-        </section>
-    </div>
-    <div class="flexrow">
-        <details  {{collapse collapsed "spellcastingSidebar"}}> <summary></summary>
-            <div class="flex2">
-                <div class="flex3">
-                    <div class="flexcol">
-                        {{! Divine Casting}}
-                        <section>
-                            <h4 class="category-label flexrow">
-                                <span style="flex: 0 0 92%">{{localize "fantasycraft.divine"}}</span>
-                                <input class="push" type="checkbox" name="system.isDivine" data-dtype="Boolean" {{checked actor.system.isDivine}} style="max-height: 11px; flex: 0 0 5%"/>
-                            </h4>
-                            <div class={{#if actor.system.isDivine}} "category-body" {{else}}"collapsed-category" {{/if}}>
-                                {{! Alignment and Paths Options}}
-                                <h4 class="skill-name">{{localize "fantasycraft.alignment"}}</h4>
-                                    <ul class="traits-list">
-                                    {{#each actor.system.interests.alignment.array as |item id|}}
-                                        <li class="tag {{id}} bordered-text">{{item}}</li>
-                                    {{/each}}
-                                    </ul>
-                                {{! paths and their steps}}
-                                <h4 class="skill-name">{{localize "fantasycraft.paths"}}</h4>
-                                <br>
-                                <div class="two-column">
-                                    {{#each paths as |path id|}}
-                                    <div class="item flexrow" data-item-id="{{path.id}}" data-item-name="{{path.name}}">
-                                        <span class="flex6">{{path.name}}</span>
-                                        <select class="flex1 pathChange" data-item-id="{{path.id}}">
-                                            {{#select path.system.pathStep}}
-                                                <option value=""></option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            {{/select}}
-                                        </select>
-                                        <a class="editItem">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a class="deleteItem">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                    {{/each}}
-                                </div>
-                            </div>
-                        </section>
-                        {{! Arcane Casting}}
-                        <div>
-                            <h4 class="category-label flexrow">
-                            <span style="flex: 0 0 92%">{{localize "fantasycraft.arcane"}}</span>
-                            <input class="push" type="checkbox" name="system.isArcane" data-dtype="Boolean" {{checked actor.system.isArcane}} style="max-height: 11px; flex: 0 0 5%"/>
-                            </h4>
-                            <section class={{#if actor.system.isArcane}} "category-body" {{else}}"collapsed-category" {{/if}}>
-                                {{! Spellcasting skill}}
-                                <h4 class="skill-name"><a class="roll-skill">{{localize "fantasycraft.spellcasting"}}</a></h4>
-                                <ul class="flexrow" style="padding-left: 5px; text-align: center" data-skill="spellcasting">
-                                    <li>
-                                        <input class="skill-input" name="system.arcane.spellcasting.value" type="number" value="{{actor.system.arcane.spellcasting.value}}" placeholder="0" disabled=true />
-                                        <footer> {{localize "fantasycraft.total"}} </footer>
-                                    </li>
-                                    <li>
-                                        <input class="skill-input" name="system.abilityScores.intelligence.mod" type="number" value="{{actor.system.abilityScores.intelligence.mod}}" placeholder="0" disabled=true/>
-                                        <footer> {{localize "fantasycraft.ability"}} </footer>
-                                    </li>
-                                    <li>
-                                        <input type="number" class="smallBox calcBox" style="height: 26px" name="system.arcane.spellcasting.ranks" value="{{actor.system.arcane.spellcasting.ranks}}" />
-                                        <footer> {{localize "fantasycraft.ranks"}} </footer>
-                                    </li>
-                                    <li>
-                                        <input class="skill-input" name="system.arcane.spellcasting.misc" type="number" value="{{actor.system.arcane.spellcasting.misc}}" placeholder="0"/>
-                                        <footer> {{localize "fantasycraft.misc"}} </footer>
-                                    </li>
-                                    <li>
-                                        <input class="skill-input" name="system.arcane.spellcasting.threat" type="number" value="{{actor.system.arcane.spellcasting.threat}}" placeholder="20"/>
-                                        <footer> {{localize "fantasycraft.threat"}} </footer>
-                                    </li>
-                                </ul>
-
-                                {{! Spells Known}}
-                                <h4 class="skill-name">{{localize "fantasycraft.spellsKnown"}}</h4>
-                                <ul class="flexrow" style="padding-left: 5px; text-align: center">
-                                    <li>
-                                        <input class="skill-input" name="system.arcane.spellsKnown.value" type="number" value="{{actor.system.arcane.spellsKnown.value}}" placeholder="0" disabled=true/>
-                                        <footer> {{localize "fantasycraft.total"}} </footer>
-                                    </li>
-                                    <li>
-                                        <input class="skill-input" name="wisdomScore" type="number" value="{{actor.system.abilityScores.wisdom.value}}" placeholder="0" disabled=true/>
-                                        <footer> {{localize "fantasycraft.ability"}} </footer>
-                                    </li>
-                                    <li>
-                                        <input type="number" class="smallBox calcBox" style="height: 26px" name="castingRanks" value="{{actor.system.arcane.spellcasting.ranks}}" disabled=true/>
-                                        <footer> {{localize "fantasycraft.ranks"}} </footer>
-                                    </li>
-                                    <li> 
-                                        <input class="skill-input" name="system.arcane.spellsKnown.misc" type="number" value="{{actor.system.arcane.spellsKnown.misc}}" placeholder="0"/>
-                                        <footer> {{localize "fantasycraft.misc"}} </footer>
-                                    </li>
-                                </ul>
-                                <h4 class="skill-name">{{localize "fantasycraft.spellPoints"}}</h4>
-                                <ul class="flexrow" style="padding-left: 5px; text-align: center">
-                                    <li class="flex3"><span>{{actor.system.arcane.spellPoints}}</span>
-                                    <li class="flex1"><span>/</span></li>
-                                    <li class="flex1"><span class="skill-name">{{localize "fantasycraft.max"}}</span></li>
-                                    <li class="flex3"><input class="wideBox" type="number" name="system.arcane.spellPointMax" value="{{actor.system.arcane.spellPointMax}}" placeholder="0" disabled=true /></li>
-                                </ul>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-                <div class="flexrow">
-                    <h4 class="category-label"> {{localize "fantasycraft.spellTricks"}}</h4>
-                </div>
-                <section class="category-body" style="height: calc(100% - 17px);">
+            <div class="flexcol flex5 category-body">
+            {{!-- Casting Tricks --}}
+                <div>
                     {{#each spellTricks as |trick id|}}
-                    <div class="item ownnedItem flexrow" data-item-id="{{_id}}" data-item-name="{{armour.name}}">
+                    <div class="item ownnedItem flexrow" data-item-id="{{_id}}" data-item-name="{{trick.name}}">
                         <label class="flex4">{{trick.name}}</label>
                         <span>
-                            {{#compare trick.system.uses.timeFrame "unlimited" operator="=="}}-{{/compare}}
-                            {{#compare trick.system.uses.timeFrame "unlimited" operator="!="}}{{trick.system.uses.usesRemaining}}/{{trick.system.uses.maxUses}}{{/compare}}
+                            {{#if (eq trick.system.uses.timeFrame "unlimited")}}
+                                -
+                            {{else}}
+                                {{trick.system.uses.usesRemaining}}/{{trick.system.uses.maxUses}}
+                            {{/if}}
                         </span>
                         <div>
                             <a class="editItem">
@@ -215,31 +54,175 @@
                         </div>
                     </div>
                     {{/each}}
-                </section>
-            </div>
-            <div class="flex2">
-                <div class="flexrow">
-                    <h4 class="category-label"> {{localize "fantasycraft.castingOptions"}}</h4>
                 </div>
-                {{! List of spellcasting feats, abilities, and tricks}}
-                <div class="category-body" style="height: calc(100% - 17px);">
-                    {{#each feats as |feat id|}}
-                        {{#compare feat.system.featType "fantasycraft.spellcasting" operator="=="}}
-                        <div class="flexrow item" data-item-id="{{feat.id}}" data-item-name="{{feat.name}}">
-                            <span style="flex: 0 0 85%">{{feat.name}}</span>
-                            <a class="editItem" style="flex: 0 0 5%">
+            </div>
+            <div class="flex4 category-body">
+                {{#if actor.system.isDivine}}
+                <h4 class="remove-space center-text">{{localize "fantasycraft.pathBonuses"}}</h4>
+                <div class="flexrow">
+                    {{#each paths as |path id|}}
+                        {{#if path.system.pathStep}}
+                        <div class="item flexhalf button" data-item-id="{{path.id}}" data-item-name="{{path.name}}">
+                            <a class="path-bonus">{{path.system.shorthand}}</a>
+                        </div>
+                        {{/if}}
+                    {{/each}}
+                </div>
+                {{/if}}
+                {{#if actor.system.isArcane}}
+                <div class="flexrow">
+                    <h4 class="skill-name" data-skill="spellcasting">
+                        <div class="button">
+                        <a class="roll-skill">{{localize "fantasycraft.spellcasting"}}</a>
+                        </div>
+                    </h4>
+                    <div class="center-text">
+                        <span>{{actor.system.arcane.spellcasting.value}}</span>
+                        <footer> {{localize "fantasycraft.bonus"}} </footer>
+                    </div>
+                 </div>
+                <div class="center-text flexrow">
+                    <h4 class="flex3">{{localize "fantasycraft.spellPoints"}}</h4>
+                    <div class="flexrow flex2">
+                        <div>
+                            <input type="number" name="system.arcane.spellPoints" value="{{actor.system.arcane.spellPoints}}" style="height: 18px"/>
+                            <footer class="capitalize" style="font-size:10px;"> {{localize "current"}}</footer>
+                        </div>
+                        <span>/</span>
+                        <div>
+                            <span>{{actor.system.arcane.spellPointMax}} </span>
+                            <footer style="font-size:10px;"> {{localize "fantasycraft.max"}}</footer>
+                        </div>
+                    </div>
+                </div>
+                
+                {{/if}}
+            </div>
+        </section>
+    </div>
+    <button class="collapse-topbar collapse-button {{#unless topbar}} collapsed {{/unless}}">
+        {{#if topbar}} <i class="fa-light fa-caret-up"></i> {{else}} <i class="fa-light fa-caret-down"></i> {{/if}}
+    </button>
+    {{!-- Minimizable Top Bar --}}
+    <div class="top-bar flexrow" style="{{#if topbar}} {{else}} display: none;{{/if}}">
+        {{!-- Casting Options (Feats, Class Features) --}}
+        <div>
+            <h4 class="category-label"> {{localize "fantasycraft.castingOptions"}}</h4>
+            {{! List of spellcasting feats, abilities, and tricks}}
+            <div class="category-body">
+                {{#each feats as |feat id|}}
+                    {{#if (eq feat.system.featType "spellcasting")}}
+                    <div class="flexrow item" data-item-id="{{feat.id}}" data-item-name="{{feat.name}}">
+                        <span class="flex6">{{feat.name}}</span>
+                        <div>
+                            <a class="editItem">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a class="deleteItem" style="flex: 0 0 5%">
+                            <a class="deleteItem">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
-                        {{/compare}}
+                    </div>
+                    {{/if}}
+                {{/each}}
+            </div>
+        </div>
+        {{! Divine Casting}}
+        <div>
+            <h4 class="category-label flexrow">
+                <span>{{localize "fantasycraft.divine"}}</span>
+                <input class="push" type="checkbox" name="system.isDivine" data-dtype="Boolean" {{checked actor.system.isDivine}}>
+            </h4>
+            
+            <div class={{#if actor.system.isDivine}} "category-body compact-input center-text" {{else}}"collapsed-category" {{/if}}>
+                {{! Alignment and Paths Options}}
+                <h4 class="skill-name">{{localize "fantasycraft.alignment"}}</h4>
+                    <ul class="traits-list remove-space">
+                    {{#each actor.system.interests.alignment.array as |item id|}}
+                        <li class="tag {{id}} bordered-text">{{item}}</li>
+                    {{/each}}
+                    </ul>
+                <h4 class="skill-name">{{localize "fantasycraft.paths"}}</h4>
+                {{! paths and their steps}}
+                <div>
+                    {{#each paths as |path id|}}
+                    <div class="item flexrow" data-item-id="{{path.id}}" data-item-name="{{path.name}}">
+                        <span class="flex6">{{path.name}}</span>
+                        <select class="flex1 pathChange" data-item-id="{{path.id}}">
+                            {{selectOptions ../config.zeroToFive selected=path.system.pathStep localize=true}}
+                        </select>
+                        <a class="editItem">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="deleteItem">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
                     {{/each}}
                 </div>
             </div>
-    </details>
-    {{! Spell List}}
+        </div>
+        {{! Arcane Casting}}
+        <div>
+            <h4 class="category-label flexrow">
+                <span>{{localize "fantasycraft.arcane"}}</span>
+                <input class="push" type="checkbox" name="system.isArcane" data-dtype="Boolean" {{checked actor.system.isArcane}}>
+            </h4>
+            <section class={{#if actor.system.isArcane}} "category-body compact-input center-text" {{else}}"collapsed-category" {{/if}}>
+                {{! Spellcasting skill}}
+                <h4 class="skill-name"><a class="roll-skill">{{localize "fantasycraft.spellcasting"}}</a></h4>
+                <div class="flexrow center-text remove-space" data-skill="spellcasting">
+                    <div>
+                        <input class="skill-input" name="system.arcane.spellcasting.value" type="number" value="{{actor.system.arcane.spellcasting.value}}" placeholder="0" disabled=true />
+                        <footer> {{localize "fantasycraft.total"}} </footer>
+                    </div>
+                    <div>
+                        <input class="skill-input" name="system.abilityScores.intelligence.mod" type="number" value="{{actor.system.abilityScores.intelligence.mod}}" placeholder="0" disabled=true/>
+                        <footer> {{localize "fantasycraft.ability"}} </footer>
+                    </div>
+                    <div>
+                        <input type="number" class="smallBox" name="system.arcane.spellcasting.ranks" value="{{actor.system.arcane.spellcasting.ranks}}" />
+                        <footer> {{localize "fantasycraft.ranks"}} </footer>
+                    </div>
+                    <div>
+                        <input class="skill-input" name="system.arcane.spellcasting.misc" type="number" value="{{actor.system.arcane.spellcasting.misc}}" placeholder="0"/>
+                        <footer> {{localize "fantasycraft.misc"}} </footer>
+                    </div>
+                </div>
+
+                {{! Spells Known}}
+                <h4 class="skill-name">{{localize "fantasycraft.spellsKnown"}}</h4>
+                <div class="flexrow center-text remove-space">
+                    <div>
+                        <input class="skill-input" name="system.arcane.spellsKnown.value" type="number" value="{{actor.system.arcane.spellsKnown.value}}" placeholder="0" disabled=true/>
+                        <footer> {{localize "fantasycraft.total"}} </footer>
+                    </div>
+                    <div>
+                        <input class="skill-input" name="wisdomScore" type="number" value="{{actor.system.abilityScores.wisdom.value}}" placeholder="0" disabled=true/>
+                        <footer> {{localize "fantasycraft.ability"}} </footer>
+                    </div>
+                    <div>
+                        <input type="number" class="smallBox" name="castingRanks" value="{{actor.system.arcane.spellcasting.ranks}}" disabled=true/>
+                        <footer> {{localize "fantasycraft.ranks"}} </footer>
+                    </div>
+                    <div> 
+                        <input class="skill-input" name="system.arcane.spellsKnown.misc" type="number" value="{{actor.system.arcane.spellsKnown.misc}}" placeholder="0"/>
+                        <footer> {{localize "fantasycraft.misc"}} </footer>
+                    </div>
+                </div>
+                <div class="flexrow center-text remove-space">
+                    <h4 class="skill-name">{{localize "fantasycraft.spellPoints"}}</h4>
+                    <div class="flex3"><span>{{actor.system.arcane.spellPoints}}</span></div>
+                    <div class="flex1"><span>/</span></div>
+                    <div class="flex1"><span class="skill-name">{{localize "fantasycraft.max"}}</span></div>
+                    <div class="flex3"><input class="wideBox" type="number" name="system.arcane.spellPointMax" value="{{actor.system.arcane.spellPointMax}}" placeholder="0" disabled=true /></div>
+                </div>
+            </section>
+        </div>
+    </div>
+    </div>
+    <div>
+    {{!-- SPELL LIST --}}
         <div class="flexcol">
             <div>
                 <h4 class="category-label flexrow">
@@ -258,7 +241,7 @@
                         <li class="filter-item" data-filter="Seer"> {{localize "fantasycraft.seer"}}</li>
                         <li class="filter-item" data-filter="Trickster"> {{localize "fantasycraft.trickster"}}</li>
                     </ul>
-                    <div style="text-align: center; flex: 0.75"><b>{{localize "fantasycraft.level"}} - </b></div>
+                    <div class="center-text"><b>{{localize "fantasycraft.level"}} - </b></div>
                     <ul class="filter-list flexrow flex2" data-filter="spellLevels">
                         <li class="filter-level" data-filter="all"> {{localize "fantasycraft.all"}}</li>
                         <li class="filter-level" data-filter="level0"> 0</li>
@@ -273,24 +256,21 @@
                         <li class="filter-level" data-filter="level9"> 9</li>
                     </ul>
                 </div>
-                <ul class="center-text item-list">
+                <ul class="center-text item-list remove-space">
                     <li class="flexrow">
                         <div class="flex1"> <a class="sortTable" value="0">{{localize "fantasycraft.pin"}}</a></div>
-                        <div class="flex3" style="min-width: 125px"> <a class="sortTable" value="1">{{localize "fantasycraft.spellName"}}</a></div>
+                        <div class="flex3"> <a class="sortTable" value="1">{{localize "fantasycraft.spellName"}}</a></div>
                         <div class="flex1"> <a class="sortTable" value="2">{{localize "fantasycraft.level"}}</a></div>
                         <div class="flex2"> <a class="sortTable" value="3">{{localize "fantasycraft.castingTime"}}</a></div>
-                        <div class="flex2"> <a class="sortTable" value="4">{{localize "fantasycraft.distance"}}</a></div>
-                        <div class="flex3"> <a class="sortTable" value="5">{{localize "fantasycraft.area"}}</a></div>
-                        <div class="flex3"> <a class="sortTable" value="6">{{localize "fantasycraft.spellDuration"}}</a></div>
-                        <div class="flex2" style="font-size:12.5px"> <a class="sortTable" value="7">{{localize "fantasycraft.savingThrow"}}</a></div>
-                        <div class="flex1"> <a class="sortTable" value="8">{{localize "fantasycraft.cost"}}</a></div>
+                        <div class="flex2"> <a class="sortTable" value="7">{{localize "fantasycraft.savingThrow"}}</a></div>
                         <div class="flex1"> {{localize "fantasycraft.edit"}}</div>
                     </li>
                     {{#each spells as |spell id|}}
-                        {{> "systems/fantasycraft/templates/partials/spell-part.hbs" spell id=spell._id}}
+                        {{> "systems/fantasycraft/templates/partials/spell-part.hbs" spell id=spell._id sidebar=true}}
                     {{/each}}
                 </ul>
             </div>
         </div>
     </div>
+    {{!collapse button}}
 </div>

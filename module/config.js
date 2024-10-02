@@ -6,6 +6,17 @@ export const fantasycraft = {};
 fantasycraft.classFeatures = ClassFeatures;
 fantasycraft.originFeatures = OriginFeatures;
 
+
+fantasycraft.zeroToFive = 
+{
+	0: 0,
+	1: 1,
+	2: 2,
+	3: 3,
+	4: 4,
+	5: 5
+}
+
 fantasycraft.abilityScores = 
 {
 	strength: "fantasycraft.strength",
@@ -14,6 +25,15 @@ fantasycraft.abilityScores =
 	intelligence: "fantasycraft.intelligence",
 	wisdom: "fantasycraft.wisdom",
 	charisma: "fantasycraft.charisma"
+}
+fantasycraft.abilityShort = 
+{
+	strength: "fantasycraft.str",
+	dexterity: "fantasycraft.dex",
+	constitution: "fantasycraft.con",
+	intelligence: "fantasycraft.int",
+	wisdom: "fantasycraft.wis",
+	charisma: "fantasycraft.cha"
 }
 fantasycraft.actionTime =
 {
@@ -38,6 +58,11 @@ fantasycraft.bonusType =
 	magic: "fantasycraft.magic",
 	insight: "fantasycraft.insight"
 }
+fantasycraft.pointBuy = 
+{
+	pointCost: ["-","-","-","-","-","-","-","-",0,1,1,1,1,2,2,3,3,4,4,5,5,5]
+}
+
 fantasycraft.experience =
 {
 	xpNeeded: [0, 1000, 2500, 5000, 10000, 15000, 25000, 40000, 60000, 80000, 100000, 125000, 150000, 200000, 250000, 300000, 375000, 450000, 525000, 600000]
@@ -949,9 +974,11 @@ fantasycraft.attackPropertiesList =
 	bludgeon: "fantasycraft.bludgeon",
 	cavalry: "fantasycraft.cavalry",
 	cord: "fantasycraft.cord",
+	diseased: "fantasycraft.diseased",
 	double: "fantasycraft.double",
 	excruciating: "fantasycraft.excruciating",
 	finesse: "fantasycraft.finesse", 
+	grab: "fantasycraft.grab",
 	grip: "fantasycraft.grip",
 	heavy: "fantasycraft.heavy",
 	hook: "fantasycraft.hook",
@@ -968,7 +995,8 @@ fantasycraft.attackPropertiesList =
 	spike: "fantasycraft.spike",
 	stationary: "fantasycraft.stationary",
 	trip: "fantasycraft.trip",
-	unreliable: "fantasycraft.unreliable"
+	unreliable: "fantasycraft.unreliable",
+	venomous: "fantasycraft.venomous"
 }
 
 fantasycraft.trapTarget = 
@@ -1022,6 +1050,12 @@ fantasycraft.poisonUpgrades =
 	concentrated: "fantasycraft.concentrated",
 	potent: "fantasycraft.potent",
 	virulent: "fantasycraft.virulent"
+}
+
+fantasycraft.lightHeavy = 
+{
+	light: "fantasycraft.light",
+	heavy: "fantasycraft.heavy"
 }
 
 fantasycraft.scrollUpgrades = 
@@ -1306,12 +1340,54 @@ fantasycraft.pathEffects =
 {
 	feat: "fantasycraft.feat", 
 	spell: "fantasycraft.spell", 
+	twoZeroLevels: "fantasycraft.twoZeroLevelSpells",
 	resistances: "fantasycraft.resistance", 
 	skillBonus: "fantasycraft.skillBonus", 
 	damageBonus: "fantasycraft.damageBonus", 
 	damageImmunity: "fantasycraft.damageImmunity", 
 	speedBonus: "fantasycraft.speedBonus", 
 	saveBonus: "fantasycraft.saveBonus", 
+	classAbility: "fantasycraft.classAbility",
+	attributeBonus: "fantasycraft.attributeBonus",
+	convertDamage: "fantasycraft.convertDamage",
+	npcOrOriginFeature: "fantasycraft.npcOrOriginFeature",
+	adBonus: "fantasycraft.adBonus",
+	trick: "fantasycraft.trick",
 	other: "fantasycraft.other"
+}
+fantasycraft.locomotionType = 
+{
+	
+	bipedal: "fantasycraft.bipedal",
+	quadrupedal: "fantasycraft.quadrupedal"
+}
+fantasycraft.classType = 
+{
+	base: "fantasycraft.baseClass",
+	expert: "fantasycraft.expertClass",
+	master: "fantasycraft.masterClass"
+}
 
+fantasycraft.pathTimeResets =
+{
+	atWill: "fantasycraft.atWill",
+	perScene: "fantasycraft.scene",
+	perAdventure: "fantasycraft.adventure"
+}
+
+fantasycraft.dice = 
+{
+	d3: "fantasycraft.d3",
+	d4: "fantasycraft.d4",
+	d6: "fantasycraft.d6",
+	d8: "fantasycraft.d8",
+	d10: "fantasycraft.d10",
+	d12: "fantasycraft.d12",
+	d20: "fantasycraft.d20"
+}
+
+fantasycraft.pathScaling =
+{
+	true: "fantasycraft.perPathStep",
+	false: "fantasycraft.flatValue"
 }

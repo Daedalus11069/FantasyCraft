@@ -6,7 +6,7 @@ export default class GearDialog extends FormApplication   {
         this.actor = actor; 
     }
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "npc-gear",
             classes: ["fantasycraft"],
             choices: {},

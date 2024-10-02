@@ -1,23 +1,23 @@
 <li class="item ownedItem flexrow" data-item-id="{{id}}" data-item-name="{{name}}">
-    <div class="flex2">
-        <a class="roll-natural-attack" data-roll-info='{{id}}'>
-            <i class="fas fa-dice-d20"></i>
-            <span><b>{{name}}</b></span>
+    <div class="center-dice flex1">
+        <a class="roll-natural-attack dice-button" data-roll-info='{{id}}'>
+            <i class="fas fa-dice-d20 fa-xl"></i>
         </a>
     </div>
-    <div class="flex2">
-        {{system.damage.value}} {{localize system.damageType}} 
+    <div class="flex3 flexcol">
+        <span>
+            <b>{{name}}</b>
+        </span>
+        <span>
+            <div class="damage-threat"><span>{{system.damage.value}} {{localize system.damageType}}</span><span>-</span><span> {{localize "fantasycraft.threat"}} {{system.threat}}</span></div>
+        </span>
     </div>
-    <div class="flex1">
-        {{localize "fantasycraft.threat"}} {{system.threat}} 
-    </div>
-    <div class="flex6">
-        {{localize "fantasycraft.qualities"}}: 
+    <div class="flex5">
         {{#each system.naturalUpgrades as |prop id|}}
             {{#if prop}}
-            {{#compare prop "" operator="!="}}
-            {{#compare prop "0" operator="!="}}
-                {{id}}{{#if (isBool prop)}}{{else}} {{prop}}{{/if}}
+                {{#compare prop "" operator="!="}}
+                {{#compare prop "0" operator="!="}}
+                {{localize (lookup ../qualities id)}}{{#if (isBool prop)}}{{else}} {{prop}}{{/if}}
                 {{/compare}}
                 {{/compare}}
             {{/if}}

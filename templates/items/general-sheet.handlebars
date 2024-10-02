@@ -6,7 +6,7 @@
 
         <div>
             <div class="header-details flexcol">
-                <h1 class="charname">
+                <h1 class="title-name">
                     <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
                 </h1>
             </div>
@@ -187,12 +187,8 @@
                     <div>
                         {{localize "fantasycraft.itemType"}}
                         <select name="system.itemType">
-                            {{#select item.system.itemType}}
-                                {{#each config.itemType as |name type|}}
-                                    <option value="{{type}}">{{localize name}}</option>
-                                {{/each}}
-                            {{/select}}
-                        </select>
+                            {{selectOptions config.itemType selected=item.system.itemType localize=true}}
+                       </select>
 
                         <label class="checkbox">
                             <input type="checkbox" name="system.isMagic" {{checked item.system.isMagic}}/> {{localize "fantasycraft.isMagic"}}
@@ -219,11 +215,7 @@
                         {{!area, object or area and object}}
                         <div>
                             <select name="system.target.targetType">
-                                {{#select item.system.target.targetType}}
-                                {{#each config.trapTarget as |name type|}}
-                                    <option value="{{type}}">{{localize name}}</option>
-                                {{/each}}
-                                {{/select}}
+                                {{selectOptions config.trapTarget selected=item.system.target.targetType localize=true}}
                             </select>
                         {{#compare item.system.target.targetType "object" operator="!="}}
                             <input class="narrowField" type="number" name="system.target.width" value="{{item.system.target.width}}" placeholder="1">
@@ -255,13 +247,7 @@
                         <span> {{ localize 'fantasycraft.incubation'}} </span> 
                         <input type="number" name="system.incubation.value" value="{{item.system.incubation.value}}" placeholder="1">
                         <select name="system.incubation.duration">
-                            {{#select item.system.incubation.duration}}
-                            {{#each config.durationTimeIncrements as |name type|}}
-                                {{#unless @last}}
-                                <option value="{{type}}">{{localize name}}</option>
-                                {{/unless}}
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.durationTimeIncrements selected=item.system.incubation.duration localize=true}}
                         </select>
                     </div>
                     <div class="flexrow">
@@ -298,14 +284,9 @@
                 <div class="item-customization-section">
                     <div>
                         <span> {{ localize 'fantasycraft.sizeDef'}} </span> 
-
-                        <select name="system.size.size"> 
-                        {{#select item.system.size.size}}
-                            {{#each config.sizeLetter as |v k|}}
-                                <option value="{{k}}">{{localize v}}</option>
-                            {{/each}}
-                        {{/select}}
-                        </select>
+                            <select name="system.size.size"> 
+                                {{selectOptions config.sizeLetter selected=item.system.size.size localize=true}}
+                            </select>
                         <input type="number" class="mediumField" name="system.size.hands" value="{{item.system.size.hands}}" placeholder="7"/> 
                     </div>
                 </div>
@@ -337,12 +318,8 @@
                         <div>
                             <span class="categorylabel">  {{ localize 'fantasycraft.sizeHand'}} </span>
                             <select name="system.size.size"> 
-                            {{#select item.system.size.size}}
-                                {{#each config.sizeLetter as |v k|}}
-                                    <option value="{{k}}">{{localize v}}</option>
-                                {{/each}}
-                                <option value="Special">{{localize "fantasycraft.special"}}</option>
-                            {{/select}}
+                            {{selectOptions config.sizeLetter selected=item.system.size.size localize=true}}
+                            <option value="Special">{{localize "fantasycraft.special"}}</option>
                             </select>
 
                             <select name="system.size.hands"> 
@@ -405,11 +382,7 @@
                         <label>{{ localize "fantasycraft.era" }}</label>
                         <div>
                             <select name="system.era">
-                                {{#select item.system.era}}
-                                    {{#each config.eras as |name type|}}
-                                        <option value="{{name}}">{{localize name}}</option>
-                                    {{/each}}
-                                {{/select}}
+                                {{selectOptions config.eras selected=item.system.era localize=true}}
                             </select>
                         </div>
                     </div>

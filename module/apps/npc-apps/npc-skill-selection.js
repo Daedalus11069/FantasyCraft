@@ -6,7 +6,7 @@ export default class SkillSelector extends FormApplication   {
         this.actor = actor; 
     }
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "skill-selector",
             classes: ["fantasycraft"],
             choices: {},
@@ -22,7 +22,7 @@ export default class SkillSelector extends FormApplication   {
     {
       let signatureSkills = this.actor.system.signatureSkills;
         //Populate choices
-        const choices = duplicate(this.skills.choices);
+        const choices =foundry.utils.duplicate(this.skills.choices);
         for ( let [k, v] of Object.entries(this.skills.choices) ) {
           if (v != "fantasycraft.spellcasting")
           {

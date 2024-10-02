@@ -4,7 +4,7 @@
         <img class="profile-left" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
 
         <div class="header-details flexcol">
-            <h1 class="charname">
+            <h1 class="title-name">
                 <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
             </h1>
 
@@ -114,11 +114,7 @@
                     <div>
                         <label>{{ localize "fantasycraft.armourCoverage" }}</label>
                         <select name="system.armourCoverage">
-                            {{#select item.system.armourCoverage}}
-                            {{#each config.armourCoverage as |name type|}}
-                                <option value="{{type}}">{{localize name}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.armourCoverage selected=item.system.armourCoverage}}
                         </select>
                     </div>
                 </div>
@@ -220,11 +216,7 @@
                     <div>
                         <label>{{ localize "fantasycraft.era" }}</label>
                         <select name="system.era">
-                            {{#select item.system.era}}
-                                {{#each config.eras as |name type|}}
-                                    <option value="{{type}}">{{localize type}}</option>
-                                {{/each}}
-                            {{/select}}
+                            {{selectOptions config.eras selected=item.system.era localize=true}}
                         </select>
                     </div>
                 </div>
@@ -236,10 +228,7 @@
                             <input style="margin: 0px;" type="checkbox" name="system.fittings" {{checked item.system.fittings}}/>
                             {{#if item.system.fittings}}
                                 <select name="system.upgrades.fittings">
-                                {{#select item.system.upgrades.fittings}}
-                                    <option value="light">{{localize "fantasycraft.light"}}</option>
-                                    <option value="heavy">{{localize "fantasycraft.heavy"}}</option>
-                                {{/select}}
+                                    {{selectOptions config.lightHeavy selected=item.system.upgrades.fittings localize=true}}
                                 </select>
                             {{/if}}
                         </div>
@@ -252,10 +241,7 @@
                         <label>{{ localize "fantasycraft.cost" }}</label>
                         <input class="mediumField" type="number" name="system.cost" value={{item.system.cost}} data-dtype="Number" placeholder=0 />
                         <select name="system.currency">
-                            {{#select item.system.currency}}
-                            <option value="Silver">{{localize "fantasycraft.silver"}}</option>
-                            <option value="Reputation">{{localize "fantasycraft.reputation"}}</option>
-                            {{/select}}
+                            {{selectOptions config.currency selected=item.system.currency localize=true}}
                         </select>
                     </div>
                 </div>
@@ -269,12 +255,8 @@
                     </div>
                     <div>
                         <select name="system.upgrades.craftsmanship">
-                            {{#select item.system.upgrades.craftsmanship}}
-                                <option value="none">{{localize "fantasycraft.noEntry"}}</option>
-                                {{#each config.customizations as |name type|}}
-                                    <option value="{{name}}">{{localize type}}</option>
-                                {{/each}}
-                            {{/select}}
+                            <option value="none">{{localize "fantasycraft.noEntry"}}</option>
+                            {{selectOptions config.customizations selected=item.system.upgrades.craftsmanship localize=true}}
                         </select>
                     </div>
                 </div>
@@ -284,12 +266,8 @@
                     </div>
                     <div>
                         <select name="system.upgrades.materials">
-                            {{#select item.system.upgrades.materials}}
-                                <option value="none">{{localize "fantasycraft.noEntry"}}</option>
-                                {{#each config.materials as |name type|}}
-                                    <option value="{{name}}">{{localize type}}</option>
-                                {{/each}}
-                            {{/select}}
+                            <option value="none">{{localize "fantasycraft.noEntry"}}</option>
+                            {{selectOptions config.materials selected=item.system.upgrades.materials localize=true}}
                         </select>
                     </div>
                 </div>

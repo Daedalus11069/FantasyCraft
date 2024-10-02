@@ -1,65 +1,71 @@
 import * as Utils from './Utils.js';
 
 //Function to handle trick effects pre-roll adding bonuses or penalties to the roll formula or replacing it with a skill roll
-export function determinePreRollTrickEffect(trick, actor, rollInfo, rollFormula, target, trick2 = null)
+export function determinePreRollTrickEffect(data, actor, rollFormula, target, trick1, trick2 = null)
 {
-    if (!trick && trick2 != null)
-        trick = trick2
-        
-    if (!trick) return rollFormula;
+    //If Trick 1 is defined, use that, if trick 1 is not defined but trick 2 is, use that instead
 
-    //if attack trick
-    if (checkTargets(trick, target)) 
+    if (!trick1 && !trick2) return rollFormula;
+
+    //if attack trick requires a target, and there isn't one return an error
+    if (checkTargets(trick1, target)) 
     {
         return "Error";
     }
 
-    if (trick.system.uses.timeFrame != "unlimited")
+    //reduce the number of uses remaining of non-unlimited tricks
+    if (trick1.system.uses.timeFrame != "unlimited")
     {
         let updateString = "system.uses.usesRemaining";
-        let newValue = trick.system.uses.usesRemaining-1;
-        trick.update({[updateString]: newValue });
+        let newValue = trick1.system.uses.usesRemaining-1;
+        trick1.update({[updateString]: newValue });
     }
 
     //If the roll has an attack roll bonus and a condition, add the attack roll bonus only if the condition is met.
-    if (trick.system.effect.rollModifier && (checkConditions(trick, target[0]?.document.actor, 0, actor) || trick.system.effect.condition == ""))
+    if (trick1.system.effect.rollModifier && (checkConditions(trick1, target[0]?.document.actor, 0, actor) || trick1.system.effect.condition == ""))
+    {
         //Tricks that affect the attack roll by either a flat roll modifier or replacing the roll with a different kind.
-        rollFormula += Utils.returnPlusOrMinusString(trick.system.effect.rollModifier);
+        rollFormula.push("@trickBonus");
+        data.modifiers.trickBonus = Utils.returnPlusOrMinusString(trick1.system.effect.rollModifier);
+    }
 
     //This is essentially only for called shot
-    if (trick.system.effect.additionalEffect == "ignoreAP")
+    if (trick1.system.effect.additionalEffect == "ignoreAP")
     {
-        rollFormula += ignoreArmour(target);
-        if (trick2 != null) rollFormula = determinePreRollTrickEffect(trick2, actor, rollInfo, rollFormula, target)
-        return rollFormula
+        rollFormula.push("@calledShot");
+        data.modifiers.calledShot = ignoreArmour(target);
+        if (trick2 != undefined || trick2 != null) rollFormula = determinePreRollTrickEffect(data, actor, rollFormula, target, trick2)
+            return rollFormula
     }
 
     //replace the roll with a skill check if required
-    if (trick.system.effect.additionalEffect == "replaceAttackRoll")
+    if (trick1.system.effect.additionalEffect == "replaceAttackRoll")
     {
-      let skill = actor.skills[rollInfo.trick1.system.effect.secondaryCheck]
-      rollFormula = "1d20" + " + " + skill.ranks + " + " + skill.misc + " + " + actor.abilityScores[skill.ability].mod;
-      if (trick2 != null) rollFormula = determinePreRollTrickEffect(trick2, actor, rollInfo, rollFormula, target)
-      return rollFormula
+        let skill = actor.skills[trick1.system.effect.secondaryCheck]
+        rollFormula = ["1d20", "@ranks", "@misc", "@abilityBonus"];
+        data.modifiers.ranks = skill.ranks;
+        data.modifiers.misc = skill.misc;
+        data.modifiers.abilityBonus = actor.abilityScores[skill.ability].mod;
+
+        if (trick2 != undefined || trick2 != null) rollFormula = determinePreRollTrickEffect(data, actor, rollFormula, target, trick2)
+            return rollFormula
     }
 
     //replace the attribute used in the roll if required
-    if (trick.system.effect.additionalEffect == "replaceAttribute")
+    if (trick1.system.effect.additionalEffect == "replaceAttribute")
     {
-      rollFormula = "1d20 + " + actor.abilityScores[trick.system.effect.secondaryCheck].mod + rollFormula.slice(8)
-      if (trick2 != null) rollFormula = determinePreRollTrickEffect(trick2, actor, rollInfo, rollFormula, target)
-      return rollFormula
+        rollFormula = "1d20 + " + actor.abilityScores[trick1.system.effect.secondaryCheck].mod + rollFormula.slice(8)
+        if (trick2 != undefined || trick2 != null) rollFormula = determinePreRollTrickEffect(data, actor, rollFormula, target, trick2)
+        return rollFormula
     }
 
-    if (trick2 != null) rollFormula = determinePreRollTrickEffect(trick2, actor, rollInfo, rollFormula, target)
+    if (trick2 != undefined || trick2 != null) rollFormula = determinePreRollTrickEffect(data, actor, rollFormula, target, trick2)
 
     return rollFormula;
-    
-    //if combat action trick
 }
 
 //Function to handle trick effects that happen after the roll has been made (mainly comparing rolls to target defense)
-export function determinePostRollTrickEffect(trick, actor, item, target, attackRoll)
+export function determinePostRollTrickEffect(trick, actor, item, target, attackRoll, trick2 = null)
 {
     if (!trick) return null;
 
@@ -71,6 +77,9 @@ export function determinePostRollTrickEffect(trick, actor, item, target, attackR
 
         if (trick.system.effect.additionalEffect == "failDamageSave") autoFailSaveCheck(attackRoll, target, trick.system, item, actor);
     }
+
+    if (trick2 != null || trick2 != undefined)
+        determinePostRollTrickEffect(trick2, actor, item, target, attackRoll)
 }
 
 export function checkConditions(trick, target, attackRoll = 0, actor)
@@ -109,7 +118,7 @@ function ignoreArmour(target)
     if (armour == null)
         armour = target[0].actor.items.find(item => item.name == game.i18n.localize("fantasycraft.thickHide"));
         
-    if (armour  == null)
+    if (armour == null || armour == undefined)
         return 0
         
     if (armour.type == "feature" || armour.system?.armourCoverage == "partial")
@@ -148,12 +157,15 @@ export function autoFailSaveCheck(attackRoll, targets, trick, item, actor)
 export function multipleDamageRolls(attackRoll, target, trick)
 {
     const condition = trick.system.effect.condition;
+    const character = target.type == "character";
+    let defense = (character) ? target.system.defense.value : target.system.traits.defense.total;
 
-    if (condition == "hitBy4" && attackRoll.total >= target.system.traits.defense.total + 4)
+
+    if (condition == "hitBy4" && attackRoll.total >= defense + 4)
         return 1;
-    if (condition == "hitBy10" && attackRoll.total >= target.system.traits.defense.total + 4 && attackRoll.total < target.system.traits.defense.total + 10)
+    if (condition == "hitBy10" && attackRoll.total >= defense + 4 && attackRoll.total < defense + 10)
         return 1;
-    if (condition == "hitBy10" && attackRoll.total >= target.system.traits.defense.total + 10)
+    if (condition == "hitBy10" && attackRoll.total >= defense + 10)
         return 2;
 
     return 0;

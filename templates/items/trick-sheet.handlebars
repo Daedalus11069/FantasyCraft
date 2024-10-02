@@ -37,52 +37,29 @@
             <div class="form-group item-customization-section">
                 <label>{{localize "fantasycraft.trickType"}}</label>
                 <select name="system.trickType.trickTarget">
-                    {{#select item.system.trickType.trickTarget}}
-                        {{#each config.trickTypes as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.trickTypes selected=item.system.trickType.trickTarget localize=true}}
                 </select>
                 {{#compare item.system.trickType.trickTarget "combatAction" operator="=="}}
                 <select name="system.trickType.keyword">
-                    {{#select item.system.trickType.keyword}}
-                        {{#each config.combatActions as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.combatActions selected=item.system.trickType.keyword localize=true}}
                 </select>
                 {{/compare}}
                 {{#compare item.system.trickType.trickTarget "skillTrick" operator="=="}}
                 <select name="system.trickType.keyword">
-                    {{#select item.system.trickType.keyword}}
-                        {{#each config.skills as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                        <option value="pathSpellCasting"> {{localize "fantasycraft.pathSpellcasting"}}</option>
-                    {{/select}}
+                    {{selectOptions config.skills selected=item.system.trickType.keyword localize=true}}
                 </select>
                 {{/compare}}
 
                 {{#compare item.system.trickType.trickTarget "attackTrick" operator="=="}}
                 <select name="system.trickType.keyword">
-                    {{#select item.system.trickType.keyword}}
-                        {{#each config.attackTrickKeywords as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.attackTrickKeywords selected=item.system.trickType.keyword localize=true}}
                 </select>
                 {{/compare}}
                 <span>{{localize "fantasycraft.additionalKeyword"}}</span><input type="checkbox" name="system.trickType.twoKeywords" {{checked item.system.trickType.twoKeywords}}>
                 {{#if item.system.trickType.twoKeywords}}
                     <select name="system.trickType.keyword2">
-                        {{#select item.system.trickType.keyword2}}
-                            {{#each config.attackTrickKeywords as |v k|}}
-                                <option value="{{k}}"> {{localize v}}</option>
-                            {{/each}}
-                            {{#each config.combatActions as |v k|}}
-                                <option value="{{k}}"> {{localize v}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.attackTrickKeywords localize=true selected=item.system.trickType.keyword2}}
+                        {{selectOptions config.combatActions localize=true selected=item.system.trickType.keyword2}}
                     </select>
                 {{/if}}
             </div>
@@ -118,11 +95,7 @@
                 <label>{{localize "fantasycraft.rollModifier"}}</label>
                 <input class="mediumField" type="number" name="system.effect.rollModifier" value="{{item.system.effect.rollModifier}}" data-dtype="Number" placeholder=0 />
                 <select name="system.effect.rollModifierType">
-                    {{#select item.system.effect.rollModifierType}}
-                        {{#each config.bonusType as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.bonusType selected=item.system.effect.rollModifierType localize=true}}
                 </select>
             </div>
 
@@ -131,11 +104,7 @@
                 {{#compare item.system.effect.damageModifierStyle "modifier" operator="=="}}
                 <input class="mediumField" type="number" name="system.effect.damageModifier" value="{{item.system.effect.damageModifier}}" >
                 <select name="system.effect.damageModifierType">
-                    {{#select item.system.effect.damageModifierType}}
-                        {{#each config.bonusType as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.bonusType selected=item.system.effect.damageModifierType localize=true}}
                 </select>
                 {{/compare}}
                 <select name="system.effect.damageModifierStyle">
@@ -168,53 +137,31 @@
             <div class="form-group item-customization-section">
                 <label>{{localize "fantasycraft.otherEffects"}}</label>
                 <select name="system.effect.additionalEffect">
-                    {{#select item.system.effect.additionalEffect}}
-                        <option value="none"></option>
-                        {{#each config.attackTrickEffects as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    <option value="none"></option>
+                    {{selectOptions config.attackTrickEffects selected=item.system.effect.additionalEffect localize=true}}
                 </select>
                 
                 {{#compare item.system.effect.additionalEffect "replaceAttackRoll" operator="=="}}
                 <select name="system.effect.secondaryCheck">
-                    {{#select item.system.effect.secondaryCheck}}
-                        {{#each config.skills as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.skills selected=item.system.effect.secondaryCheck localize=true}}
                 </select>
                 {{/compare}}
 
                 {{#if (eq item.system.effect.additionalEffect "changeDamageType")}}
                 <select name="system.effect.secondaryCheck">
-                    {{#select item.system.effect.secondaryCheck}}
-                        {{#each config.damageTypes as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.damageTypes selected=item.system.effect.secondaryCheck localize=true}}
                 </select>
                 {{/if}}
                 
                 {{#compare item.system.effect.additionalEffect "replaceAttribute" operator="=="}}
                 <select name="system.effect.secondaryCheck">
-                    {{#select item.system.effect.secondaryCheck}}
-                        {{#each config.abilityScores as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.abilityScores selected=item.system.effect.secondaryCheck localize=true}}
                 </select>
                 {{/compare}}
 
                 {{#compare item.system.effect.additionalEffect "failDamageSave" operator="=="}}
                 <select name="system.effect.secondaryCheck">
-                    {{#select item.system.effect.secondaryCheck}}
-                        {{#each config.abilityScores as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                        <option value="beatsDefense"> {{localize "fantasycraft.beatsDefense"}}</option>
-                        <option value="dr4"> {{localize "fantasycraft.dr4OrLess"}}</option>
-                    {{/select}}
+                    {{selectOptions config.abilityScores selected=item.system.effect.secondaryCheck localize=true}}
                 </select>
                 {{/compare}}
 
@@ -227,22 +174,14 @@
 
                 {{#compare item.system.effect.additionalEffect "impareAttribute" operator="=="}}
                 <select name="system.effect.secondaryCheck">
-                    {{#select item.system.effect.secondaryCheck}}
-                        {{#each config.abilityScores as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                        <option value="usersChoice"> {{localize "fantasycraft.usersChoice"}}</option>
-                    {{/select}}
+                    <option value="usersChoice"> {{localize "fantasycraft.usersChoice"}}</option>
+                    {{selectOptions config.abilityScores selected=item.system.effect.secondaryCheck localize=true}}
                 </select>
                 {{/compare}}
 
                 {{#compare item.system.effect.additionalEffect "applyCondition" operator="=="}}
                 <select name="system.effect.secondaryCheck">
-                    {{#select item.system.effect.secondaryCheck}}
-                        {{#each config.negativeConditions as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.negativeConditions selected=item.system.effect.secondaryCheck localize=true}}
                 </select>
                 {{/compare}}
 
@@ -256,11 +195,7 @@
 
                 {{#compare item.system.effect.additionalEffect "minimumDamage" operator="=="}}
                 <select name="system.effect.secondaryCheck">
-                    {{#select item.system.effect.secondaryCheck}}
-                        {{#each config.abilityScores as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions config.abilityScores selected=item.system.effect.secondaryCheck localize=true}}
                 </select>
                 {{/compare}}
             </div>
@@ -268,21 +203,13 @@
             <div class="form-group item-customization-section">
                 <label>{{localize "fantasycraft.condition"}}</label>
                 <select name="system.effect.condition">
-                    {{#select item.system.effect.condition}}
-                        <option value="none"></option>
-                        {{#each config.trickConditions as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    <option value="none"></option>
+                    {{selectOptions config.trickConditions selected=item.system.effect.condition localize=true}}
                 </select>
                 {{#compare item.system.effect.condition "targetHasCondition" operator="=="}}
                 <select name="system.effect.conditionTarget">
-                    {{#select item.system.effect.conditionTarget}}
-                        <option value="none"></option>
-                        {{#each config.negativeConditions as |v k|}}
-                            <option value="{{k}}"> {{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    <option value="none"></option>
+                    {{selectOptions config.negativeConditions selected=item.system.effect.conditionTarget localize=true}}
                 </select>
                 {{/compare}}
             </div>
@@ -301,11 +228,7 @@
                 {{/compare}} {{/compare}}
                 {{#compare item.system.uses.timeFrame "unlimited" operator="!="}} {{#compare item.system.uses.counter "feat" operator="=="}}
                     <select name="system.uses.featType">
-                        {{#select item.system.uses.featType}}
-                            {{#each config.featType as |v k|}}
-                                <option value="{{k}}"> {{localize v}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.featType selected=item.system.uses.featType localize=true}}
                     </select>
                 {{/compare}} {{/compare}}
                 {{#compare item.system.uses.timeFrame "unlimited" operator="!="}}
@@ -314,6 +237,7 @@
                         <option value="number">{{localize "fantasycraft.number"}}</option>
                         <option value="feat">{{localize "fantasycraft.feat"}}</option>
                         <option value="actionDie">{{localize "fantasycraft.startingActionDie"}}</option>
+                        <option value="pathStep">{{localize "fantasycraft.pathStep"}}</option>
                     {{/select}}
                 </select>
                 {{/compare}}

@@ -4,7 +4,7 @@
         <img class="profile-left" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
 
         <div class="header-details flexrow">
-            <h1 class="charname" style="flex: 4">
+            <h1 class="title-name" style="flex: 4">
                 <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'fantasycraft.itemName' }}"/>
             </h1>
 
@@ -13,11 +13,7 @@
                     {{localize item.system.weaponProficiency }}
                 </div>
                 <select name="system.weaponCategory">
-                    {{#select item.system.weaponCategory}}
-                        {{#each (lookup config item.system.weaponProficiency) as |v k|}}
-                        <option value="{{k}}">{{localize v}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions (lookup config item.system.weaponProficiency) selected=item.system.weaponCategory localize=true}}   
                 </select>
             </div>
         </div>

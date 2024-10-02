@@ -1,6 +1,7 @@
 import TraitSelector from "../../apps/trait-selector.js";
 import ArmourResistance from "../../apps/armour-resistances.js";
 import { returnPlusOrMinusString } from "../../Utils.js";
+import SelectFromCompendium from "../../apps/select-item-from-compendium.js";
 
 export default class FCItemSheet extends ItemSheet {
 
@@ -10,7 +11,7 @@ export default class FCItemSheet extends ItemSheet {
   
 	static get defaultOptions() 
   {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}],
       classes: ["fantasycraft", "sheet", "item"],
       width: 600,
@@ -85,8 +86,8 @@ export default class FCItemSheet extends ItemSheet {
 
     if(data.item.type == "class")
     {
-      this.item.system.abilities = TextEditor.enrichHTML(this.item.system.abilities);
-      this.item.system.classTable = TextEditor.enrichHTML(this.item.system.classTable);
+      this.item.system.abilities = await TextEditor.enrichHTML(this.item.system.abilities);
+      this.item.system.classTable = await TextEditor.enrichHTML(this.item.system.classTable);
     }
     if(data.item.type == "stance")
     {
@@ -150,6 +151,10 @@ export default class FCItemSheet extends ItemSheet {
     html.find('.moveItem').click(this._move.bind(this));
     html.find('.deleteItem').click(this._delete.bind(this));
 
+    html.find('.clear-data').change(this._clearData.bind(this));
+    html.find('.getPathFeature').click(this._findFeature.bind(this));
+    html.find('.edit-item').click(this._onEditItem.bind(this));
+    //html.find('.drop-zone').drag(this._dragHandler.bind(this));
 
     // Handle default listeners last so system listeners are triggered first
     super.activateListeners(html);
@@ -167,10 +172,10 @@ export default class FCItemSheet extends ItemSheet {
 			let _skillPoints = 8;
 
 			//determine starting proficiencies
-			if (itemData.system.vitality > 6) 
+			if (itemData.system.vitality != "Low") 
 			{
-				vitCont = (itemData.system.vitality == 9) ? 1 : 2;
-				_skillPoints = (itemData.system.vitality == 9) ? 6 : 4;
+				vitCont = (itemData.system.vitality == "Medium") ? 1 : 2;
+				_skillPoints = (itemData.system.vitality == "Medium") ? 6 : 4;
 			}
 			if (attack != "Low") attCont = (attack == "Medium") ? 1 : 2;
 			itemData.system.proficiencies.value = 2 + vitCont + attCont;
@@ -226,20 +231,54 @@ export default class FCItemSheet extends ItemSheet {
     return true;
   }
 
-  async _onDrop(itemData)
+  /** Inherited */
+  async _onDrop(event)
   {
+    console.log("test")
 
     //get the item from the drag event
-    itemData = TextEditor.getDragEventData(itemData);
-    const itemFromID = await fromUuid(itemData.uuid)
+    const ItemData = TextEditor.getDragEventData(event);
+    const DropData = event.target.closest('.drop-zone');
+    const itemFromID = await fromUuid(ItemData.uuid)
     let droppedItem = {... itemFromID};
     const item = this.item;
+    if (DropData.dataset.type == "twoZeroLevels") DropData.dataset.type = "spell"
+    if (this.item.type == "path")
+    {
+      if (DropData == null || !this._checkType(droppedItem, DropData.dataset.type))
+        return;
+
+      let step = item.system[DropData.dataset.step];
+      let effect = DropData.dataset.effect;
+      let value = ".value"
+      let target = ".target"
+
+      if (event.target.classList.contains("special"))
+      {
+        step.special = droppedItem.name;
+        step.specialTarget = ItemData.uuid;
+        value = ".special"
+        target = ".specialTarget"
+      }
+      else
+      {
+        step["value" + effect] = droppedItem.name;
+        step["target" + effect] = ItemData.uuid;
+      }
+
+      let updateString = (event.target.classList.contains("special")) ? "system." + DropData.dataset.step + value : "system." + DropData.dataset.step + value + effect;
+      await this.item.update({[updateString]: droppedItem.name})
+      updateString = (event.target.classList.contains("special")) ? "system." + DropData.dataset.step + target : "system." + DropData.dataset.step + target + effect;
+      await this.item.update({[updateString]: ItemData.uuid})
+
+      return;
+    } 
     
     //if the dropped item does not have a cost or if this is not a store, return
     if(droppedItem.system?.cost == undefined || item.type != "store")
       return
     
-    droppedItem.referenceId = itemData.uuid;
+    droppedItem.referenceId = ItemData.uuid;
 
     //figure out if this is going in the shopping cart directly or into a store inventory
     let targetArray = (item.system.freeBuy) ? item.system.shoppingCart : item.system.storeArray;
@@ -262,6 +301,28 @@ export default class FCItemSheet extends ItemSheet {
     await item.update({[arrayString]: targetArray});
 
     this.render(true);
+  }
+
+  /**
+   * Ensure that the dropped item matches the type of the receiving item slot
+   * @param {*} droppedItem Item that was dropped 
+   * @param {*} rit Receiving Item Type
+   */
+  _checkType(droppedItem, rit)
+  {
+    if (droppedItem.type == "feature")
+    {
+      if (rit == "classAbility" && droppedItem.system.featureType == "class")
+        return true;
+      else if (rit == "npcOrOriginFeature" && (droppedItem.system.featureType == "npcQuality" || droppedItem.system.featureType == "origin"))
+        return true;
+      else 
+        return false;
+    }
+    else if (droppedItem.type == rit)
+      return true;
+    else
+      return false
   }
 
   _magicItemInformation(event)
@@ -464,7 +525,6 @@ export default class FCItemSheet extends ItemSheet {
 
     await this.item.update({"system.pricePercent": newPrice});
 
-    console.log("Merchant Roll: " + merchantTotal)
     this.render(true);
   }
 
@@ -610,7 +670,53 @@ export default class FCItemSheet extends ItemSheet {
     await this.item.update({[destinationString]: destinationArray})
   }
 
+  _clearData(event)
+  {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const step = this.item.system[element.dataset.step]
+    const effect = element.dataset.effect;
+    let newStep
 
+    if (effect == 1)
+    {
+      newStep = 
+      {
+        damageType1: "lethal", damageType2: step.damageType2,
+        drop1: step.drop1, drop2: step.drop2,
+        effect1: step.effect1, effect2: step.effect2,
+        effect1Scaling: step.effect1Scaling, effect2Scaling: step.effect2Scaling,
+        spell1Reset: step.spell1Reset, spell2Reset: step.spell2Reset,
+        value1: "", value2: step.value2,
+        target1: "", target2: step.target2
+      }
+    }
+    else
+      newStep = 
+      {
+        damageType1: step.damageType1, damageType2: "",
+        drop1: step.drop1, drop2: step.drop2,
+        effect1: step.effect1, effect2: step.effect2,
+        effect1Scaling: step.effect1Scaling, effect2Scaling: step.effect2Scaling,
+        spell1Reset: step.spell1Reset, spell2Reset: step.spell2Reset,
+        value1: step.value1, value2: "",
+        target1: step.target1, target2: ""
+      }
+
+    let updateString = "system." + element.dataset.step;
+
+    this.item.update({[updateString]: newStep});
+  }
+
+  async _findFeature(event)
+  {
+    //event.preventDefault();
+    const element = event.currentTarget;
+    const featureType = element.dataset.type;
+    const compendium = game.packs.get("fantasycraft." + featureType + "s").index;
+    const options = { name: featureType, compendium };
+    new SelectFromCompendium(this.item, options).render(true)
+  }
   _delete(event)
   {
     event.preventDefault();
@@ -622,4 +728,13 @@ export default class FCItemSheet extends ItemSheet {
     let newArray = array.filter(a => a.name != itemName)
     this.item.update({[string]: newArray})
   }
+
+  async _onEditItem(event)
+  {
+    event.preventDefault();
+    const li = event.currentTarget.closest(".item");
+    const item = await fromUuid(li.dataset.itemId);
+    return item.sheet.render(true);  
+  }
+
 }

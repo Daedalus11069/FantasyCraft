@@ -5,11 +5,7 @@
 {{#compare item.system.charms.charmNumber 1 operator=">="}}
 {{!Determine the type of Charm}}
     <select class="charmSelecter" name="system.charms.charm1.ability">
-        {{#select item.system.charms.charm1.ability}}
-            {{#each config.magicItemCharms as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.magicItemCharms selected=item.system.charms.charm1.ability localize=true}}
     </select>
 
     {{! Is the Charm a greater or Lesser Charm?}}
@@ -18,33 +14,21 @@
     {{! If the Charm is Skill Ranks, Select field for the skill it affects}}
     {{#compare item.system.charms.charm1.ability "skillRanks" operator="=="}}
     <select name="system.charms.charm1.target">
-        {{#select item.system.charms.charm1.target}}
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.skills selected=item.system.charms.charm1.target localize=true}}
     </select>
     {{/compare}}
 
     {{! If the Charm is Bane, Select field for the creature Type}}
     {{#compare item.system.charms.charm1.ability "bane" operator="=="}}
     <select name="system.charms.charm1.target">
-        {{#select item.system.charms.charm1.target}}
-            {{#each config.creatureType as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.creatureType selected=item.system.charms.charm1.target localize=true}}
     </select>
     {{/compare}}
 
     {{! If the Charm is Attribute Bonus, Select field for the target Attribute}}
     {{#compare item.system.charms.charm1.ability "attributeBonus" operator="=="}}
     <select name="system.charms.charm1.target">
-        {{#select item.system.charms.charm1.target}}
-            {{#each config.abilityScores as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.abilityScores selected=item.system.charms.charm1.target localize=true}}
     </select>
     {{/compare}}
 
@@ -52,22 +36,14 @@
     {{#compare item.system.charms.charm1.ability "accuracyBonus" operator="=="}}
         {{#compare item.type "weapon" operator="!="}}
         <select name="system.charms.charm1.target">
-            {{#select item.system.charms.charm1.target}}
-                {{#each config.attackType as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.attackType selected=item.system.charms.charm1.target localize=true}}
         </select>
         {{/compare}}
     {{/compare}}
     {{#compare item.system.charms.charm1.ability "damageBonus" operator="=="}}
         {{#compare item.type "weapon" operator="!="}}
         <select name="system.charms.charm1.target">
-            {{#select item.system.charms.charm1.target}}
-                {{#each config.attackType as |v k|}}
-                    <option value="{{k}}"> {{localize v}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions config.attackType selected=item.system.charms.charm1.target localize=true}}
         </select>
         {{/compare}}
     {{/compare}}
@@ -83,11 +59,7 @@
 {{#compare item.system.charms.charmNumber 2 operator=">="}}
     {{!Determine the type of Charm}}
     <select class="charmSelecter" name="system.charms.charm2.ability">
-        {{#select item.system.charms.charm2.ability}}
-            {{#each config.magicItemCharms as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.magicItemCharms selected=item.system.charms.charm2.ability localize=true}}
     </select>
 
     {{! Is the Charm a greater or Lesser Charm?}}
@@ -96,33 +68,21 @@
     {{! If the Charm is Skill Ranks, Select field for the skill it affects}}
     {{#compare item.system.charms.charm2.ability "skillRanks" operator="=="}}
     <select name="system.charms.charm2.target">
-        {{#select item.system.charms.charm2.target}}
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.skills selected=item.system.charms.charm2.target localize=true}}
     </select>
     {{/compare}}
 
     {{! If the Charm is Bane, Select field for the creature Type}}
     {{#compare item.system.charms.charm2.ability "bane" operator="=="}}
     <select name="system.charms.charm2.target">
-        {{#select item.system.charms.charm2.target}}
-            {{#each config.creatureType as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.creatureType selected=item.system.charms.charm2.target localize=true}}
     </select>
     {{/compare}}
 
     {{! If the Charm is Attribute Bonus, Select field for the target Attribute}}
     {{#compare item.system.charms.charm2.ability "attributeBonus" operator="=="}}
     <select name="system.charms.charm2.target">
-        {{#select item.system.charms.charm2.target}}
-            {{#each config.abilityScores as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.abilityScores selected=item.system.charms.charm2.target localize=true}}
     </select>
     {{/compare}}
     
@@ -137,11 +97,7 @@
 {{#compare item.system.charms.charmNumber 3 operator=">="}}
     {{!Determine the type of Charm}}
     <select class="charmSelecter" name="system.charms.charm3.ability">
-        {{#select item.system.charms.charm3.ability}}
-            {{#each config.magicItemCharms as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.magicItemCharms selected=item.system.charms.charm3.ability localize=true}}
     </select>
 
     {{! Is the Charm a greater or Lesser Charm?}}
@@ -150,33 +106,21 @@
     {{! If the Charm is Skill Ranks, Select field for the skill it affects}}
     {{#compare item.system.charms.charm3.ability "skillRanks" operator="=="}}
     <select name="system.charms.charm3.target">
-        {{#select item.system.charms.charm3.target}}
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.skills selected=item.system.charms.charm3.target localize=true}}
     </select>
     {{/compare}}
 
     {{! If the Charm is Bane, Select field for the creature Type}}
     {{#compare item.system.charms.charm3.ability "bane" operator="=="}}
     <select name="system.charms.charm3.target">
-        {{#select item.system.charms.charm3.target}}
-            {{#each config.creatureType as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.creatureType selected=item.system.charms.charm3.target localize=true}}
     </select>
     {{/compare}}
 
     {{! If the Charm is Attribute Bonus, Select field for the target Attribute}}
     {{#compare item.system.charms.charm3.ability "attributeBonus" operator="=="}}
     <select name="system.charms.charm3.target">
-        {{#select item.system.charms.charm3.target}}
-            {{#each config.abilityScores as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.abilityScores selected=item.system.charms.charm3.target localize=true}}
     </select>
     {{/compare}}
     
@@ -191,11 +135,7 @@
 {{#compare item.system.charms.charmNumber 4 operator=">="}}
     {{!Determine the type of Charm}}
     <select class="charmSelecter" name="system.charms.charm4.ability">
-        {{#select item.system.charms.charm4.ability}}
-            {{#each config.magicItemCharms as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.magicItemCharms selected=item.system.charms.charm4.ability localize=true}}
     </select>
 
     {{! Is the Charm a greater or Lesser Charm?}}
@@ -204,33 +144,21 @@
     {{! If the Charm is Skill Ranks, Select field for the skill it affects}}
     {{#compare item.system.charms.charm4.ability "skillRanks" operator="=="}}
     <select name="system.charms.charm4.target">
-        {{#select item.system.charms.charm4.target}}
-            {{#each config.skills as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.skills selected=item.system.charms.charm4.target localize=true}}
     </select>
     {{/compare}}
 
     {{! If the Charm is Bane, Select field for the creature Type}}
     {{#compare item.system.charms.charm4.ability "bane" operator="=="}}
     <select name="system.charms.charm4.target">
-        {{#select item.system.charms.charm4.target}}
-            {{#each config.creatureType as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.creatureType selected=item.system.charms.charm4.target localize=true}}
     </select>
     {{/compare}}
 
     {{! If the Charm is Attribute Bonus, Select field for the target Attribute}}
     {{#compare item.system.charms.charm4.ability "attributeBonus" operator="=="}}
     <select name="system.charms.charm4.target">
-        {{#select item.system.charms.charm4.target}}
-            {{#each config.abilityScores as |v k|}}
-                <option value="{{k}}"> {{localize v}}</option>
-            {{/each}}
-        {{/select}}
+        {{selectOptions config.abilityScores selected=item.system.charms.charm4.target localize=true}}
     </select>
     {{/compare}}
     

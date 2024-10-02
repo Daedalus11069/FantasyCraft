@@ -114,7 +114,6 @@ export async function createMacro(data, type, slot)
 {
   let newData = {};
   let icon;
-  console.log("test")
   if (type == "Item")
   {
     if (game.user.isGM)
@@ -195,7 +194,7 @@ function attackMacro(name)
   else if (weapon.type == "weapon" && !weapon.system.readied)
     ui.notifications.warn("This Weapon is not Readied")
   else if (weapon.type == "attack")
-    game.user.character.rollNaturalAttack(weapon, event.shiftKey)
+    game.user.character.rollUnarmedAttack(weapon, event.shiftKey)
   `
 }
 
@@ -206,3 +205,9 @@ function spellMacro(name, id)
   game.user.character.sheet._spellCard(event, "${id}", true)
   `
 }
+
+export async function findAndReturnConfigInfo({name="", type})
+{
+  return type[name.toLowerCase()];
+}
+

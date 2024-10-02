@@ -5,7 +5,7 @@ export default class Treasure extends Application   {
         this.actor = actor; 
     }
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "npc-treasure",
             classes: ["fantasycraft"],
             choices: {},

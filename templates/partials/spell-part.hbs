@@ -1,5 +1,4 @@
-<li class="flexrow item ownedItem" data-item-id={{id}}>
-        
+<li class="flexrow item ownedItem limit-height" data-item-id={{id}}>
     <text class="flex1">
         <div data-item-id="{{id}}" data-item-name="{{name}}">
             <a class="pin-spell">
@@ -24,10 +23,12 @@
                     <strong><label>{{ localize "fantasycraft.castingTime"}}: </label></strong>
                     <span> {{system.castingTime.value}} {{localize system.castingTime.increment}}</span>
                 </div>
+                
                 <div>
                     <strong><label>{{ localize "fantasycraft.distance"}}: </label></strong>
                     <span> {{localize system.distance.description}} {{#if system.distance.rangedAttack}}{{localize "fantasycraft.rangedAttack"}} {{/if}}</span>
                 </div>
+                
                 {{#if system.area.value}}
                 <div>
                     <strong><label>{{ localize "fantasycraft.area"}}: </label></strong>
@@ -39,6 +40,7 @@
                     </span>
                 </div>
                 {{/if}}
+
                 <div>
                     <strong><label>{{ localize "fantasycraft.spellDuration"}}: </label></strong>
                     <span> 
@@ -75,6 +77,7 @@
                 {{/if}}
                 </div>
                 {{/if}}
+
                 {{#if system.preparationCost}}
                 <div>
                     <strong><label>{{ localize "fantasycraft.preparationCost"}}: </label></strong>
@@ -91,56 +94,6 @@
     </text>
     <text class="small-font">{{system.level}}</text>
     <text class="small-font flex2">{{system.castingTime.value}} {{localize system.castingTime.increment}}</text>
-    <text class="small-font flex2">{{localize system.distance.description}} 
-        {{#if system.distance.rangedAttack}} <span class="shorthand-icon">R</span>{{/if}}
-    </text>
-    {{! Spell Area }}
-    <text class="small-font flex3">
-        {{#compare system.area.value "0" operator="!="}}
-            {{#compare system.area.shape "custom" operator="=="}}
-                <span class="tooltip" style="border-radius: 50%;"> ?
-                    <div class="tooltiptext relative-position" style="position:relative; width:300px;">
-                        {{system.area.value}} 
-                        {{localize "fantasycraft.ft"}}
-                        {{#if system.area.perLevel}}{{localize "fantasycraft.perCastingLevel"}}{{/if}} 
-                        {{#if system.area.penetrating}}{{localize "fantasycraft.penetrating"}}{{/if}} 
-                    </div>
-                </span>
-            {{/compare}}
-                {{#compare system.area.shape "custom" operator="!="}}
-                {{system.area.value~}} 
-                {{~localize "fantasycraft.ft"}}
-                {{#if system.area.perLevel}}{{~localize "fantasycraft.perCastingLevelAB"}}{{/if}} 
-                {{#if system.area.penetrating}}{{localize "fantasycraft.penetrating"}}{{/if}} 
-                {{localize system.area.shape}}
-            {{/compare}}
-        {{/compare}}
-        {{#compare system.area.value "0" operator="=="}}
-        -
-        {{/compare}}
-    </text>
-    {{! Spell Duration }}
-    <text class="small-font flex3">
-        {{#if system.duration.isNotInstantOrPermanent}}
-            {{system.duration.number}}    {{localize system.duration.increment~}} 
-            {{#if system.duration.perCastingLevel}}
-                {{~localize "fantasycraft.perCastingLevelAB"}}
-            {{/if}}
-        {{else}}
-            {{system.duration.value}}
-        {{/if}}
-        {{#if system.duration.durationKeyword}} ({{~/if~}}
-        {{~#if system.duration.dismissable~}}
-            {{~localize "fantasycraft.dismissableAB"~}}
-        {{~/if~}}
-        {{~#if system.duration.enduring~}}
-            {{~#if system.duration.dismissable~}}
-            , 
-            {{/if}}
-            {{~localize "fantasycraft.enduringAB"~}}
-        {{~/if~}}
-        {{~#if system.duration.durationKeyword~}}){{/if}}
-    </text>
     {{! Spell Saves }}
     <text class="small-font flex2">
     {{#if system.save.hasSave}}
@@ -171,7 +124,6 @@
         {{localize "fantasycraft.noEntry"}}
     {{/if}}
     </text>
-    <text class="small-font">{{system.preparationCost}}</text>
     <div>                
         <div class="item" data-item-id="{{id}}" data-item-name="{{name}}">
             <a class="editItem">

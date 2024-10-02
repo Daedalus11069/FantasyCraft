@@ -2,8 +2,8 @@ import {resetAbilityUsage} from './Utils.js';
 
 const _createCondition = (name, icon, changes = []) => ({
     id: name,
-    label: game.i18n.localize("fantasycraft." + name),
-    icon: icon,
+    name: game.i18n.localize("fantasycraft." + name),
+    img: icon,
     transfer: true,
     duration: {},
     flags: {

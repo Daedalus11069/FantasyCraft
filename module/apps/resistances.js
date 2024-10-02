@@ -10,7 +10,7 @@ export default class Resistances extends FormApplication {
         this.actor = actor; 
     }
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "resistances",
             classes: ["fantasycraft"],
             choices: {},
@@ -27,7 +27,7 @@ export default class Resistances extends FormApplication {
         let resistances = this.actor.system.resistances;
         
         //Populate choices
-        const choices = duplicate(resistances);
+        const choices = foundry.utils.duplicate(resistances);
 
         return {
             resistances: resistances,

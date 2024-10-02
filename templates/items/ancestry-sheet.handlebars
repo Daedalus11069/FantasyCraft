@@ -31,11 +31,7 @@
                     <div>
                     <label>{{localize "fantasycraft.size"}}</label> 
                         <select name="system.size">
-                            {{#select item.system.size}}
-                            {{#each config.size as |v k|}}
-                                <option value="{{k}}">{{localize v}}</option>
-                            {{/each}}
-                            {{/select}}
+                            {{selectOptions config.size selected=item.system.size localize=true}}
                         </select>
                         <div>
                             <input class="narrowField" type="number" name="system.footprint.width" value="{{item.system.footprint.width}}">
@@ -57,24 +53,17 @@
                     <div>
                         <label>{{localize "fantasycraft.locomotion"}}</label>
                         <select name="system.locomotion">
-                            {{#select item.system.locomotion}}
-                                <option value="bipedal">{{localize "fantasycraft.bipedal"}}</option>
-                                <option value="quadrupedal">{{localize "fantasycraft.quadrupedal"}}</option>
-                            {{/select}}
+                            {{selectOptions config.locomotionType selected=item.system.locomotion localize=true}}
                         </select>
                     </div>
                 </div>
                 {{!creature type}}
                 <div class="form-group item-customization-section">
                     <div>
-                    <label>{{localize "fantasycraft.type"}}</label> 
-                    <select name="system.type">
-                        {{#select item.system.type}}
-                        {{#each config.creatureType as |v k|}}
-                            <option value="{{k}}">{{localize v}}</option>
-                        {{/each}}
-                        {{/select}}
-                    </select>
+                        <label>{{localize "fantasycraft.type"}}</label> 
+                        <select name="system.type">
+                            {{selectOptions config.creatureType selected=item.system.type localize=true}}
+                        </select>
                     </div>
                 </div>
                 {{!Attribute changes}}
@@ -90,12 +79,8 @@
                             </a>
                         {{else}}
                         <select name="system.stats.stat1.ability">
-                            {{#select item.system.stats.stat1.ability}}
-                                <option value=""></option>
-                            {{#each config.abilityScores as |v k|}}
-                                <option value="{{k}}">{{localize v}}</option>
-                            {{/each}}
-                            {{/select}}
+                            <option value=""></option>
+                            {{selectOptions config.abilityScores selected=item.system.stats.stat1.ability localize=true}}
                         </select>
                         {{/if}}
                         <input class="narrowField" type="number" name="system.stats.stat1.value" value="{{item.system.stats.stat1.value}}"/>
@@ -114,12 +99,8 @@
                             </a>
                         {{else}}
                             <select name="system.stats.stat2.ability">
-                                {{#select item.system.stats.stat2.ability}}
-                                    <option value=""></option>
-                                {{#each config.abilityScores as |v k|}}
-                                    <option value="{{k}}">{{localize v}}</option>
-                                {{/each}}
-                                {{/select}}
+                                <option value=""></option>
+                                {{selectOptions config.abilityScores selected=item.system.stats.stat2.ability localize=true}}
                             </select>
                         {{/if}}
                         <input class="narrowField" type="number" name="system.stats.stat2.value" value="{{item.system.stats.stat2.value}}"/>
@@ -138,12 +119,8 @@
                             </a>
                         {{else}}
                             <select name="system.stats.stat3.ability">
-                                {{#select item.system.stats.stat3.ability}}
-                                    <option value=""></option>
-                                {{#each config.abilityScores as |v k|}}
-                                    <option value="{{k}}">{{localize v}}</option>
-                                {{/each}}
-                                {{/select}}
+                                <option value=""></option>
+                                {{selectOptions config.abilityScores selected=item.system.stats.stat3.ability localize=true}}
                             </select>
                         {{/if}}
                         <input class="narrowField" type="number" name="system.stats.stat3.value" value="{{item.system.stats.stat3.value}}"/>
@@ -162,12 +139,8 @@
                             </a>
                         {{else}}
                             <select name="system.stats.stat4.ability">
-                                {{#select item.system.stats.stat4.ability}}
-                                    <option value=""></option>
-                                {{#each config.abilityScores as |v k|}}
-                                    <option value="{{k}}">{{localize v}}</option>
-                                {{/each}}
-                                {{/select}}
+                                <option value=""></option>
+                                {{selectOptions config.abilityScores selected=item.system.stats.stat4.ability localize=true}}
                             </select>
                         {{/if}}
                         <input class="narrowField" type="number" name="system.stats.stat4.value" value="{{item.system.stats.stat4.value}}"/>
@@ -185,14 +158,16 @@
                     <div>
                         <label>{{localize "fantasycraft.speed"}}</label> 
                         <select name="system.speed2.type">
-                            {{#select item.system.speed2.type}}
-                                <option value=""></option>
-                            {{#each config.moveType as |v k|}}
-                                <option value="{{k}}">{{localize v}}</option>
-                            {{/each}}
-                            {{/select}}
+                            <option value=""></option>
+                            {{selectOptions config.moveType selected=item.system.speed2.type localize=true}}
                         </select>
                         <input class="mediumField" type="number" name="system.speed2.value" value="{{item.system.speed2.value}}">
+                    </div>
+                </div>
+                <div class="form-group item-customization-section">
+                    <div>
+                        <label>{{localize "fantasycraft.isTalent"}}</label> 
+                        <input type="checkbox" name="system.isTalent" {{checked item.system.isTalent}}/> 
                     </div>
                 </div>
                 <div>

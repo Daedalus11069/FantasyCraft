@@ -1,48 +1,121 @@
-<form autocomplete="off" onsubmit="event.preventDefault();">
-    {{!Page 1 - Class}}
-        {{! Drop down with class choices}}
-        {{! Shows what that class provides at this level}}
-        {{> "systems/fantasycraft/templates/partials/class-choice.hbs"}}
+<form autocomplete="off" class="sheet" onsubmit="event.preventDefault();">
+    {{! Drop down with class choices}}
+    {{! Shows what that class provides at this level}}
+    <div style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "class")}} {{else}} display: none {{/if}}">
+        {{> "systems/fantasycraft/templates/partials/level-up-partials/class-choice.hbs" classes=classes}}
+    </div>
 
-    {{!Page 2}}
-        {{! choice of E slot if required}}
-    {{!Page 3}}
-        {{! Skill points}}
-        {{> "systems/fantasycraft/templates/partials/skill-table-part.hbs"}}
-    {{!Page 4}}
-        {{!Attribute Bonus if level x4, or x3 if fast attributes is on}}
-        {{#if pages.attributes}}
-        <div>
-            <div>
-                attribute points remaining
-                <input type="number" name="attributePoints" value="1" disabled=true>
-            </div>
-            <div>
-                <input type="number" name="strength" value="{{actor.system.abilityScores.strength.value}}" disabled=true>
-                <input type="number" name="dexterity" value="{{actor.system.abilityScores.dexterity.value}}" disabled=true>
-                <input type="number" name="constitution" value="{{actor.system.abilityScores.constitution.value}}" disabled=true>
-                <input type="number" name="intelligence" value="{{actor.system.abilityScores.intelligence.value}}" disabled=true>
-                <input type="number" name="wisdom" value="{{actor.system.abilityScores.wisdom.value}}" disabled=true>
-                <input type="number" name="charisma" value="{{actor.system.abilityScores.charisma.value}}" disabled=true>
+    {{!Attribute Bonus if level x4, or x3 if fast attributes is on}}
+    <div style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "attributes")}} {{else}} display: none {{/if}}">
+        <div class="page-container">
+            <label class="flexrow page-header">
+                <h3 class="flex3">{{localize "fantasycraft.attributes"}}</h3>
+                <h3 class="flex6 right-align-text">{{localize "fantasycraft.attributePointsRemaining"}}</h3>
+                <input type="number" class="center-text pointHoldier" name="attributePoints" value="{{options.attributePoints}}" disabled=true>
+            </label>
+            <div class="flexcol">
+                {{#each options.updatingActor.system.abilityScores as |score key|}}
+                <div class="flexrow center-text">
+                    <label class="flex6 capitalize"><h4>{{localize key}}</h4></label>
+                    <a><i class="fa fa-minus decrease-attribute plus-minus-buttons" data-attribute="{{key}}"></i></a> <input class="mediumBox" type="number" name="{{key}}" value="{{score.value}}" disabled=true> <a><i class="fa fa-plus increase-attribute plus-minus-buttons" data-attribute="{{key}}"></i></a>
+                </div>
+                {{/each}}
             </div>
         </div>
-        {{/if}}
-    {{!Page 5}}
-        {{!Proficiency choice if level odd level (other than 1), every level if fast proficiencies is on}}
-        {{#if pages.proficiencies}}
-        {{/if}}
-    {{!Page 6}}
-        {{!Interest if level 2+4x, or every even level if fast interests is on}}
-        {{#if pages.interests}}
-         <div>
-            <h4 class="category-label"> {{localize "fantasycraft.interests"}} </h4>
+    </div>
+
+    {{! Origin }}
+    <div style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "origin")}} {{else}} display: none {{/if}}">
+        <div class="page-container">
+            <div class="flexcol page-header">
+                <h3>{{localize "fantasycraft.origin"}}</h3>
+
+                {{> "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs" item=nextLevel.careerAncestry type="Ancestry" source="career" suboption="any" suboption2="any"}}
+                {{#if (eq nextLevel.careerAncestry.name "Human")}}
+                {{> "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs" item=nextLevel.careerTalent type="Talent" source="career" suboption="talent" suboption2="any"}}
+                {{/if}}
+                {{> "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs" item=nextLevel.careerSpecialty type="Specialty" source="career" suboption="any" suboption2="any"}}
+            </div>
+        </div>
+    </div>
+
+    {{! choice of E slot if required}}
+    <div style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "eSlot")}} {{else}} display: none {{/if}}">
+    </div>
+
+    {{! Skill points}}
+    <div style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "skills")}} {{else}} display: none {{/if}}">
+        <div class="page-container">
+            <label class="flexrow page-header">
+                <h3 class="category-label flex3"> {{localize "fantasycraft.skills"}}</h3>
+                <h3 class="flex6 right-align-text">{{localize "fantasycraft.ranksRemaining"}}</h3>
+                <input class="center-text ranks-remaining" type="number" name="newSkillRanks" value="{{options.ranksRemaining}}" disabled="true">
+            </label>
+            {{> "systems/fantasycraft/templates/partials/skill-table-part.hbs" skills=options.updatingActor.system.skills abilityScores=options.updatingActor.system.abilityScores }}
+            {{#if (not (eq nextLevel.class.system.spellPoints "None"))}}
+                <div class="flexrow center-text remove-space skill" data-skill="spellcasting">
+                    <div style="align-self: center;">{{localize "fantasycraft.spellcasting"}}</div>
+                    <div>
+                        <input class="skill-input" name="system.arcane.spellcasting.value" type="number" value="{{options.updatingActor.system.arcane.spellcasting.value}}" placeholder="0" disabled=true />
+                        <footer> {{localize "fantasycraft.total"}} </footer>
+                    </div>
+                    <div>
+                        <input class="skill-input" name="system.abilityScores.intelligence.mod" type="number" value="{{options.updatingActor.system.abilityScores.intelligence.mod}}" placeholder="0" disabled=true/>
+                        <footer> {{localize "fantasycraft.ability"}} </footer>
+                    </div>
+                    <div>
+                        <input type="number" class="smallBox skill-ranks" name="system.arcane.spellcasting.ranks" value="{{options.updatingActor.system.arcane.spellcasting.ranks}}" />
+                        <footer> {{localize "fantasycraft.ranks"}} </footer>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    
+    {{!Proficiency choice if level odd level (other than 1), every level if fast proficiencies is on}}
+    <div class="flexcol" style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "proficiencies")}} {{else}} display: none {{/if}}">
+        <div class="page-container flexcol">
+            <label class="flexrow page-header">
+                <h3 class="flex3">{{localize "fantasycraft.proficiencies"}}</h3>
+                <h3 class="flex6 right-align-text">{{localize "fantasycraft.proficiencyPointsRemaining"}}</h3>
+                <input class="center-text pointHoldier" type="number" name="proficiencyPoints" value="{{options.proficiencyPoints}}" disabled=true>
+            </label>
+
+            <div class="flexrow category-body right-border remove-space">
+                <section class="two-column" style="grid-template-columns: 48% 52%;">
+                    {{#each options.proficiencies as |prof id|}}
+                        <section class="push">
+                        <span>{{localize prof.label}}</span>
+                            <input class="med-checkbox change-proficiencies prof" type="checkbox" name="system.proficency.{{id}}.proficient" data-proficiency="proficient" data-type="{{id}}" {{checked prof.proficient}}/>
+                            <input class="med-checkbox change-proficiencies forte" type="checkbox" name="system.proficency.{{id}}.forte" data-proficiency="forte" data-type="{{id}}" {{checked prof.forte}}/>
+                        </section>
+                    {{/each}}
+                </section>
+            </div>
+            <span class="center-text">- OR -</span>
+            {{#each nextLevel.careerTrick as |trick id|}}
+                {{> "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs" item=trick type="Trick" source="career" suboption="none" suboption2=id}}
+            {{/each}}
+            {{#times options.proficiencyPoints}}
+                {{> "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs" item="" type="Trick" source="career" suboption="none" suboption2=this}}
+            {{/times}}
+        </div>
+    </div>
+    
+    {{!Interest if level 2+4x, or every even level if fast interests is on}}
+    <div style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "interests")}} {{else}} display: none {{/if}}">
+        <div class="page-container">
+            <label class="flexrow page-header">
+                <h3 class="flex3">{{localize "fantasycraft.interests"}}</h3>
+                <h3 class="flex6 right-align-text">{{localize "fantasycraft.interestsRemaining"}}</h3>
+                <input class="center-text pointHoldier" type="number" name="interestsRemaining" value="{{options.interestsRemaining}}" disabled=true>
+            </label>
+
             {{#each actor.system.interests as |name id|}}
             <div class="form-group">
-                <section style="flex: 0 0 100%;">
+                <section>
                     <label>{{localize id}}</label>
-                    <a class="addInterest" data-type="{{id}}" data-target="system.interests.{{id}}">
-                        <i class="fas fa-plus"></i>
-                    </a>
+                    <input class="interest {{id}}" type="text" name="system.interests.{{id}}" value="{{localize (lookup ../nextLevel.interests id)}}"/>
                 </section>
                 <ul class="traits-list">
                 {{#each name.array as |item iid|}}
@@ -52,21 +125,48 @@
             </div>
             {{/each}}
         </div>
-        {{/if}}
-    {{!Page 7}}
-        {{!feat choice if level x3, or every even level if fast feats is on}}
-        {{#if pages.feats}}
+    </div>
+        
+    {{!feat choice if level x3, or every even level if fast feats is on}}
+    <div class="flexcol" style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "feats")}} {{else}} display: none {{/if}}">
+        <h3>{{localize "fantasycraft.feats"}}</h3>
+        {{> "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs" item=nextLevel.careerFeat type="Feat" source="career" suboption="any" suboption2="any"}}
 
+        {{#if class-feat}} 
+            <span class="{{#if FILLED}}feature-container{{else}}drop-zone{{/if}}" data-type="feat" data-feat-type="{{INSERT CLASS FEAT TYPE HERE}}"> Drop Feat Here.</span>
         {{/if}}
-    {{!Page number}}
+    </div>
+
+    {{!spellcasting choice if the player has leveled up an arcane casting class}}
+    <div class="flexcol" style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "spellcasting")}} {{else}} display: none {{/if}}">
+        <h3>{{localize "fantasycraft.spellcasting"}}</h3>
+        
+        {{#each nextLevel.classSpell as |spell id|}}
+        {{> "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs" item=spell type="Spell" source="class" suboption="any" suboption2=id}}
+        {{/each}}
+        {{#times options.newSpells}}
+        {{> "systems/fantasycraft/templates/partials/level-up-partials/drop-zone.hbs" item="" type="Spell" source="class" suboption="any" suboption2=this}}
+        {{/times}}
+    </div>
+    
+    <div class="flexcol" style="{{#if (eq (lookup (lookup pages options.pageNum) "page") "summary")}} {{else}} display: none {{/if}}">
+        {{> "systems/fantasycraft/templates/partials/level-up-partials/summary-page.hbs" pages=pages nextLevel=nextLevel baseActor=baseActor}}
+    </div>
 
     {{!Next/Previous Buttons}}
-    <nav class="sheet-navigation sheet-tabs" data-group="primary">
-        <span>{{localize "fantasycraft.page"}} {{pageNum}}</span>
-        <div>
-            {{#if (eq this.pageNum 1)}} <a class="item" disabled="true">{{ localize "fantasycraft.previous" }}</a> {{else}}<a class="item" data-tab="characterInformation">{{ localize "fantasycraft.previous" }}</a> {{/if}}
-            <a class="item" data-tab="characterInformation">{{ localize "fantasycraft.next" }}</a>
+    <nav class="sheet-tabs" data-group="primary">
+        <span>{{localize "fantasycraft.page"}} {{pageIndex}} / {{pages.length}}</span>
+        <div class="form-group">
+            <div class="button">
+                {{#unless (eq options.pageNum 0)}} <a class="previous-page">{{ localize "fantasycraft.previous" }}</a> {{/unless}}
+            </div>
+            <div class="button">
+                {{#if (eq pages.length pageIndex)}}
+                    <button type="submit" name="submit" value="1">{{ localize "fantasycraft.levelUp" }} </button>
+                {{else}}
+                    <a class="next-page" name="next-button" {{#if (and (eq (lookup (lookup pages options.pageNum) "page") "class") (not nextLevel.level))}} disabled="true"{{/if}}>{{ localize "fantasycraft.next" }}</a>
+                {{/if}}
+            </div>
         </div>
     </nav>
-
 </form>

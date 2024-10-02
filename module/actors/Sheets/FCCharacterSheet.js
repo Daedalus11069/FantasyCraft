@@ -1,11 +1,12 @@
+import * as levelUp from "../../level-up-functions.js";
 import ActorSheetFC from "./SheetBase.js";
 
 export default class FCCharacterSheet extends ActorSheetFC {
 
 	static get defaultOptions()
 	{
-		return mergeObject(super.defaultOptions, {
-			template:"systems/fantasycraft/templates/sheets/character-sheet.handlebars",
+		return foundry.utils.mergeObject(super.defaultOptions, {
+			template:"systems/fantasycraft/templates/sheets/character-sheet-v2.handlebars",
 			scrollY: [
 			  ".spellcasting .spell-list"
 			],
@@ -17,15 +18,15 @@ export default class FCCharacterSheet extends ActorSheetFC {
 
 	_preCreate(data, user) 
 	{
-		super._preCreate(data, user);
-	
-		const tokenUpdateData = {};
-		// Link token data by default
-		if (data.prototypeToken?.actorLink === undefined) {
-		  tokenUpdateData["actorLink"] = true;
-		}
-	
-		if (!foundry.utils.isEmpty(tokenUpdateData)) this.prototypeToken.updateSource(tokenUpdateData);
+		//super._preCreate(data, user);
+	//
+		//const tokenUpdateData = {};
+		//// Link token data by default
+		//if (data.prototypeToken?.actorLink === undefined) {
+		//  tokenUpdateData["actorLink"] = true;
+		//}
+	//
+		//if (!foundry.utils.isEmpty(tokenUpdateData)) this.prototypeToken.updateSource(tokenUpdateData);
 	}	
 
 	getData()
@@ -37,6 +38,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		data.ancestries = data.actor.items.filter(function(item) {return item.type == "ancestry"});
 		data.ancestryFeatures = data.actor.items.filter(function(item) {return (item.type == "feature" && (item.system.source == data.ancestries[0]?.name || item.system.source == data.ancestries[1]?.name))});
 		data.armour = data.actor.items.filter(function(item) {return item.type == "armour"});
+		data.equippedArmour = data.armour.find(function(armour) {return armour.system.equipped});
 		data.classes = data.actor.items.filter(function(item) {return item.type == "class"});
 		data.classFeatures = data.actor.items.filter(function(item) {return (item.type == "feature" && item.system.featureType == "class")});
 		data.feats = data.actor.items.filter(function(item) {return item.type == "feat"});
@@ -52,7 +54,10 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		data.tricks = data.actor.items.filter(item => item.type == "trick" && (item.system.trickType.keyword != "pathSpellCasting" && item.system.trickType.keyword != "spellcasting"));
 		data.spellTricks = data.actor.items.filter(item => item.type == "trick" && (item.system.trickType.keyword == "pathSpellCasting" || item.system.trickType.keyword == "spellcasting"));
 		data.stances = data.actor.items.filter(item => item.type == "stance");
+		data.topbar = (!!game.user.getFlag("fantasycraft", "collapsed")) ? game.user.getFlag("fantasycraft", "collapsed") : false;
 
+		
+		
 		data.hasCutting = data.actor.items.filter(item => item.name == game.i18n.localize("fantasycraft.arrowCutting"));
 		data.hasParry = data.actor.items.filter(item => item.name == game.i18n.localize("fantasycraft.parry"));
 		data.hasBlock = data.actor.items.filter(item => item.name == game.i18n.localize("fantasycraft.shieldBlock"));
@@ -83,12 +88,18 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		if (this.actor.system.totalWeight > this.actor.system.carryingCapacity.light)
 			data.encumbered = (this.actor.system.totalWeight > this.actor.system.carryingCapacity.heavy) ? "overencumbered" : "encumbered";
 
+		data.wPercs = data.actor.system.wounds.value / data.actor.system.wounds.max * 100;
+		data.vPercs = data.actor.system.vitality.value / data.actor.system.vitality.max * 100;
+
+		data.cPercs = data.actor.system.totalWeight / data.actor.system.carryingCapacity.overloaded * 100;
+
 		return data;
 	}
 
 	activateListeners(html)
 	{
 		html.find('.sortTable').click(this._sortTable.bind(this));
+		html.find('.collapse-topbar').click(this._collapseTopbar.bind(this));
 		//html.find('.school-filter').click(this._filterSpells.bind(this));
 
 		super.activateListeners(html);
@@ -121,18 +132,18 @@ export default class FCCharacterSheet extends ActorSheetFC {
 
 		//get the number of each type of feat the character has. 
 		let feats = {
-			basicFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.basicCombat")).length,
-			meleeFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.meleeCombat")).length,
-			rangedFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.rangedCombat")).length,
-			unarmedFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.unarmedCombat")).length,
-			chanceFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.chance")).length,
-			covertFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.covert")).length,
-			gearFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.gear")).length,
-			skillFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.skill")).length,
-			spellcastingFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.spellcasting")).length,
-			speciesFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.species")).length,
-			styleFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.style")).length,
-			terrainFeats: items.filter(item => (item.type == "feat" && item.system.featType == "fantasycraft.terrain")).length
+			basicFeats: items.filter(item => (item.type == "feat" && item.system.featType == "basicCombat")).length,
+			meleeFeats: items.filter(item => (item.type == "feat" && item.system.featType == "meleeCombat")).length,
+			rangedFeats: items.filter(item => (item.type == "feat" && item.system.featType == "rangedCombat")).length,
+			unarmedFeats: items.filter(item => (item.type == "feat" && item.system.featType == "unarmedCombat")).length,
+			chanceFeats: items.filter(item => (item.type == "feat" && item.system.featType == "chance")).length,
+			covertFeats: items.filter(item => (item.type == "feat" && item.system.featType == "covert")).length,
+			gearFeats: items.filter(item => (item.type == "feat" && item.system.featType == "gear")).length,
+			skillFeats: items.filter(item => (item.type == "feat" && item.system.featType == "skill")).length,
+			spellcastingFeats: items.filter(item => (item.type == "feat" && item.system.featType == "spellcasting")).length,
+			speciesFeats: items.filter(item => (item.type == "feat" && item.system.featType == "species")).length,
+			styleFeats: items.filter(item => (item.type == "feat" && item.system.featType == "style")).length,
+			terrainFeats: items.filter(item => (item.type == "feat" && item.system.featType == "terrain")).length
 		}
 
 		//if the character has a feat expert feature, add 2 to that type of feat. 
@@ -184,15 +195,16 @@ export default class FCCharacterSheet extends ActorSheetFC {
 			//Add tyhe ancestry
 			this._alterAncestry(itemData, act, true);
 		}
-		if (itemData.type == "general")
+		if (itemData.type == "general" || (itemData.type == "weapon" && itemData.system.weaponCategory == "arrowsAndBolts" || itemData.system.weaponCategory == "powder"))
 		{
-			let itemCheck = act.itemTypes.general.find(i => i.name == itemData.name);
+			let itemCheck = (itemData.type == "general") ? act.itemTypes.general.find(i => i.name == itemData.name) : act.itemTypes.weapon.find(i => i.name == itemData.name) ;
 			let hasItem = !!itemCheck;
 
 			if (hasItem)
 			{
 				dontAdd = true;
-				await itemCheck.update({"system.quantity": itemCheck.system.quantity++});
+				let quantity = itemCheck.system.quantity + 1;
+				await itemCheck.update({"system.quantity": quantity});
 			}
 		}
 		else if ( itemData.type == "class")
@@ -228,7 +240,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 			// Add class features
 			if ( !hasClass || dontAdd ) 
 			{
-				let features = await ActorSheetFC.getClassFeatures(
+				let features = await levelUp.getClassFeatures(
 					{ 
 						className: itemData.name, 
 						level: itemData.system.levels, 
@@ -267,11 +279,11 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		} else if (itemData.type == "specialty")
 		{
 			// Start by getting the feat that the specialty provides and adding to the sheet
-			const feat = await ActorSheetFC.getFeat({ specialtyName: itemData.name });
+			const feat = await levelUp.getFeat({ specialtyName: itemData.name });
 			if (feat != null) await this.actor.createEmbeddedDocuments("Item", [feat]);
 
 			// Get the different features added by the Specialty to add them to the sheet. 
-			const features = await ActorSheetFC.getOriginFeatures({originName: itemData.name});
+			const features = await levelUp.getOriginFeatures({originName: itemData.name});
 			for (const feature of features)
 			{
 				await act.createEmbeddedDocuments("Item", [feature]);
@@ -321,6 +333,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 			if (itemData.system.containsFlag)
 				act.setFlag("fantasycraft", itemData.name, itemData.name);
 		}
+
 		// Default drop handling if the item should be added
 		if ( !dontAdd ) super._onDropItemCreate(itemData);
 	}
@@ -350,10 +363,10 @@ export default class FCCharacterSheet extends ActorSheetFC {
 				[travelSpeed]: charRef.value - (itemData.system.speed2.value/10)});
 		}
 
-		//If adding an ancestry apply that ancestries details to the character and add the ancestry features, otherwise set them back to default and remove the features.
+		//If adding an ancestry, apply that ancestries details to the character and add the ancestry features, otherwise set them back to default and remove the features.
 		if (add)
 		{
-			const features = await ActorSheetFC.getOriginFeatures({ originName: itemData.name });
+			const features = await levelUp.getOriginFeatures({ originName: itemData.name });
 
 			for (const feature of features)
 			{
@@ -401,7 +414,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		{
 			for (let i = 0; i < practiced.length; i++)
 			{
-				let practicedSkill = await ActorSheetFC.getSkillOrStats({ originName: itemData.name, searchObject: "skill"})
+				let practicedSkill = await levelUp.getSkillOrStats({ originName: itemData.name, searchObject: "skill"})
 				let newName = "Practiced " + practicedSkill[i];
 				await practiced[i].update({name: newName});
 			}
@@ -410,7 +423,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		//Attribute Training
 		if(!!attribute)
 		{
-			let attributeTraining = await ActorSheetFC.getSkillOrStats({ originName: itemData.name, searchObject: "attribute"})
+			let attributeTraining = await levelUp.getSkillOrStats({ originName: itemData.name, searchObject: "attribute"})
 			let newDescription = "The lower of your " + attributeTraining[0] + " or " + attributeTraining[1] + " increases by 1, your choice in the case of a tie.";
 
 			await attribute.update({"system.description.value": newDescription, name: "Attribute Training (" + attributeTraining[0] + ", " + attributeTraining[1]});
@@ -419,7 +432,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		//Paired Skills
 		if(!!skillPair)
 		{
-			let pairedSkill = await ActorSheetFC.getSkillOrStats({ originName: itemData.name, searchObject: "paired"})
+			let pairedSkill = await levelUp.getSkillOrStats({ originName: itemData.name, searchObject: "paired"})
 			let newDescription = "Whenever you gain ranks in " + pairedSkill[0] + " you gain equal ranks in  " + pairedSkill[1] + ". This may not increase " + pairedSkill[1] + " beyond its maximum ranks.";
 
 			await skillPair.update({"system.description.value": newDescription, name: "Paired Skills (" + pairedSkill[0] + ", " + pairedSkill[1]});
@@ -428,7 +441,7 @@ export default class FCCharacterSheet extends ActorSheetFC {
 		//Feat Expert
 		if(!!featExpert)
 		{
-			let featType = await ActorSheetFC.getSkillOrStats({ originName: itemData.name, searchObject: "feat"})
+			let featType = await levelUp.getSkillOrStats({ originName: itemData.name, searchObject: "feat"})
 			let newName = featType + " Expert";
 
 			await featExpert.update({name: newName});
@@ -544,6 +557,14 @@ export default class FCCharacterSheet extends ActorSheetFC {
 
 	}
 
+	async _collapseTopbar(event)
+	{
+		console.log("test")
+		event.preventDefault();
+		await game.user.setFlag("fantasycraft", "collapsed", !game.user.getFlag("fantasycraft", "collapsed"));
+		this.render(false)
+	}
+
 	_sortFunction(event, pinnedList, startPosition = 1)
 	{
 		let table;
@@ -638,8 +659,6 @@ export default class FCCharacterSheet extends ActorSheetFC {
 	}
 
 	//If x > y and x is NOT pinned or x and y are both pinned, switch
-	//
-	
 	_filterItems(items, filters, filterType)
 	{
 		if (filterType == "school")

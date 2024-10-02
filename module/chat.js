@@ -1,6 +1,5 @@
 import * as Utils from "./Utils.js";
 import * as Tricks from "./Tricks.js";
-import { fantasycraft } from "./config.js";
 
 export function addChatListeners(html)
 {
@@ -37,11 +36,11 @@ export function featureCard(feature, actor)
 
 function getChatBaseData(actor) {
     const rollMode = game.settings.get('core', 'rollMode')
+
     return {
       user: game.user.id,
       speaker: {
         actor: actor.id,
-        token: actor.token,
         alias: actor.name,
       },
       blind: rollMode === 'blindroll',
@@ -92,8 +91,8 @@ export function onSavingThrow(diceRoll, actor, savingThrow, dc=0)
 
     const d = rollInfo.data
     d['roll'] = diceRoll.total;
-    d['formula'] = diceRoll.formula
-    d['diceRoll'] = diceRoll.terms[0].results[0].result
+    d['formula'] = diceRoll.formula;
+    d['diceRoll'] = diceRoll.terms[0].total;
     if (dc != 0) d['dc'] = dc;
     d['success'] = (dc != 0 && dc < diceRoll.total) ? true : false;
 
@@ -187,30 +186,42 @@ export function onHealingRoll(diceRoll, actor, healingType)
     setRenderTemplate(diceRoll, 'systems/fantasycraft/templates/chat/healing-chat.hbs', rollInfo, chatData);
 }
 
-export function onAttack(attackRoll, attacker, item, trick=null, trick2=null, additionalInfo, ammo)
+export function onAttack(attackRoll, attacker, item, tricks, additionalInfo, ammo)
 {
-    let threat = (trick?.system.effect.additionalEffect == "replaceAttackRoll") ? attacker.system.skills[trick.system.effect.secondaryCheck].threat : item.system.threatRange;
+    let threat = (item.system?.threatRange != undefined) ? item.system.threatRange : item.system.threat;
+    threat = (tricks?.trick1 != undefined && tricks.trick1.system.effect.additionalEffect == "replaceAttackRoll") ? attacker.system.skills[tricks.trick1.system.effect.secondaryCheck].threat : threat;
+    threat = (tricks?.trick2 != undefined && tricks.trick2.system.effect.additionalEffect == "replaceAttackRoll") ? attacker.system.skills[tricks.trick2.system.effect.secondaryCheck].threat : threat;
 
-    if (game.settings.get('fantasycraft','deadlyCombat'))
-        threat -= 2;
+    // If the GM has enabled the Deadly Combat quality, increase the threat range further.
+    if (game.settings.get('fantasycraft','deadlyCombat')) threat -= 2;
 
     let magicItems = _checkForThreatRangeMagicItems(attacker);
 
-    if (trick?.system.effect.additionalEffect != "replaceAttackRoll")
+    if (tricks?.trick1?.system.effect.additionalEffect != "replaceAttackRoll" && tricks?.trick2?.system.effect.additionalEffect != "replaceAttackRoll")
     {
-        let threatItem = magicItems.find(mi => mi.target == item.system.attackType)
+        let threatItem = magicItems.find(mi => mi.target == item.system.attackType);
         if (threatItem != undefined)
             threat -= (threat.greater) ? 2 : 1;
     }
 
-    const attackInfo = setUpAttackData(attackRoll, attacker, item, threat, item.system.weaponProperties, ammo);
- 
-    setUpTricks(attackInfo, this, trick)
-    setUpTricks(attackInfo, this, trick2)
+    let qualities = (item.type == "attack") ? _filterQualities(item.system.naturalUpgrades) : _filterQualities(item.system.weaponProperties);
+    const attackInfo = setUpAttackData(attackRoll, attacker, item, threat, qualities, ammo);
 
-    const chatData = getChatBaseData(attacker)
+    if (item.type == "attack" && item.system.attackType != "naturalAttack")
+    {
+        const d = attackInfo.data;
+        d['areaSize'] = item.system.area.value * CONFIG.fantasycraft.areaRangeMultiplier[item.system.area.shape];
+        d['areaShape'] = item.system.area.shape;
+        d['properties'] = CONFIG.fantasycraft.attackPropertiesList;
+    }
 
-    setRenderTemplate(attackRoll, 'systems/fantasycraft/templates/chat/weapon-chat.hbs', attackInfo, chatData);
+    if (tricks?.trick1)
+        setUpTricks(attackInfo, tricks);
+
+    const chatData = getChatBaseData(attacker);
+
+    setRenderTemplate(attackRoll, 'systems/fantasycraft/templates/chat/attack-chat.hbs', attackInfo, chatData);
+
 }
 
 function _checkForThreatRangeMagicItems(actor)
@@ -239,6 +250,17 @@ function _checkForThreatRangeMagicItems(actor)
     return magicItems;
 }
 
+function _filterQualities(qualities)
+{
+    let newQualities = {}
+    for(let [key, value] of Object.entries(qualities))
+    {
+        if (Number.isNumeric(value) && value > 0) newQualities[game.i18n.localize(CONFIG.fantasycraft.attackPropertiesList[key])] = value;
+    }
+
+    return newQualities;
+}
+
 function _combatActionThreatRanges(actor, combatAction)
 {
     let threat = 20;
@@ -247,56 +269,51 @@ function _combatActionThreatRanges(actor, combatAction)
     //Get all of the actors magic items and see if any of them affect threat ranges.
     let magicItems = _checkForThreatRangeMagicItems(actor);
 
+    //TODO get weapon for disarm from the dialog box instead of finding one here.
+    let readiedWeapon = actor.items.find(item => item.type == "weapon" && item.system.readied)
     //get the base threat associated with the skill or attack, then check for a magic reduction
     //checking for magic currently only enabled on pummel and disarm since players will likely bake the magic bonus to skills right into their skills list.
     switch(combatAction)
     {
         case "anticipate":
             threat = actor.system.skills.senseMotive.threat;
-            //threatChange = (magicItems.find(item => item.target == "senseMotive").greater) ? 2 : 1;
             break;
         case "bullRush":
             threat = actor.system.skills.athletics.threat;
-            //threatChange = (magicItems.find(item => item.target == "athletics").greater) ? 2 : 1;
             break;
         case "distract":
             threat = actor.system.skills.bluff.threat;
-            //threatChange = (magicItems.find(item => item.target == "bluff").greater) ? 2 : 1;
             break;
         case "feint":
             threat = actor.system.skills.prestidigitation.threat;
-            //threatChange = (magicItems.find(item => item.target == "prestidigitation").greater) ? 2 : 1;
             break;
         case "grapple":
             threat = actor.system.skills.athletics.threat;
-            //threatChange = (magicItems.find(item => item.target == "athletics").greater) ? 2 : 1;
-            break;
-        case "pummel":
-            if (actor.martialArts) threat = (actor.mastersArt) ? 18 : 19;
-            threatChange = (magicItems.find(item => item.target == "unarmed").greater) ? 2 : 1;
             break;
         case "taunt":
             threat = actor.system.skills.senseMotive.threat;
-            //threatChange = (magicItems.find(item => item.target == "senseMotive").greater) ? 2 : 1;
             break;
         case "tire":
             threat = actor.system.skills.resolve.threat;
-            //threatChange = (magicItems.find(item => item.target == "resolve").greater) ? 2 : 1;
             break;
         case "threaten":
             threat = actor.system.skills.intimidate.threat;
-            //threatChange = (magicItems.find(item => item.target == "intimidate").greater) ? 2 : 1;
             break;
         case "trip":
             threat = actor.system.skills.acrobatics.threat;
-            //threatChange = (magicItems.find(item => item.target == "acrobatics").greater) ? 2 : 1;
+            break;
+        case "disarm":
+            threat = readiedWeapon.system.threat;
+            break;
+        case "pummel":
+            if (actor.martialArts) threat = (actor.mastersArt) ? 18 : 19;
+            threatChange = (magicItems.length > 0 && magicItems.find(item => item.target == "unarmed").greater) ? 2 : 1;
             break;
         default:
             console.log("No Threat Range Associated with this skill");
     }
 
     threat -= threatChange;
-
 
     return threat;
 }
@@ -328,8 +345,8 @@ export function onCombatAction(actionRoll, actor, combatAction, trick=null)
     const d = actionInfo.data;
     d['roll'] = actionRoll.total;
     d['formula'] = actionRoll.formula;
-    d['diceRoll'] = actionRoll.terms[0].results[0].result;
-    d['threat'] = (actionRoll.dice[0].results[0].result >= threat) ? true: false;
+    d['diceRoll'] = actionRoll.result;
+    d['threat'] = (actionRoll.result >= threat) ? true: false;
     if (trick != null) d['trick'] = trick
 
     if (damage.value != "") 
@@ -339,7 +356,7 @@ export function onCombatAction(actionRoll, actor, combatAction, trick=null)
         d['damageType'] = damage.type;
     }
     
-    //setUpTricks(actionInfo, this, trick)
+    //setUpTricks(actionInfo, trick)
     
     const chatData = getChatBaseData(actor)
 
@@ -410,29 +427,14 @@ function combatActionDamage(actionInfo, actor, trick)
     return damage;
 }
 
-export function onNaturalAttack(attackRoll, attacker, item, trick, trick2, supernaturalAttack)
-{
-    const attackInfo = setUpAttackData(attackRoll, attacker, item, item.system.threatRange, item.system.naturalUpgrades);
- 
-    const d = attackInfo.data
-    d['areaSize'] = item.system.area.value * CONFIG.fantasycraft.areaRangeMultiplier[item.system.area.shape]
-    d['areaShape'] = item.system.area.shape
-    d['properties'] = CONFIG.fantasycraft.attackPropertiesList
-
-    setUpTricks(attackInfo, this, trick)
-    setUpTricks(attackInfo, this, trick2)
-
-    const chatData = getChatBaseData(attacker)
-
-    setRenderTemplate(attackRoll, 'systems/fantasycraft/templates/chat/natural-chat.hbs', attackInfo, chatData);
-}
-
 //duplicated code between natural attack and natural attack moved into 1 function.
 function setUpAttackData(attackRoll, attacker, item, threat, qualities, ammo=null)
 {
+    let result = attackRoll.terms[0].results[0].result;
     const attackInfo = 
     {
         actor: attacker,
+        token: attacker.token || canvas.tokens.placeables.find(token => token?.actor?.id === attacker.id),
         item: {id: item.id, data: item, name: item.name},
         data: {}
     }
@@ -444,10 +446,10 @@ function setUpAttackData(attackRoll, attacker, item, threat, qualities, ammo=nul
     const d = attackInfo.data
     d['roll'] = attackRoll.total;
     d['formula'] = attackRoll.formula
-    d['diceRoll'] = attackRoll.terms[0].results[0].result
+    d['diceRoll'] = result;
     d['qualities'] = qualities;
-    d['threat'] = (attackRoll.dice[0].results[0].result >= threat) ? true : false;
-    d['error'] = (attackRoll.dice[0].results[0].result <= item.system.errorRange || attackRoll.total < 0) ? true : false;
+    d['threat'] = (result >= threat) ? true : false;
+    d['error'] = (result <= item.system.errorRange || attackRoll.total < 0) ? true : false;
     d['target'] = (Utils.getTargets().length > 0) ? Utils.getTargets()[0].document.actor._id : "";
     d['ammo'] = (!!ammo) ? ammo._id : null;
     d['attackType'] = item.system.attackType;
@@ -460,141 +462,123 @@ function setUpAttackData(attackRoll, attacker, item, threat, qualities, ammo=nul
     return attackInfo;
 }
 
-function setUpTricks(attackInfo, attacker, trick)
+function setUpTricks(attackInfo, tricks)
 {
-    if (trick == null)
+    if (tricks.trick1 == null || tricks.trick1 == undefined)
         return;
 
-    const trickEffect = trick.system.effect?.additionalEffect;
-    let trickTarget;
-    if (trickEffect)
-        trickTarget = trick.system.effect.secondaryCheck;
+    const trick = tricks.trick1
+    const trick2 = tricks.trick2
     
     const d = attackInfo.data;
-    const dTrick = (d['trick1'] == null) ? 'trick1' : 'trick2';
-    d[dTrick] = trick;
-
+    d["trick1"] = trick;
+    d["trick2"] = trick2;
+    
     return attackInfo;
 }
 
 async function onDamage(event)
 {
     const li = event.currentTarget.closest(".chat-card");
+    const data = li.dataset;
     const attackRoll = {
         total: event.currentTarget.parentElement.dataset.attackRoll
     }
     const actor = game.actors.get(li.dataset.ownerId);
-    const speaker = ChatMessage.getSpeaker();
-    const token = ChatMessage.getSpeakerActor(speaker);
-    const item = token.items.get(li.dataset.itemId);
-    const target = game.actors.get(li.dataset.targetId);
-    const trick1 = actor.items.get(li.dataset.trick1);
-    const trick2 = actor.items.get(li.dataset.trick2);
-    const ammo = token.items.get(li.dataset.ammo);
-    const maxDamage = event.currentTarget.innerText == game.i18n.localize("fantasycraft.maxDamage") ? true : false;
-    const ap = event.currentTarget.parentElement.dataset.ap;
-    let damageModifiers;
-    let damageDice;
-    let abilityMod = "strength";
-    let itemInformation;
-    let damageType = (event.currentTarget.parentElement.dataset.damageType != null) ? event.currentTarget.parentElement.dataset.damageType : "lethal";
-    let sneakAttack = actor.system.sneakAttack;
-
-    const damageFormula = event.currentTarget.parentElement.dataset.damageFormula;
-    if (damageFormula)
+    const tokenFromUuid = (data.tokenId != "") ? await fromUuid(data.tokenId) : actor;
+    const token = (data.tokenId != "") ? tokenFromUuid.delta.syntheticActor : actor;
+    const item = token.items.get(data.itemId);
+    const target = game.actors.get(data.targetId);
+    const magicItems = Utils.getMagicItems(token);
+    const damData = 
     {
-        rollDamageAndSendToChat(damageFormula, token, itemInformation, damageType, ap, trick1)
-        return;
-    }
+        stance: actor.items.find(item => item.type == "stance" && item.system.inStance),
+        trick1: (data.trick1 != "") ? actor.items.get(data.trick1) : null,
+        trick2: (data.trick2 != "") ? actor.items.get(data.trick2) : null,
+        ap: event.currentTarget.parentElement.dataset.ap,
+        maxDamage: event.currentTarget.innerText == game.i18n.localize("fantasycraft.maxDamage") ? true : false,
+        ammo: token.items.get(data.ammo),
+        abilityMod: "strength",
+        damageType: (event.currentTarget.parentElement.dataset.damageType != null) ? event.currentTarget.parentElement.dataset.damageType : "lethal",
+        sneakAttack: actor.system.sneakAttack,
+        damageModifiers: {}
+    }    
+    let mods = damData.damageModifiers;
+    
+    //const damageFormula = event.currentTarget.parentElement.dataset.damageFormula;
+    //if (damageFormula)
+    //{
+    //    rollDamageAndSendToChat(damageFormula, token, itemInformation, damData)
+    //    return;
+    //}
 
-    if (!!item){
+    ////Damage Modifiers////
+    // Get the ability that will be used, as well as any unique modifiers for weapons or unarmed attacks 
+    if (!!item && item.type == "weapon")
+    {
         if (item.type == "weapon")
         {
             let weaponProperties = item.system.weaponProperties;
             let weaponCategory = item.system.weaponCategory;
+
+            mods.superior = (item.system.upgrades.materials == "Superior") ? 1 : 0;
+
             if (weaponProperties.finesse && token.system.abilityScores.dexterity.mod > token.system.abilityScores.strength.mod)
-                abilityMod = "dexterity"
+                damData.abilityMod = "dexterity"
 
             if (item.system.attackType == "ranged" && weaponCategory != "thrown")
-                abilityMod = ""
-
-            damageDice = (!!ammo) ? ammo.system.damage : item.system.damage;
-            let superior = (item.system.upgrades.materials == "Superior") ? 1 : 0
-
-            damageModifiers = [];
-
-            //ability mod, tricks, class bonus, all out attack/bullseye, magic, moral bonuses, misc, sneak attack dice
-            if (abilityMod != "") 
-            {
-                if (weaponCategory == "thrown" && token.items.find(item => item.name == game.i18n.localize("fantasycraft.hurledBasics")))
-                    damageModifiers.push(token.system.abilityScores[abilityMod].mod * 2)
-                else
-                    damageModifiers.push(token.system.abilityScores[abilityMod].mod)
-            }
-            if (superior != 0) damageModifiers.push(superior)
-            if (token.system?.powerAttack && (item.system.attackType == "melee" || item.system.attackType == "unarmed")) damageModifiers.push(actor.system.powerAttack * 2);
-            if (token.system?.powerAttack && (item.system.attackType == "ranged")) damageModifiers.push(actor.system.powerAttack);
-        }
-
-        if (item.type =="attack")
-        {
-            let featBonus = 0
-            damageDice = item.system.damage.value;
-      
-            if (token.system.martialArts) featBonus += 2
-            if (token.system.mastersArt)
-            { 
-                abilityMod = (token.type == "character") ? token.system.defense.ability.name : token.system.defense.defenseAttribute;
-                featBonus += 2
-            }
-
-            if (item.system.attackType == "naturalAttack")
-            {
-                damageModifiers = 
-                [
-                    token.system.abilityScores[abilityMod].mod,
-                ];
-
-                if (featBonus > 0) damageModifiers.push(featBonus)
-            }
-        }
-        itemInformation = {id: item.id, data: item, name: item.name};
-        damageType = (!!ammo) ? ammo.system.damageType : item.system.damageType;
-    } else 
+                damData.abilityMod = "";
+        } 
+    } 
+    else if (item == undefined || item.type == "attack")
     {
-        let featBonus = 0
-        damageModifiers = [];
-        damageDice = actor.system.unarmedDamage;
-
-        if (actor.system.martialArts) featBonus += 2
-        if (actor.system.mastersArt)
+        if (token.system.martialArts) mods.feat += 2
+        if (token.system.mastersArt)
         { 
-            abilityMod = (this.type == "character") ? actor.defense.ability.name : actor.defense.defenseAttribute;
-            featBonus += 2
+            damData.abilityMod = (token.type == "character") ? token.system.defense.ability.name : token.system.defense.defenseAttribute;
+            mods.feat += 2
         }
 
-        //ability mod, tricks, class bonus, all out attack/bullseye, magic, moral bonuses, misc, sneak attack dice
-        if (abilityMod != "") damageModifiers.push(actor.system.abilityScores[abilityMod].mod)
-        if (featBonus > 0) damageModifiers.push(featBonus)
-        
-
-        itemInformation = {id: "", data:actor.system.attackTypes.unarmed, name: "Unarmed Attack"}
-
-        damageType = actor.system.attackTypes.unarmed.damageType;
     }
 
-    //Add any Stance bonus
-    let stances = actor.items.filter(item => item.type == "stance" && item.system.inStance);
-    if (stances.length > 0)
+    // Assign the ability modifier to the damage roll modifiers
+    if (damData.abilityMod != "")
+        mods.ability = (item?.system?.weaponCategory == "thrown" && token.items.find(item => item.name == game.i18n.localize("fantasycraft.hurledBasics"))) ? token.system.abilityScores[damData.abilityMod].mod * 2 : token.system.abilityScores[damData.abilityMod].mod;
+    
+    //Get any bonuses from power attack
+    if (token.system?.powerAttack && (item.system.attackType == "melee" || item.system.attackType == "unarmed")) mods.powerAttack = actor.system.powerAttack * 2;
+    if (token.system?.powerAttack && (item.system.attackType == "ranged")) mods.powerAttack = actor.system.powerAttack;
+
+    //Get any bonuses from your stance
+    if (!!damData.stance && damData.stance?.system.effect1.effect == "damageBonus" || damData.stance?.system.effect2.effect == "damageBonus") 
+        mods.stance = (damData.stance.system.effect1.effect == "damageBonus") ? damData.stance.system.effect1.bonus : damData.stance.system.effect2.bonus;
+
+    //Get any bonuses from your tricks
+    if (damData.trick1 != null)
     {
-      if (stances[0].system.effect1.effect == "damageBonus") damageModifiers.push(stances[0].system.effect1.bonus)
-      if (stances[0].system.effect2.effect == "damageBonus") damageModifiers.push(stances[0].system.effect2.bonus)
+        let trickEffect = damData.trick1.system.effect
+        if (trickEffect.damageModifier > 0)
+        {
+            if (trickEffect.damageModifierType == "untyped")
+                mods[trickEffect.damageModifierType] = mods[trickEffect.damageModifierType] + trickEffect.damageModifier;
+            else 
+                mods[trickEffect.damageModifierType] = (trickEffect.damageModifier > mods[trickEffect.damageModifierType]) ?  trickEffect.damageModifier : mods[trickEffect.damageModifierType];
+        }
+
+        if(damData.trick2)
+        {
+            let trickEffect = damData.trick2.system.effect
+            if (trickEffect.damageModifier > 0)
+            {
+                if (trickEffect.damageModifierType == "untyped")
+                    mods[trickEffect.damageModifierType] = mods[trickEffect.damageModifierType] + trickEffect.damageModifier;
+                else 
+                    mods[trickEffect.damageModifierType] = (trickEffect.damageModifier > mods[trickEffect.damageModifierType]) ?  trickEffect.damageModifier : mods[trickEffect.damageModifierType];
+            }   
+        }
     }
 
-    //Add any magic item damage bonus
-    let magicItems = Utils.getMagicItems(token);
-    let magicBonus = 0;
-
+    //Get any bonuses from magic items
     if (magicItems.length > 0)
     {
         for (let mi of magicItems)
@@ -602,51 +586,77 @@ async function onDamage(event)
             let charm = Utils.getSpecificCharm(mi, "damageBonus");
             
             if (charm != null && (charm[1].target == item.system.attackType || mi == item))
-                magicBonus = (Utils.getCharmBonus(mi, charm[1].greater) > magicBonus) ? Utils.getCharmBonus(mi, charm[1].greater) : magicBonus;
+                mods.magicBonus = (Utils.getCharmBonus(mi, charm[1].greater) > mods.magicBonus) ? Utils.getCharmBonus(mi, charm[1].greater) : mods.magicBonus;
         }
     }
-    if (magicBonus > 0)
-        damageModifiers.push(magicBonus);
     
-    let rollFormula = [damageDice].concat(damageModifiers).join(" + ");
+    ////Damage Dice////
+    let damageDice;
+    let itemInformation;
+
+    //get the damage dice and item information
+    if (!!item)
+    {
+        if (item.type == "weapon")
+            damageDice = (!!damData.ammo && damData.ammo.system.damage != "") ? damData.ammo.system.damage : item.system.damage;
+        else
+            damageDice = item.system.damage.value;
+
+        itemInformation = {id: item.id, data: item, name: item.name};
+        damData.damageType = (!!damData.ammo) ? damData.ammo.system.damageType : item.system.damageType;
+    } else 
+    {
+        damageDice = token.system.unarmedDamage;
+        
+        itemInformation = {id: "", data:actor.system.attackTypes.unarmed, name: "Unarmed Attack"}
+        damData.damageType = actor.system.attackTypes.unarmed.damageType;
+    }    
+    
+    //Compile the roll formula
+    let rollFormula = [damageDice];
+    for(let [key, bonus] of Object.entries(mods)) 
+    {
+        if (bonus > 0)
+            rollFormula.push("@" + key);
+    }
     
     const rollInfo = await preRollDialog(itemInformation.name, "systems/fantasycraft/templates/chat/damageRoll-Dialog.hbs", rollFormula, null)
     if (rollInfo == null) return;
     
-    if(rollInfo?.morale) rollFormula += Utils.returnPlusOrMinusString(rollInfo.morale);
+    //Add any discretionary bonus
+    if(rollInfo?.morale) {rollFormula.push("@untyped"); mods.untyped += rollInfo.morale};
+
+    //Add any sneak attack Dice
     if(rollInfo?.sneakAttack.checked) 
     {
         if (actor.type != "character")    
         {
             let sneakAttackItem = actor.items.filter(item => item.name == game.i18n.localize("fantasycraft.sneakAttack"));
-            sneakAttack = Utils.numeralConverter(sneakAttackItem[0].system.grades.value)
+            damData.sneakAttack = Utils.numeralConverter(sneakAttackItem[0].system.grades.value)
         }
 
-        rollFormula += " + " + sneakAttack + "d6";
+        rollFormula.push(damData.sneakAttack + "d6");
+        mod.sneakAttack = damData.sneakAttack + "d6";
     }
 
     //Check tricks for changes to damage type or amount
-    if ((trick1?.system.effect.additionalEffect == "changeDamageType" && Tricks.checkConditions(trick1, target)) || (trick2?.system.effect.additionalEffect == "changeDamageType" && Tricks.checkConditions(trick2, target)))
-        damageType = trick1?.system.effect.secondaryCheck;
+    if ((damData.trick1?.system.effect.additionalEffect == "changeDamageType" && Tricks.checkConditions(damData.trick1, target)) || (damData.trick2?.system.effect.additionalEffect == "changeDamageType" && Tricks.checkConditions(damData.trick2, target)))
+        damData.damageType = damData.trick1?.system.effect.secondaryCheck;
 
-    if ((trick1?.system.effect.additionalEffect == "bonusDamage" && Tricks.checkConditions(trick1, target)) || (trick2?.system.effect.additionalEffect == "bonusDamage" && Tricks.checkConditions(trick2, target)))
-        rollFormula = rollFormula + " + " + li.dataset.bonusDamage;
+    rollDamageAndSendToChat(rollFormula, actor, itemInformation, damData)
 
-    rollDamageAndSendToChat(rollFormula, actor, itemInformation, damageType, ap, trick1, trick2, maxDamage)
-
-    if ((trick1?.system.effect.additionalEffect == "bonusWeaponDamage" && Tricks.checkConditions(trick1, target, attackRoll)) || (trick2?.system.effect.additionalEffect == "bonusWeaponDamage" && Tricks.checkConditions(trick2, target, attackRoll)))
+    if ((damData.trick1?.system.effect.additionalEffect == "bonusWeaponDamage" && Tricks.checkConditions(damData.trick1, target, attackRoll)) || (damData.trick2?.system.effect.additionalEffect == "bonusWeaponDamage" && Tricks.checkConditions(damData.trick2, target, attackRoll)))
     {
+        //Only grant Sneak attack on the first damage roll
         if(rollInfo?.sneakAttack.checked) 
-        {
-            rollFormula = rollFormula.replace(" + " + sneakAttack + "d6", '')
-        }
+            mods.sneakAttack = 0;
 
-        if (Tricks.multipleDamageRolls(attackRoll, target, trick1) == 1)
-            rollDamageAndSendToChat(rollFormula, actor, itemInformation, damageType, ap, trick1, trick2)
-        else if (Tricks.multipleDamageRolls(attackRoll, target, trick1) == 2)
+        if (Tricks.multipleDamageRolls(attackRoll, target, damData.trick1) == 1)
+            rollDamageAndSendToChat(rollFormula, actor, itemInformation, damData);
+        else if (Tricks.multipleDamageRolls(attackRoll, target, damData.trick1) == 2)
         {
-            rollDamageAndSendToChat(rollFormula, actor, itemInformation, damageType, ap, trick1, trick2)
-            rollDamageAndSendToChat(rollFormula, actor, itemInformation, damageType, ap, trick1, trick2)
+            rollDamageAndSendToChat(rollFormula, actor, itemInformation, damData);
+            rollDamageAndSendToChat(rollFormula, actor, itemInformation, damData);
         }
     }
 }
@@ -654,7 +664,7 @@ async function onDamage(event)
 async function preRollDialog(attackName, template, formula, tricks=null)
 {
     const content = await renderTemplate(template, {
-        formula: formula,
+        formula: formula.join(" + "),
         tricks: tricks
     });
 
@@ -688,18 +698,20 @@ function onDialogSubmit(html)
     return dialogOptions;
 }
 
-function rollDamageAndSendToChat(rollFormula, actor, itemInformation, damageType, ap=0, trick1=null, trick2=null, maximum = false)
+async function rollDamageAndSendToChat(rollFormula, actor, itemInformation, data)
 {
-    if (trick1?.system.effect.damageModifierStyle == "halfDamage" || trick2?.system.effect.damageModifierStyle == "halfDamage")
+    let rollString = rollFormula.join(" + ");
+    if (data.trick1?.system?.effect.damageModifierStyle == "halfDamage" || data.trick2?.system?.effect.damageModifierStyle == "halfDamage")
     {
-        rollFormula = "(" + rollFormula + ") / 2"
+        rollString = "(" + rollString + ") * @halfDamage";
+        data.damageModifiers.halfDamage = 0.5;
     }
 
-    const damageRoll = new Roll(rollFormula)
-    if (maximum) 
-        damageRoll.evaluate({maximize: true, async: false})
+    const damageRoll = new Roll(rollString, data.damageModifiers);
+    if (data.maxDamage) 
+        await damageRoll.evaluate({maximize: true})
     else
-        damageRoll.evaluate({async: false})
+        await damageRoll.evaluate()
 
     const damageInfo = 
     {
@@ -712,10 +724,10 @@ function rollDamageAndSendToChat(rollFormula, actor, itemInformation, damageType
     d['roll'] = Math.ceil(damageRoll.total);
     d['formula'] = damageRoll.formula;
     d['diceRoll'] = damageRoll.terms[0].results;
-    d['damageType'] = damageType;
-    d['ap'] = ap;
-    if (trick1) d['trick1'] = trick1;
-    if (trick2) d['trick2'] = trick2;
+    d['damageType'] = data.damageType;
+    d['ap'] = data.ap;
+    if (data.trick1) d['trick1'] = data.trick1;
+    if (data.trick2) d['trick2'] = data.trick2;
 
     const chatData = getChatBaseData(actor);
 
@@ -757,82 +769,9 @@ async function spellCasting(event)
     let element = event.currentTarget.parentElement;
     let parentElement = element.parentElement;
     let act = game.actors.get(parentElement.dataset.actorId)
-    let actor = act.system;
     let skillName ="spellcasting"
     let spell = act.items.get(parentElement.dataset.optionId)
-    let tricks = act.items.filter(item => (item.type == "trick" && item.system.trickType.keyword == "spellcasting"));
-    let skill = act.type == "character" ? actor.arcane[skillName] : actor[skillName];
-    let trick = null;
-    let skillModifiers = []
-
-    let magicItems = Utils.getMagicItems(act);
-    let magicBonus = 0;
-
-    //ranks, ability mod, misc, threat range
-    if (act.type == "character")
-    {
-        if (!skill.ranks) skill.ranks = 0;
-        let arcaneMight = 0;
-        if (spell.system.arcaneMight)
-            arcaneMight = 2;
-        skillModifiers =
-        [
-            actor.abilityScores[skill.ability].mod,
-            skill.ranks,
-            skill.misc,
-            arcaneMight
-        ]
-    }
-    else if (act.type == "npc")
-    {
-        skillModifiers = 
-        [
-            actor.abilityScores.intelligence.mod,
-            actor[skillName].value
-        ]
-    }
-
-    if (magicItems.length > 0)
-    {
-        for (let item of magicItems)
-        {
-            let charm = Utils.getSpecificCharm(item, "skillRanks")
-            if (charm != null && charm[1].target == skillName)
-            magicBonus = (Utils.getCharmBonus(item, charm[1].greater) > magicBonus) ? Utils.getCharmBonus(item, charm[1].greater) : magicBonus;
-        }
-    }
-
-    if (magicBonus > 0)
-        skillModifiers.push(magicBonus);
-
-    let rollFormula = ["1d20"];
-    for (let bonus of skillModifiers)
-    {
-        rollFormula += Utils.returnPlusOrMinusString(bonus);
-    }
-
-    const rollInfo = await preRollDialog("spellcasting", "systems/fantasycraft/templates/chat/attackRoll-Dialog.hbs", rollFormula, tricks);
-    if (rollInfo == null) return;
-
-    //check for spellcasting trick
-    if (rollInfo.trick.value != "")
-        trick = act.items.get(rollInfo.trick.value);
-
-    //roll the dice
-    const skillRoll = new Roll(rollFormula)
-    skillRoll.evaluate({async: false})
-
-    onSkillCheck(skillRoll, act, skillName, null, trick, false);
-
-    if (act.type =="character")
-    {
-        //reduce spellpoints by the spell level, or spell level modified by the trick
-        let spellPointCost = parseInt(spell.system.level);
-        if (trick != null)
-            spellPointCost += trick.system.effect.secondaryCheck;
-
-        await act.update({"system.arcane.spellPoints": actor.arcane.spellPoints - spellPointCost});
-    }
+    act.rollSkillCheck(skillName, act, spell);
 }
 
 function spellDamage(event)
@@ -849,6 +788,12 @@ function spellDamage(event)
     let scaledDamage = ((damageBase * scalingValue) > dmg.maxDamage) ? dmg.maxDamage : damageBase * scalingValue;
     let formula;
 
+    const data = 
+    {
+        damageType: spell.system.damage.damageType,
+        maximum: false
+    }
+
     if (dmg.flatOrRandom == "flat")
     {
         if(!dmg.bonusDamage)
@@ -858,7 +803,7 @@ function spellDamage(event)
         else
             formula = damageBase.toString() + " + " + (dmg.bonusDamage * scalingValue).toString();
 
-        rollDamageAndSendToChat(formula, actor, spell, dmg.damageType)
+        rollDamageAndSendToChat(formula, actor, spell, data)
         return;
     }
 
@@ -870,7 +815,7 @@ function spellDamage(event)
             formula = damageBase.toString() + dmg.diceSize + " + " + (dmg.bonusDamage * scalingValue).toString();
 
 
-        rollDamageAndSendToChat(formula, actor, spell, dmg.damageType)
+        rollDamageAndSendToChat(formula, actor, spell, data)
         return;
     }
 }

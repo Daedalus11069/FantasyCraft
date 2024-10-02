@@ -4,25 +4,19 @@
         <span>
             {{localize "fantasycraft.any"}}:
             <select class="change-any-selection" name="treasure">
-                {{#select system.treasure.any}}
-                    {{selectOptions number selected=(lookup (lookup choices 0) 'value') localize=true}}
-                {{/select}}
+                {{selectOptions number selected=(lookup (lookup choices 0) 'value') localize=true}}
             </select>
         </span>
         <span>
             {{localize "fantasycraft.coin"}}:
             <select class="change-coin-selection" name="treasure">
-                {{#select system.treasure.coin}}
-                    {{selectOptions number selected=(lookup (lookup choices 1) 'value') localize=true}}
-                {{/select}}
+                {{selectOptions number selected=(lookup (lookup choices 1) 'value') localize=true}}
             </select>
         </span>
         <span>
             {{localize "fantasycraft.gear"}}:
             <select class="change-gear-selection" name="treasure">
-                {{#select system.treasure.gear}}
-                    {{selectOptions number selected=(lookup (lookup choices 2) 'value') localize=true}}
-                {{/select}}
+                {{selectOptions number selected=(lookup (lookup choices 2) 'value') localize=true}}
             </select>
         </span>
     </div>
@@ -30,25 +24,19 @@
         <span>
             {{localize "fantasycraft.loot"}}:
             <select class="change-loot-selection" name="treasure">
-                {{#select system.treasure.loot}}
-                    {{selectOptions number selected=(lookup (lookup choices 3) 'value') localize=true}}
-                {{/select}}
+                {{selectOptions number selected=(lookup (lookup choices 3) 'value') localize=true}}
             </select>
         </span>
         <span>
             {{localize "fantasycraft.magic"}}:
             <select class="change-magic-selection" name="treasure">
-                {{#select system.treasure.magic}}
-                    {{selectOptions number selected=(lookup (lookup choices 4) 'value') localize=true}}
-                {{/select}}
+                {{selectOptions number selected=(lookup (lookup choices 4) 'value') localize=true}}
             </select>
         </span>
         <span>
             {{localize "fantasycraft.trophies"}}:
             <select class="change-trophies-selection" name="treasure">
-                {{#select system.treasure.trophies}}
-                    {{selectOptions number selected=(lookup (lookup choices 5) 'value') localize=true}}
-                {{/select}}
+                {{selectOptions number selected=(lookup (lookup choices 5) 'value') localize=true}}
             </select>
         </span>
     </div>

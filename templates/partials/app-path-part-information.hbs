@@ -1,0 +1,15 @@
+{{#if (eq effect.type "spell")}}
+    <div class="item" data-item-id="{{effect.targets.target1.id}}" data-item-2-id="{{effect.targets.target2.id}}">
+        {{effect.string}}<a class="open-item"><b>{{effect.targets.target1.name}}</b></a>
+        {{#if effect.targets.target2.name}} 
+            {{localize "fantasycraft.and"}} 
+            <a class="open-item"><b>{{effect.targets.target2.name}}</b></a>
+        {{/if}}
+        {{effect.string2}}
+    </div>
+{{else}}
+    <div class="item" data-item-id="{{effect.targets.target1.id}}" data-item-2-id="{{effect.targets.target2.id}}">
+        {{effect.string}}<a class="open-item"><b>{{effect.targets.target1.name}}</b></a>
+        <a class="open-item"><b>{{effect.targets.target2.name}}</b></a>
+    </div>
+{{/if}}
