@@ -14,7 +14,7 @@
     }
   ],
   "url": "https://github.com/daedalus11069/FantasyCraft",
-  "manifest": "https://github.com/daedalus11069/FantasyCraft/releases/download/v2.1.0/system.json",
+  "manifest": "https://github.com/daedalus11069/FantasyCraft/releases/latest/download/system.json",
   "download": "https://github.com/daedalus11069/FantasyCraft/archive/refs/tags/v2.1.0.zip",
   "esmodules": ["fantasycraft.js"],
   "styles": ["fantasycraft.css"],
