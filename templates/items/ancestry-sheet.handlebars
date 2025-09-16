@@ -146,6 +146,46 @@
                         <input class="narrowField" type="number" name="system.stats.stat4.value" value="{{item.system.stats.stat4.value}}"/>
                     </div>
                 </div>
+                <div class="form-group item-customization-section">
+                    {{!Attribute 5}}
+                    <div>
+                        <label>{{localize "fantasycraft.attributes"}}</label> 
+                        {{ localize "fantasycraft.isChoice" }} <input type="checkbox" name="system.stats.stat5.isChoice" {{checked item.system.stats.stat5.isChoice}}/> 
+                        {{#if item.system.stats.stat5.isChoice}}
+                            <span>{{localize "fantasycraft.choices"}}</span>
+
+                            <a class="trait-selector" data-options="abilityScores" data-target="system.stats.stat5.choices">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        {{else}}
+                            <select name="system.stats.stat5.ability">
+                                <option value=""></option>
+                                {{selectOptions config.abilityScores selected=item.system.stats.stat5.ability localize=true}}
+                            </select>
+                        {{/if}}
+                        <input class="narrowField" type="number" name="system.stats.stat5.value" value="{{item.system.stats.stat5.value}}"/>
+                    </div>
+                </div>
+                <div class="form-group item-customization-section">
+                    {{!Attribute 6}}
+                    <div>
+                        <label>{{localize "fantasycraft.attributes"}}</label> 
+                        {{ localize "fantasycraft.isChoice" }} <input type="checkbox" name="system.stats.stat6.isChoice" {{checked item.system.stats.stat6.isChoice}}/> 
+                        {{#if item.system.stats.stat6.isChoice}}
+                            <span>{{localize "fantasycraft.choices"}}</span>
+
+                            <a class="trait-selector" data-options="abilityScores" data-target="system.stats.stat6.choices">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        {{else}}
+                            <select name="system.stats.stat6.ability">
+                                <option value=""></option>
+                                {{selectOptions config.abilityScores selected=item.system.stats.stat6.ability localize=true}}
+                            </select>
+                        {{/if}}
+                        <input class="narrowField" type="number" name="system.stats.stat6.value" value="{{item.system.stats.stat6.value}}"/>
+                    </div>
+                </div>
                 {{!speed}}
                 <div class="form-group item-customization-section">
                     <div>

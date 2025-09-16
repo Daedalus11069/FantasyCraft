@@ -2,22 +2,22 @@
   "id": "fantasycraft",
   "title": "Fantasy Craft",
   "description": "A system for playing the Mastercraft system Fantasy Craft in the Foundry Virtual Tabletop environment.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "authors": [
     {
       "name": "Nuaurpy",
       "flags": {}
+    },
+    {
+      "name": "Daedalus11069",
+      "flags": {}
     }
   ],
-  "url": "https://github.com/nuaurpy/FantasyCraft",
-  "manifest": "https://github.com/nuaurpy/FantasyCraft/releases/download/v2.0.0/system.json",
-  "download": "https://github.com/nuaurpy/FantasyCraft/archive/refs/tags/v2.0.0.zip",
-  "esmodules": [
-    "fantasycraft.js"
-  ],
-  "styles": [
-    "fantasycraft.css"
-  ],
+  "url": "https://github.com/daedalus11069/FantasyCraft",
+  "manifest": "https://github.com/daedalus11069/FantasyCraft/releases/download/v2.1.0/system.json",
+  "download": "https://github.com/daedalus11069/FantasyCraft/archive/refs/tags/v2.1.0.zip",
+  "esmodules": ["fantasycraft.js"],
+  "styles": ["fantasycraft.css"],
   "packs": [
     {
       "name": "characters",
@@ -182,18 +182,12 @@
       "flags": {}
     }
   ],
-  "packFolders" :
-  [
+  "packFolders": [
     {
       "name": "Items and Equipment",
       "sorting": "m",
       "color": "#cd2c1e",
-      "packs": [
-        "armour",
-        "items",
-        "weapons",
-        "vehicles"
-      ]
+      "packs": ["armour", "items", "weapons", "vehicles"]
     },
     {
       "name": "Character Options",
@@ -207,26 +201,19 @@
         "feats",
         "specialty",
         "tricksandstances"
-      ] 
+      ]
     },
     {
       "name": "Magic",
       "sorting": "m",
       "color": "#cd2c1e",
-      "packs": [
-        "spells",
-        "paths"
-      ]
+      "packs": ["spells", "paths"]
     },
     {
       "name": "NPCs",
       "sorting": "m",
       "color": "#cd2c1e",
-      "packs": [
-        "rogues",
-        "monsters",
-        "npcfeatures"
-      ]
+      "packs": ["rogues", "monsters", "npcfeatures"]
     }
   ],
   "languages": [

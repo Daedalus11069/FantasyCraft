@@ -1,1530 +1,1401 @@
 {
-	"Actor": 
-	{
-		"types": ["character", "npc"],
-		"templates": 
-		{
-			"attributes": 
-			{
-				"type": "Folk",
-				"abilityScores":
-				{
-					"strength": 
-					{
-						"value":8,
-						"adjustment": 0
-					},
-					"dexterity":
-					{
-						"value":8,
-						"adjustment": 0
-					},
-					"constitution": 
-					{
-						"value":8,
-						"adjustment": 0
-					},
-					"intelligence":
-					{
-						"value":8,
-						"adjustment": 0
-					},
-					"wisdom":
-					{
-						"value":8,
-						"adjustment": 0
-					},
-					"charisma":
-					{
-						"value":8,
-						"adjustment": 0
-					}
-				},
-				"movement":
-				{
-					"ground":
-					{
-						"value": 0,
-						"run": 0,
-						"travel": 0,
-						"speedAdjustment": 0
-					},
-					"burrow":
-					{
-						"value": 0,
-						"run": 0,
-						"travel": 0,
-						"speedAdjustment": 0
-					},
-					"fly":
-					{
-						"value": 0,
-						"run": 0,
-						"travel": 0,
-						"speedAdjustment": 0
-					},
-					"swim":
-					{
-						"value": 0,
-						"run": 0,
-						"travel": 0,
-						"speedAdjustment": 0
-					}
-				},	
-				"hands": 2,
-				"size": "medium",
-				"footprint": 
-				{
-					"width": 1,
-					"height": 1
-				},
-				"reach": 1,
-				"attackTypes": {
-					"unarmed": 
-					{
-						"value": 0,
-						"ability": 
-						{
-							"name": "strength",
-							"value": 0
-						},
-						"misc": 0,
-						"magic": 0,
-						"damageType": "subdual"
-					},
-					"melee": 
-					{
-						"value": 0,
-						"ability": 
-						{
-							"name": "strength",
-							"value": 0
-						},
-						"misc": 0,
-						"magic": 0
-					},
-					"ranged":
-					{
-						"value": 0,
-						"ability": 
-						{
-							"name": "dexterity",
-							"value": 0
-						},					
-						"misc": 0,
-						"magic": 0
-					}
-				},
-				"baseAttack": 0,
-				"defense": 
-				{
-					"value": 10,
-					"class": 0,
-					"ability": {
-						"name": "dexterity",
-						"value": 0
-					},
-					"guard": 0,
-					"misc": 0
-				},
-				"flatFootedDefense": 10,
-				"initiative": 
-				{
-					"value": 0,
-					"class": 0,
-					"ability": {
-						"name": "dexterity",
-						"value": 0
-					},
-					"featBonus": 0
-				},
-				"dr": 0,
-				"saves": 
-				{
-					"fortitude": 
-					{
-						"value": 0,
-						"class": 0,
-						"ability": 
-						{
-							"name":"constitution",
-							"value": 0
-						},
-						"misc": 0
-					},
-					"reflex": 
-					{
-						"value": 0,
-						"class": 0,
-						"ability": 
-						{
-							"name":"dexterity",
-							"value": 0
-						},
-						"misc": 0
-					},
-					"will": 
-					{
-						"value": 0,
-						"class": 0,
-						"ability": 
-						{
-							"name":"wisdom",
-							"value": 0
-						},
-						"misc": 0
-					}
-				},
-				"groundSpeed": {
-					"baseSpeed": 30,
-					"speedAdjustment": 0
-				},
-				"interests":
-				{
-					"studies": 
-					{
-						"custom": ""
-					},
-					"languages":
-					{
-						"custom": ""
-					},
-					"alignment": 
-					{
-						"custom": ""
-					}
-				},
-				"spellDefense": 0
-			},
-			"vitality":
-			{
-				"vitality":
-				{
-					"value": 10,
-					"max": 10
-				}
-			},
-			"wounds":
-			{
-				"wounds": 	
-				{
-					"value": 10,
-					"max": 10
-				}
-			},
-			"non-lethal":
-			{
-				"stress": 0,
-				"subdual": 0,
-				"fatigue":
-				{
-					"fatigue1": false,
-					"fatigue2": false,
-					"fatigue3": false,
-					"fatigue4": false
-				},
-				"shaken":
-				{
-					"shaken1": false,
-					"shaken2": false,
-					"shaken3": false,
-					"shaken4": false
-				},
-				"tainted":
-				{
-					"tainted1": false,
-					"tainted2": false,
-					"tainted3": false,
-					"tainted4": false
-				}
-			},
-			"spell-casting":
-			{
-				"castingLevel": 0,
-				"isSpellcaster": false,
-				"isArcane": false,
-				"isDivine": false,
-				"spellSave": 0,
-				"castingFeats": 0,
-				"arcane": 
-				{
-					"spellPoints": 0,
-					"spellsKnown": 
-					{
-					  "value": 0,
-					  "misc": 0
-					},			  
-					"spellcasting": 
-					{
-						"value": 0,
-						"ability": "intelligence",
-						"ranks": 0,
-						"misc": 0,
-						"threat": 20,
-						"classSkill": true
-					}		
-				},
-				"divine": 
-				{
-					"alignment": "",
-					"path1": 
-					{
-						"name": "",
-						"steps": 0
-					},
-					"path2": 
-					{
-						"name": "",
-						"steps": 0
-					},
-					"path3": 
-					{
-						"name": "",
-						"steps": 0
-					},
-					"path4": 
-					{
-						"name": "",
-						"steps": 0
-					}
-				}
-			},
-			"sneakAttack": 0,
-			"prizes":
-			{
-				"contacts": [],
-				"favours": [],
-				"holdings": []
-			},
-			"gear":
-			{
-				"mount": []
-			},
-			"combatActions": 
-			{
-				"combatActions":
-				{
-					"anticipate": 0,
-					"bullRush": 0,
-					"disarm": 0,
-					"distract": 0,
-					"feint": 0,
-					"grapple": 0,
-					"pummel": 0,
-					"taunt": 0,
-					"trip": 0,
-					"threaten": 0,
-					"tire": 0
-				}
-			},
-			"conditions":
-			{
-				"conditions":
-				{
-					"baffled": 0,
-					"bleeding": 0,
-					"blinded": false,
-					"deafened": false,
-					"enraged": false,
-					"entangled": false,
-					"fatigued": 0,
-					"fixated": false,
-					"flanked": false,
-					"flat-footed": false,
-					"frightened": false,
-					"held": false,
-					"helpless": false,
-					"hidden": false,
-					"incorporeal": false,
-					"invisible": false,
-					"paralyzed": false,
-					"pinned": false,
-					"prone": false,
-					"shaken": 0,
-					"sickened": false,
-					"slowed": false,
-					"sprawled": false,
-					"stunned": false,
-					"dead": false,
-					"soulDrain": 0,
-					"tainted": 0
-				},
-				"conditionBonuses":
-				{
-					"attackMelee": 0,
-					"attackRanged": 0,
-					"strength": 0,
-					"dexterity": 0,
-					"constitution": 0,
-					"intelligence": 0,
-					"wisdon": 0,
-					"charisma": 0,
-					"strengthSkills": 0,
-					"dexteritySkills": 0,
-					"constitutionSkills": 0,
-					"intelligenceSkills": 0,
-					"wisdonSkills": 0,
-					"charismaSkills": 0,
-					"allSkills": 0,
-					"defense": 0,
-					"fortitude": 0,
-					"reflex": 0,
-					"will": 0,
-					"speed": 0,
-					"speedMultiplier": 0,
-					"damage": 0
-				}
-			}
-		},
-		"character":
-		{
-			"templates": ["vitality", "wounds", "attributes", "non-lethal", "spell-casting", "prizes", "gear", "combatActions", "conditions"],
-			"experience": 
-			{
-				"current": 0,
-				"nextLevel": 1000
-			},
-			"ancestry": "Human",
-			"careerLevel": { "value": 1 },
-			"actionDice": 3,
-			"coin":
-			{
-				"inHand": 0,
-				"stake": 0
-			},
-			"lifeStyle":
-			{
-				"value": 0,
-				"panache": 0,
-				"prudence:": 0,
-				"appearanceMisc": 0
-			},
-			"reputationAndRenown": 
-			{
-				"reputation": 0,
-				"renownTotal": 0,
-				"heroicRenown": 0,
-				"heroicTitle": "",
-				"militaryRenown": 0,
-				"militaryTitle": "",
-				"nobleRenown": 0,
-				"nobleTitle": ""
-			},
-			"actionDiceSize": 4,
-			"startingActionDice": 3,
-			"unarmedDamage": "1d3",
-			"carryingCapacity": 
-			{
-				"light": 50,
-				"heavy": 150,
-				"overloaded": 151 
-			},
-			"proficency":
-			{
-				"unarmed": 
-				{
-					"proficient": false, 
-					"forte": false
-				},
-				"blunt":
-				{
-					"proficient": false, 
-					"forte": false
-				},
-				"edged": 
-				{
-					"proficient": false, 
-					"forte": false
-				},
-				"hurled":
-				{
-					"proficient": false, 
-					"forte": false
-				},
-				"bows":
-				{
-					"proficient": false, 
-					"forte": false
-				},
-				"blackPowder":
-				{
-					"proficient": false, 
-					"forte": false
-				},
-				"siege":
-				{
-					"proficient": false, 
-					"forte": false
-				}
-			},
-			"skills": 
-			{
-				"acrobatics": {
-					"value": 0,
-					"ability": "dexterity",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-				},
-				"athletics": {
-					"value": 0,
-					"ability": "strength",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-				},
-				"blend": {
-					"value": 0,
-					"ability": "charisma",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-				},
-				"bluff": {
-					"value": 0,
-					"ability": "charisma",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-				},
-				"crafting": {
-					"value": 0,
-					"ability": "intelligence",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-				},
-				"disguise": {
-					"value": 0,
-					"ability": "charisma",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"haggle": {
-					"value": 0,
-					"ability": "wisdom",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"impress": {
-					"value": 0,
-					"ability": "charisma",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"intimidate": {
-					"value": 0,
-					"ability": "wisdom",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"investigate": {
-					"value": 0,
-					"ability": "intelligence",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"medicine": {
-					"value": 0,
-					"ability": "intelligence",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"notice": {
-					"value": 0,
-					"ability": "wisdom",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"prestidigitation": {
-					"value": 0,
-					"ability": "dexterity",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"resolve": {
-					"value": 0,
-					"ability": "constitution",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"ride": {
-					"value": 0,
-					"ability": "dexterity",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"search": {
-					"value": 0,
-					"ability": "intelligence",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"senseMotive": {
-					"value": 0,
-					"ability": "wisdom",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"sneak": {
-					"value": 0,
-					"ability": "dexterity",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"survival": {
-					"value": 0,
-					"ability": "wisdom",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				},
-				"tactics": {
-					"value": 0,
-					"ability": "intelligence",
-					"ranks": 0,
-					"misc": 0,
-					"threat": 20,
-					"classSkill": false,
-					"originSkill": false
-
-				}
-			},
-			"maxSkillRanks": 4,
-			"totalSkillRanks": 0,
-			"appearance": 0,
-			"knowledge":
-			{
-				"value": 0,
-				"studies": 0,
-				"misc": 0,
-				"situational": 0
-			},
-			"martialArts": false,
-			"mastersArt": false,
-			"subplots": 
-			{
-				"plot1":
-				{
-					"value": "",
-					"completed": false
-				},
-				"plot2":
-				{
-					"value": "",
-					"completed": false
-				},
-				"plot3":
-				{
-					"value": "",
-					"completed": false
-				},
-				"plot4":
-				{
-					"value": "",
-					"completed": false
-				},
-				"plot5":
-				{
-					"value": "",
-					"completed": false
-				},
-				"plot6":
-				{
-					"value": "",
-					"completed": false
-				}
-			}
-		},
-		"npc":
-		{
-			"templates": ["attributes", "vitality", "wounds", "gear", "conditions", "non-lethal"],
-			"isSpecial": false,
-			"type": 
-			{
-				"value": []
-			},
-			"threat": 1,
-			"defense":
-			{
-				"guard": 0,
-				"penalty": 0,
-				"defenseAttribute": "dexterity",
-				"attributePositive": true,
-				"attributeNormalized": 0
-			},
-			"damageTaken": 0,
-			"failedSaves": 0,
-			"primaryMovement": "walker",
-			"traits": 
-			{
-				"initiative": 
-				{
-					"grade": "I",
-					"value": 0
-				},
-				"attack": 
-				{
-					"grade": "I",
-					"value": 0
-				},
-				"defense": 
-				{
-					"grade": "I",
-					"value": 0
-				},
-				"resilience": 
-				{
-					"grade": "I",
-					"value": 0
-				},
-				"health": 
-				{
-					"grade": "I",
-					"value": 0
-				},
-				"competence": 
-				{
-					"grade": "-",
-					"value": 0
-				}
-			},
-			"spellcasting": 
-			{
-				"grade": "",
-				"value": 0
-			},
-			"signatureSkills": [],
-			"attacks": [],
-			"npcQualities": [],
-			"equipment": {
-				"value": [],
-				"xpTotal": 0
-			},
-			"treasureRollMod": 0,
-			"treasure": {
-				"any": {
-					"shorthand": "A",
-					"value": 0
-				},
-				"coin": {
-					"shorthand": "C",
-					"value": 0
-				},
-				"gear": {
-					"shorthand": "G",
-					"value": 0
-				},
-				"loot": {
-					"shorthand": "L",
-					"value": 0
-				},
-				"magic": {
-					"shorthand": "M",
-					"value": 0
-				},
-				"trophies": {
-					"shorthand": "T",
-					"value": 0
-				}
-			},
-			"details": 
-			{
-				"age": "",
-				"height": "",
-				"wight": "",
-				"hair": "",
-				"eyes": "",
-				"pronouns": "",
-				"appearance": "",
-				"traits": "",
-				"background": "",
-				"notes": ""
-			},
-			"xp": 0,
-			"playerControlled": false
-		}
-	},
-	"Item": 
-	{
-		"types": ["ancestry", "armour", "attack", "class", "feat", "feature", "general", "path", "specialty", "spell", "stance", "trick", "weapon", "store"],
-		"templates": 
-		{
-			"object": 
-			{
-				"complexity": 
-				{
-					"time": "D",
-					"number": 0
-				},	
-				"construction": 
-				{
-					"hardness": "Soft",
-					"saveNumbers": 1
-				},
-				"size": 
-				{
-					"size":"S",
-					"hands": "1h"
-				},
-				"cost": 0,
-				"era": "primitive",
-				"weight": 0,
-				"quantity": 1,
-				"currency": "silver",
-				"type": "none"
-			},
-			"description":
-			{
-				"description": 
-				{
-					"value": "",
-					"chat": "",
-					"unidentified": ""
-				},
-				"source": ""		  
-			},
-			"enchanted":
-			{
-				"isMagic": false,
-				"totalReputation": 0,
-				"itemLevel": 1,
-				"essences":{
-					"essenceNumber": 0,
-					"essence1": 
-					{
-						"ability": "none",
-						"reputationCost": 0,
-						"target": "",
-						"greater": false,
-						"attackType": "unarmed"
-					},
-					"essence2": 
-					{
-						"ability": "none",
-						"reputationCost": 0,
-						"target": "",
-						"greater": false,
-						"attackType": "unarmed"
-					},
-					"essence3": 
-					{
-						"ability": "none",
-						"reputationCost": 0,
-						"target": "",
-						"greater": false,
-						"attackType": "unarmed"
-					},
-					"essence4": 
-					{
-						"ability": "none",
-						"reputationCost": 0,
-						"target": "",
-						"greater": false,
-						"attackType": "unarmed"
-					}
-				},
-				"charms":
-				{
-					"charmNumber": 0,
-					"charm1": 
-					{
-						"ability": "none",
-						"reputationCost": 0,
-						"target": "",
-						"greater": false,
-						"spellLevel": 0
-					},
-					"charm2": 
-					{
-						"ability": "none",
-						"reputationCost": 0,
-						"target": "",
-						"greater": false,
-						"spellLevel": 0
-					},
-					"charm3": 
-					{
-						"ability": "none",
-						"reputationCost": 0,
-						"target": "",
-						"greater": false,
-						"spellLevel": 0
-					},
-					"charm4": 
-					{
-						"ability": "none",
-						"reputationCost": 0,
-						"target": "",
-						"greater": false,
-						"spellLevel": 0
-					}
-				}
-			},
-			"grants-spellcasting":
-			{
-				"castingLevel": false
-			}
-		},
-		"ancestry":
-		{
-			"templates": ["description", "grants-spellcasting"],
-			"isTalent": false,
-			"stats": {
-				"stat1":
-				{
-					"ability": "none",
-					"value": 0,
-					"isChoice": false,
-					"choices": []
-				},
-				"stat2":
-				{
-					"ability": "none",
-					"value": 0,
-					"isChoice": false,
-					"choices": []
-				},
-				"stat3":
-				{
-					"ability": "none",
-					"value": 0,
-					"isChoice": false,
-					"choices": []
-				},
-				"stat4":
-				{
-					"ability": "none",
-					"value": 0,
-					"isChoice": false,
-					"choices": []
-				}
-			},
-			"locomotion": "bipedal",
-			"speed": 30,
-			"speed2": 
-			{
-				"type": "none",
-				"value": 0
-			},
-			"size": "medium",
-			"type": "Folk",
-			"footprint": 
-			{
-				"width": 1, 
-				"height": 1
-			},
-			"reach": 1,
-			"feat": "none"
-		},
-		"armour":
-		{
-			"templates": ["object", "description", "enchanted", "grants-spellcasting"],
-			"armourCoverage": "Partial",
-			"damageReduction": 0,
-			"armourCheckPenalty": 0,
-			"defensePenalty": 0,
-			"disguisePenalty": 0,
-			"speedPenalty": 0,
-			"equipped": false,
-			"resistances": [],
-			"fittings": false,
-			"upgrades": 
-			{
-				"fittings": "none",
-				"craftsmanship": "none",
-				"materials": "none",
-				"beast": false,
-				"blessed": false,
-				"ceremonial": false,
-				"cushioned": false,
-				"discreet": false,
-				"fireproofed": false,
-				"fitted": false,
-				"insulated": false,
-				"lightweight": false,
-				"reinforced": false,
-				"vented": false,
-				"warm": false
-			}
-		},
-		"attack":
-		{
-			"attackType": "naturalAttack",
-			"naturalAttack": "Bite",
-			"damageType": "lethal",
-			"attackGrade": "I",
-			"quantity": 1,
-			"threatRange": 20,
-			"damage":
-			{
-				"value": "1d4",
-				"diceSize": 4,
-				"diceNum": 1
-			},
-			"naturalUpgrades": 
-			{
-				"aligned": "",
-				"armourPiercing": 0,
-				"bleed": false,
-				"diseased": "",
-				"finesse": false,
-				"grab": false,
-				"keen": 0,
-				"reach": 0,
-				"trip": false,
-				"venomous": ""
-			},
-			"attackDescription": "Damage",
-			"saveUpgrade": "none",
-			"area":
-			{
-				"value": 0,
-				"shape": ""
-			},
-			"supernaturalAttack": 
-			{
-				"value": false,
-				"linkedAttack": ""
-			}
-		},
-		"weapon":
-		{
-			"templates": ["object", "description", "enchanted", "grants-spellcasting"],
-			"weaponProficiency": "Edged",
-			"weaponCategory": "axe",
-			"damage": "1d6",
-			"damageType": "lethal",
-			"attackType": "melee",
-			"threatRange": 20,
-			"errorRange": 1,
-			"readied": false,
-			"weaponRange": 0,
-			"weight": 0,
-			"weaponProperties": 
-			{
-				"craftsmanship": "none",
-				"materials": "none",
-				"ap": 0,
-				"aligned": false,
-				"blast": false,
-				"bleed": false,
-				"bludgeon": false,
-				"cavalry": false,
-				"cord": false,
-				"double": false,
-				"excruciating": false,
-				"finesse": false,
-				"grip": false,
-				"guard": 0,
-				"heavy": false,
-				"hook": false,
-				"hurl": false,
-				"inaccurate": false,
-				"indirect": false,
-				"keen": false,
-				"lightweight": false,
-				"load": 0,
-				"lure": false,
-				"massive": false,
-				"poisonous": false,
-				"pummeling": false,
-				"reach": 0,
-				"return": false,
-				"spread": false,
-				"spike": false,
-				"stationary": false,
-				"trip": false,
-				"unreliable": false
-			}
-		},
-		"general":
-		{
-			"templates": ["object", "description", "enchanted", "grants-spellcasting"],
-			"itemType": "good",
-			"availability": 0,
-			"speed": 
-			{
-				"value": 0,
-				"run": 0
-			},
-			"travel": 0,
-			"occLoad": 
-			{
-				"value": 0,
-				"weight": ""
-			},
-			"target": 
-			{
-				"targetType": "area",
-				"object": false,	
-				"width": 0,
-				"height": 0 
-			},
-			"spellLevel": 0,
-			"skill": "",
-			"uses": 0,
-			"incubation": 
-			{
-				"value": 1,
-				"duration": "minute"
-			},
-			"itemUpgrades":
-			{
-				"durable": false,
-				"hollow": false,
-				"masterwork": false,
-				"beast": false,
-				"biggerArea": false,
-				"complexMechanism": false,
-				"hairTrigger": false,
-				"moreDamage": false,
-				"poison": false,
-				"secondTrigger": false,
-				"unusualDesign": false,
-				"unusualMechanism": false,
-				"cocktail": false,
-				"distilled": false,
-				"gas": false,
-				"exotic": false,
-				"fastActing": false,
-				"persistent": false,
-				"concentrated": false,
-				"potent": false,
-				"virulent": false,
-				"solidMaterial": false,
-				"heavyMaterial": false,
-				"exceptionalSpecimen": false,
-				"training": false,
-				"agile": false,
-				"armored": false,
-				"enclosed": false,
-				"fast": false,
-				"hauling": false,
-				"powered": false,
-				"sailborne": false,
-				"warbuilt": false
-			}
- 		},
-		"class":
-		{
-			"templates": ["description", "grants-spellcasting"],
-			"levels": 1,
-			"vitality": 9,
-			"skillPoints": 6,
-			"classSkills": [],
-			"classType": "base",
-			"proficiencies": 
-			{
-				"value": 0,
-				"misc": 0
-			},
-			"eSlot": 
-			{
-				"hasESlot": false,
-				"firstLevel": 6,
-				"frequency": 3	
-			},
-			"baseAttack": [],
-			"initiative": [],
-			"fortitude": [],
-			"reflex": [],
-			"will": [],
-			"defense": [],
-			"lifeStyle": [],
-			"legend": [],
-			"spellPoints": [],
-			"abilities": "",
-			"classTable": ""
-		},
-		"feature":{
-			"templates": ["description"],
-			"core": false,
-			"featureType": "class",
-			"containsFlag": false,
-			"flag": "",
-			"number": 1,
-			"xpMultiplier": "none",
-			"damageTypes": 
-			{
-				"string": ""
-			},
-			"xpValue": 0,
-			"xpDifferentOnIncrease": false,
-			"xpPerGrade": 2,
-			"grades":
-			{
-				"value": "",
-				"maximum": "X",
-				"gradeArray": []
-			},
-			"flawless":
-			{
-				"isFlawless": false,
-				"skill1": "",
-				"skill2": "",
-				"classSource": "assassin"
-			}
-			
-		},
-		"feat":
-		{
-			"templates": ["description", "grants-spellcasting"],
-			"featType": "Basic Combat",
-			"flavorText": "",
-			"prerequisites": "",
-			"changeAbility": false,
-			"changeSave": false,
-			"changeSkill": false,
-			"changeSpeed": false,
-			"changeLifestyle": false,
-			"grantsNaturalAttack": false,
-			"grantsResistance": false,
-			"ability": 
-			{
-				"value": 0,
-				"ability": "none"
-			},
-			"save":
-			{
-				"value": 0,
-				"save": "none"
-			},
-			"skill":
-			{
-				"value1": 0,
-				"value2": 0,
-				"value3": 0,
-				"skill1": "none",
-				"skill2": "none",
-				"skill3": "none",
-				"skill1Threat": 20,
-				"skill2Threat": 20,
-				"skill3Threat": 20
-			},
-			"movement":
-			{
-				"movementType": "ground",
-				"value": 0
-			},
-			"lifestyle":
-			{
-				"lifestyleType": "prudence",
-				"value": 0
-			},
-			"naturalAttack":
-			{
-				"naturalAttackType": "claw",
-				"grade": "I"
-			},
-			"resistances": 
-			{
-				"value1": 0,
-				"value2": 0,
-				"resistance1": "",
-				"resistance2": ""
-			},
-			"trick-stance1": "",
-			"trick-stance2": "",
-			"containsFlag": false,
-			"flag": ""
-		},
-		"path":
-		{
-			"templates": ["description", "grants-spellcasting"],
-			"pathStep": 0,
-			"step1":
-			{
-				"damageType1": "",
-				"damageType2": "",
-				"effect1": "",
-				"value1": "",
-				"effect2": "",
-				"value2": "",
-				"effect1Scaling": false,
-				"effect2Scaling": false,
-				"spell1Reset": "per scene",
-				"spell2Reset": "per scene",
-				"target1": "",
-				"target2": "",
-				"special": "",
-				"specialTarget": ""
-			},
-			"step2":
-			{
-				"damageType1": "",
-				"damageType2": "",
-				"effect1": "",
-				"value1": "",
-				"effect2": "",
-				"value2": "",
-				"effect1Scaling": false,
-				"effect2Scaling": false,
-				"spell1Reset": "per scene",
-				"spell2Reset": "per scene",
-				"target1": "",
-				"target2": ""
-			},
-			"step3":
-			{
-				"damageType1": "",
-				"damageType2": "",
-				"effect1": "",
-				"value1": "",
-				"effect2": "",
-				"value2": "",
-				"effect1Scaling": false,
-				"effect2Scaling": false,
-				"spell1Reset": "per scene",
-				"spell2Reset": "per scene",
-				"target1": "",
-				"target2": ""
-			},
-			"step4":
-			{
-				"damageType1": "",
-				"damageType2": "",
-				"effect1": "",
-				"value1": "",
-				"effect2": "",
-				"value2": "",
-				"effect1Scaling": false,
-				"effect2Scaling": false,
-				"spell1Reset": "per scene",
-				"spell2Reset": "per scene",
-				"target1": "",
-				"target2": ""
-			},
-			"step5":
-			{
-				"damageType1": "",
-				"damageType2": "",
-				"effect1": "",
-				"value1": "",
-				"effect2": "",
-				"value2": "",
-				"effect1Scaling": false,
-				"effect2Scaling": false,
-				"spell1Reset": "per scene",
-				"spell2Reset": "per scene",
-				"target1": "",
-				"target2": ""
-			}
-		},
-		"spell":
-		{
-			"templates": ["description", "grants-spellcasting"],
-			"school:": "none",
-			"discipline": "none",
-			"level": 0,
-			"castingTime": "half",
-			"distance":
-			{
-				"value": "personal",
-				"rangedAttack": false
-			},
-			"duration": 
-			{
-				"value": "instant",
-				"number": 0,
-				"increment": "round",
-				"isNotInstantOrPermanent": true,
-				"perCastingLevel": false,
-				"enduring": false,
-				"dismissable": false
-			},
-			"save": 
-			{
-				"saveType": "none",
-				"saveEffect": "partial",
-				"saveKeywords": []
-			},
-			"save2": 
-			{
-				"saveType": "none",
-				"saveEffect": "partial",
-				"saveKeywords": []
-			},
-			"area": 
-			{
-				"value": 0,
-				"shape": "none",
-				"penetrating": false,
-				"perLevel": false,
-				"customShape": false
-			},
-			"preperationCost": 0,
-			"secondaryTerms": 
-			{
-				"value": []
-			},
-			"damage":
-			{
-				"flatOrRandom": "flat",
-				"scaling": "none",
-				"diceSize": "d6",
-				"diceNum": "1",
-				"maxDamage": "12",
-				"flatDamage": 0,
-				"damageType": "fire",
-				"dealsDamage": false,
-				"bonusDamage": 0,
-				"ap": 0,
-				"secondaryDamage": "none",
-				"secondaryDamagetype": "stress"
-			},
-			"arcaneMight": false,
-			"pinned": false
-		},
-		"specialty":
-		{
-			"templates": ["description", "grants-spellcasting"],
-			"feat": "none",
-			"requirement": "none"
-		},
-		"stance":
-		{
-			"templates": ["description", "grants-spellcasting"],
-			"inStance": false,
-			"effect1": 
-			{
-				"effect": "",
-				"bonus": 0,
-				"bonusTarget": ""
-			},
-			"effect2": 
-			{
-				"effect": "",
-				"bonus": 0,
-				"bonusTarget": ""
-			}
-		},
-		"trick":
-		{
-			"templates": ["description", "grants-spellcasting"],
-			"effect": 
-			{
-				"rollModifier": 0,
-				"rollModifierType": "untyped",
-				"damageModifier": 0,
-				"damageModifierType": "untyped",
-				"damageModifierStyle": "modifier",
-				"errorRangeModifier": 0,
-				"weaponQuality": "",
-				"healing": 0,
-				"minimumDamage": 0,
-				"additionalEffect": "",
-				"secondaryCheck": "none",
-				"condition": "none",
-				"conditionTarget": ""
-			},
-			"button": 
-			{
-				"requiresButton": false,
-				"buttonText": ""
-			},
-			"failurePenalty": "",
-			"trickSource": "",
-			"requiresTarget": false,
-			"uses": 
-			{
-				"value": 0,
-				"maxUses": 1,
-				"counter": "none",
-				"timeFrame": "unlimited",
-				"featType": "none"
-			},
-			"trickType": {
-				"keyword": "Basic",
-				"keyword2": "",
-				"trickTarget":"attackTrick",
-				"twoKeywords": false
-			},
-			"requiresForte": false
-		},
-		"store":
-		{
-			"templates": ["description"],
-			"storeArray": [],
-			"shoppingCart": [],
-			"freeBuy": true,
-			"silverOnHand": 0,
-			"canBeHaggled": false,
-			"haggleSkill": "X",
-			"hasBeenHaggled": false,
-			"pricePercent": 1,
-			"merchantLevel": 1,
-			"AD": {
-				"value": 0,
-				"starting": 0
-			},
-			"playerNumber": 4,
-			"sceneType": "standard"
-		}
-	}
+  "Actor": {
+    "types": ["character", "npc"],
+    "templates": {
+      "attributes": {
+        "type": "Folk",
+        "abilityScores": {
+          "strength": {
+            "value": 8,
+            "adjustment": 0
+          },
+          "dexterity": {
+            "value": 8,
+            "adjustment": 0
+          },
+          "constitution": {
+            "value": 8,
+            "adjustment": 0
+          },
+          "intelligence": {
+            "value": 8,
+            "adjustment": 0
+          },
+          "wisdom": {
+            "value": 8,
+            "adjustment": 0
+          },
+          "charisma": {
+            "value": 8,
+            "adjustment": 0
+          }
+        },
+        "movement": {
+          "ground": {
+            "value": 0,
+            "run": 0,
+            "travel": 0,
+            "speedAdjustment": 0
+          },
+          "burrow": {
+            "value": 0,
+            "run": 0,
+            "travel": 0,
+            "speedAdjustment": 0
+          },
+          "fly": {
+            "value": 0,
+            "run": 0,
+            "travel": 0,
+            "speedAdjustment": 0
+          },
+          "swim": {
+            "value": 0,
+            "run": 0,
+            "travel": 0,
+            "speedAdjustment": 0
+          }
+        },
+        "hands": 2,
+        "size": "medium",
+        "footprint": {
+          "width": 1,
+          "height": 1
+        },
+        "reach": 1,
+        "attackTypes": {
+          "unarmed": {
+            "value": 0,
+            "ability": {
+              "name": "strength",
+              "value": 0
+            },
+            "misc": 0,
+            "magic": 0,
+            "damageType": "subdual"
+          },
+          "melee": {
+            "value": 0,
+            "ability": {
+              "name": "strength",
+              "value": 0
+            },
+            "misc": 0,
+            "magic": 0
+          },
+          "ranged": {
+            "value": 0,
+            "ability": {
+              "name": "dexterity",
+              "value": 0
+            },
+            "misc": 0,
+            "magic": 0
+          }
+        },
+        "baseAttack": 0,
+        "defense": {
+          "value": 10,
+          "class": 0,
+          "ability": {
+            "name": "dexterity",
+            "value": 0
+          },
+          "guard": 0,
+          "misc": 0
+        },
+        "flatFootedDefense": 10,
+        "initiative": {
+          "value": 0,
+          "class": 0,
+          "ability": {
+            "name": "dexterity",
+            "value": 0
+          },
+          "featBonus": 0
+        },
+        "dr": 0,
+        "saves": {
+          "fortitude": {
+            "value": 0,
+            "class": 0,
+            "ability": {
+              "name": "constitution",
+              "value": 0
+            },
+            "misc": 0
+          },
+          "reflex": {
+            "value": 0,
+            "class": 0,
+            "ability": {
+              "name": "dexterity",
+              "value": 0
+            },
+            "misc": 0
+          },
+          "will": {
+            "value": 0,
+            "class": 0,
+            "ability": {
+              "name": "wisdom",
+              "value": 0
+            },
+            "misc": 0
+          }
+        },
+        "groundSpeed": {
+          "baseSpeed": 30,
+          "speedAdjustment": 0
+        },
+        "interests": {
+          "studies": {
+            "custom": ""
+          },
+          "languages": {
+            "custom": ""
+          },
+          "alignment": {
+            "custom": ""
+          }
+        },
+        "spellDefense": 0
+      },
+      "vitality": {
+        "vitality": {
+          "value": 10,
+          "max": 10
+        }
+      },
+      "wounds": {
+        "wounds": {
+          "value": 10,
+          "max": 10
+        }
+      },
+      "non-lethal": {
+        "stress": 0,
+        "subdual": 0,
+        "fatigue": {
+          "fatigue1": false,
+          "fatigue2": false,
+          "fatigue3": false,
+          "fatigue4": false
+        },
+        "shaken": {
+          "shaken1": false,
+          "shaken2": false,
+          "shaken3": false,
+          "shaken4": false
+        },
+        "tainted": {
+          "tainted1": false,
+          "tainted2": false,
+          "tainted3": false,
+          "tainted4": false
+        }
+      },
+      "spell-casting": {
+        "castingLevel": 0,
+        "isSpellcaster": false,
+        "isArcane": false,
+        "isDivine": false,
+        "spellSave": 0,
+        "castingFeats": 0,
+        "arcane": {
+          "spellPoints": 0,
+          "spellsKnown": {
+            "value": 0,
+            "misc": 0
+          },
+          "spellcasting": {
+            "value": 0,
+            "ability": "intelligence",
+            "ranks": 0,
+            "misc": 0,
+            "threat": 20,
+            "classSkill": true
+          }
+        },
+        "divine": {
+          "alignment": "",
+          "path1": {
+            "name": "",
+            "steps": 0
+          },
+          "path2": {
+            "name": "",
+            "steps": 0
+          },
+          "path3": {
+            "name": "",
+            "steps": 0
+          },
+          "path4": {
+            "name": "",
+            "steps": 0
+          }
+        }
+      },
+      "sneakAttack": 0,
+      "prizes": {
+        "contacts": [],
+        "favours": [],
+        "holdings": []
+      },
+      "gear": {
+        "mount": []
+      },
+      "combatActions": {
+        "combatActions": {
+          "anticipate": 0,
+          "bullRush": 0,
+          "disarm": 0,
+          "distract": 0,
+          "feint": 0,
+          "grapple": 0,
+          "pummel": 0,
+          "taunt": 0,
+          "trip": 0,
+          "threaten": 0,
+          "tire": 0
+        }
+      },
+      "conditions": {
+        "conditions": {
+          "baffled": 0,
+          "bleeding": 0,
+          "blinded": false,
+          "deafened": false,
+          "enraged": false,
+          "entangled": false,
+          "fatigued": 0,
+          "fixated": false,
+          "flanked": false,
+          "flat-footed": false,
+          "frightened": false,
+          "held": false,
+          "helpless": false,
+          "hidden": false,
+          "incorporeal": false,
+          "invisible": false,
+          "paralyzed": false,
+          "pinned": false,
+          "prone": false,
+          "shaken": 0,
+          "sickened": false,
+          "slowed": false,
+          "sprawled": false,
+          "stunned": false,
+          "dead": false,
+          "soulDrain": 0,
+          "tainted": 0
+        },
+        "conditionBonuses": {
+          "attackMelee": 0,
+          "attackRanged": 0,
+          "strength": 0,
+          "dexterity": 0,
+          "constitution": 0,
+          "intelligence": 0,
+          "wisdon": 0,
+          "charisma": 0,
+          "strengthSkills": 0,
+          "dexteritySkills": 0,
+          "constitutionSkills": 0,
+          "intelligenceSkills": 0,
+          "wisdonSkills": 0,
+          "charismaSkills": 0,
+          "allSkills": 0,
+          "defense": 0,
+          "fortitude": 0,
+          "reflex": 0,
+          "will": 0,
+          "speed": 0,
+          "speedMultiplier": 0,
+          "damage": 0
+        }
+      }
+    },
+    "character": {
+      "templates": [
+        "vitality",
+        "wounds",
+        "attributes",
+        "non-lethal",
+        "spell-casting",
+        "prizes",
+        "gear",
+        "combatActions",
+        "conditions"
+      ],
+      "experience": {
+        "current": 0,
+        "nextLevel": 1000
+      },
+      "ancestry": "Human",
+      "careerLevel": { "value": 1 },
+      "actionDice": 3,
+      "coin": {
+        "inHand": 0,
+        "stake": 0
+      },
+      "lifeStyle": {
+        "value": 0,
+        "panache": 0,
+        "prudence:": 0,
+        "appearanceMisc": 0
+      },
+      "reputationAndRenown": {
+        "reputation": 0,
+        "renownTotal": 0,
+        "heroicRenown": 0,
+        "heroicTitle": "",
+        "militaryRenown": 0,
+        "militaryTitle": "",
+        "nobleRenown": 0,
+        "nobleTitle": ""
+      },
+      "actionDiceSize": 4,
+      "startingActionDice": 3,
+      "unarmedDamage": "1d3",
+      "carryingCapacity": {
+        "light": 50,
+        "heavy": 150,
+        "overloaded": 151
+      },
+      "proficency": {
+        "unarmed": {
+          "proficient": false,
+          "forte": false
+        },
+        "blunt": {
+          "proficient": false,
+          "forte": false
+        },
+        "edged": {
+          "proficient": false,
+          "forte": false
+        },
+        "hurled": {
+          "proficient": false,
+          "forte": false
+        },
+        "bows": {
+          "proficient": false,
+          "forte": false
+        },
+        "blackPowder": {
+          "proficient": false,
+          "forte": false
+        },
+        "siege": {
+          "proficient": false,
+          "forte": false
+        }
+      },
+      "skills": {
+        "acrobatics": {
+          "value": 0,
+          "ability": "dexterity",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "athletics": {
+          "value": 0,
+          "ability": "strength",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "blend": {
+          "value": 0,
+          "ability": "charisma",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "bluff": {
+          "value": 0,
+          "ability": "charisma",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "crafting": {
+          "value": 0,
+          "ability": "intelligence",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "disguise": {
+          "value": 0,
+          "ability": "charisma",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "haggle": {
+          "value": 0,
+          "ability": "wisdom",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "impress": {
+          "value": 0,
+          "ability": "charisma",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "intimidate": {
+          "value": 0,
+          "ability": "wisdom",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "investigate": {
+          "value": 0,
+          "ability": "intelligence",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "medicine": {
+          "value": 0,
+          "ability": "intelligence",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "notice": {
+          "value": 0,
+          "ability": "wisdom",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "prestidigitation": {
+          "value": 0,
+          "ability": "dexterity",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "resolve": {
+          "value": 0,
+          "ability": "constitution",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "ride": {
+          "value": 0,
+          "ability": "dexterity",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "search": {
+          "value": 0,
+          "ability": "intelligence",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "senseMotive": {
+          "value": 0,
+          "ability": "wisdom",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "sneak": {
+          "value": 0,
+          "ability": "dexterity",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "survival": {
+          "value": 0,
+          "ability": "wisdom",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        },
+        "tactics": {
+          "value": 0,
+          "ability": "intelligence",
+          "ranks": 0,
+          "misc": 0,
+          "threat": 20,
+          "classSkill": false,
+          "originSkill": false
+        }
+      },
+      "maxSkillRanks": 4,
+      "totalSkillRanks": 0,
+      "appearance": 0,
+      "knowledge": {
+        "value": 0,
+        "studies": 0,
+        "misc": 0,
+        "situational": 0
+      },
+      "martialArts": false,
+      "mastersArt": false,
+      "subplots": {
+        "plot1": {
+          "value": "",
+          "completed": false
+        },
+        "plot2": {
+          "value": "",
+          "completed": false
+        },
+        "plot3": {
+          "value": "",
+          "completed": false
+        },
+        "plot4": {
+          "value": "",
+          "completed": false
+        },
+        "plot5": {
+          "value": "",
+          "completed": false
+        },
+        "plot6": {
+          "value": "",
+          "completed": false
+        }
+      }
+    },
+    "npc": {
+      "templates": [
+        "attributes",
+        "vitality",
+        "wounds",
+        "gear",
+        "conditions",
+        "non-lethal"
+      ],
+      "isSpecial": false,
+      "type": {
+        "value": []
+      },
+      "threat": 1,
+      "defense": {
+        "guard": 0,
+        "penalty": 0,
+        "defenseAttribute": "dexterity",
+        "attributePositive": true,
+        "attributeNormalized": 0
+      },
+      "damageTaken": 0,
+      "failedSaves": 0,
+      "primaryMovement": "walker",
+      "traits": {
+        "initiative": {
+          "grade": "I",
+          "value": 0
+        },
+        "attack": {
+          "grade": "I",
+          "value": 0
+        },
+        "defense": {
+          "grade": "I",
+          "value": 0
+        },
+        "resilience": {
+          "grade": "I",
+          "value": 0
+        },
+        "health": {
+          "grade": "I",
+          "value": 0
+        },
+        "competence": {
+          "grade": "-",
+          "value": 0
+        }
+      },
+      "spellcasting": {
+        "grade": "",
+        "value": 0
+      },
+      "signatureSkills": [],
+      "attacks": [],
+      "npcQualities": [],
+      "equipment": {
+        "value": [],
+        "xpTotal": 0
+      },
+      "treasureRollMod": 0,
+      "treasure": {
+        "any": {
+          "shorthand": "A",
+          "value": 0
+        },
+        "coin": {
+          "shorthand": "C",
+          "value": 0
+        },
+        "gear": {
+          "shorthand": "G",
+          "value": 0
+        },
+        "loot": {
+          "shorthand": "L",
+          "value": 0
+        },
+        "magic": {
+          "shorthand": "M",
+          "value": 0
+        },
+        "trophies": {
+          "shorthand": "T",
+          "value": 0
+        }
+      },
+      "details": {
+        "age": "",
+        "height": "",
+        "wight": "",
+        "hair": "",
+        "eyes": "",
+        "pronouns": "",
+        "appearance": "",
+        "traits": "",
+        "background": "",
+        "notes": ""
+      },
+      "xp": 0,
+      "playerControlled": false
+    }
+  },
+  "Item": {
+    "types": [
+      "ancestry",
+      "armour",
+      "attack",
+      "class",
+      "feat",
+      "feature",
+      "general",
+      "path",
+      "specialty",
+      "spell",
+      "stance",
+      "trick",
+      "weapon",
+      "store"
+    ],
+    "templates": {
+      "object": {
+        "complexity": {
+          "time": "D",
+          "number": 0
+        },
+        "construction": {
+          "hardness": "Soft",
+          "saveNumbers": 1
+        },
+        "size": {
+          "size": "S",
+          "hands": "1h"
+        },
+        "cost": 0,
+        "era": "primitive",
+        "weight": 0,
+        "quantity": 1,
+        "currency": "silver",
+        "type": "none"
+      },
+      "description": {
+        "description": {
+          "value": "",
+          "chat": "",
+          "unidentified": ""
+        },
+        "source": ""
+      },
+      "enchanted": {
+        "isMagic": false,
+        "totalReputation": 0,
+        "itemLevel": 1,
+        "essences": {
+          "essenceNumber": 0,
+          "essence1": {
+            "ability": "none",
+            "reputationCost": 0,
+            "target": "",
+            "greater": false,
+            "attackType": "unarmed"
+          },
+          "essence2": {
+            "ability": "none",
+            "reputationCost": 0,
+            "target": "",
+            "greater": false,
+            "attackType": "unarmed"
+          },
+          "essence3": {
+            "ability": "none",
+            "reputationCost": 0,
+            "target": "",
+            "greater": false,
+            "attackType": "unarmed"
+          },
+          "essence4": {
+            "ability": "none",
+            "reputationCost": 0,
+            "target": "",
+            "greater": false,
+            "attackType": "unarmed"
+          }
+        },
+        "charms": {
+          "charmNumber": 0,
+          "charm1": {
+            "ability": "none",
+            "reputationCost": 0,
+            "target": "",
+            "greater": false,
+            "spellLevel": 0
+          },
+          "charm2": {
+            "ability": "none",
+            "reputationCost": 0,
+            "target": "",
+            "greater": false,
+            "spellLevel": 0
+          },
+          "charm3": {
+            "ability": "none",
+            "reputationCost": 0,
+            "target": "",
+            "greater": false,
+            "spellLevel": 0
+          },
+          "charm4": {
+            "ability": "none",
+            "reputationCost": 0,
+            "target": "",
+            "greater": false,
+            "spellLevel": 0
+          }
+        }
+      },
+      "grants-spellcasting": {
+        "castingLevel": false
+      }
+    },
+    "ancestry": {
+      "templates": ["description", "grants-spellcasting"],
+      "isTalent": false,
+      "stats": {
+        "stat1": {
+          "ability": "none",
+          "value": 0,
+          "isChoice": false,
+          "choices": []
+        },
+        "stat2": {
+          "ability": "none",
+          "value": 0,
+          "isChoice": false,
+          "choices": []
+        },
+        "stat3": {
+          "ability": "none",
+          "value": 0,
+          "isChoice": false,
+          "choices": []
+        },
+        "stat4": {
+          "ability": "none",
+          "value": 0,
+          "isChoice": false,
+          "choices": []
+        },
+        "stat5": {
+          "ability": "none",
+          "value": 0,
+          "isChoice": false,
+          "choices": []
+        },
+        "stat6": {
+          "ability": "none",
+          "value": 0,
+          "isChoice": false,
+          "choices": []
+        }
+      },
+      "locomotion": "bipedal",
+      "speed": 30,
+      "speed2": {
+        "type": "none",
+        "value": 0
+      },
+      "size": "medium",
+      "type": "Folk",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      },
+      "reach": 1,
+      "feat": "none"
+    },
+    "armour": {
+      "templates": [
+        "object",
+        "description",
+        "enchanted",
+        "grants-spellcasting"
+      ],
+      "armourCoverage": "Partial",
+      "damageReduction": 0,
+      "armourCheckPenalty": 0,
+      "defensePenalty": 0,
+      "disguisePenalty": 0,
+      "speedPenalty": 0,
+      "equipped": false,
+      "resistances": [],
+      "fittings": false,
+      "upgrades": {
+        "fittings": "none",
+        "craftsmanship": "none",
+        "materials": "none",
+        "beast": false,
+        "blessed": false,
+        "ceremonial": false,
+        "cushioned": false,
+        "discreet": false,
+        "fireproofed": false,
+        "fitted": false,
+        "insulated": false,
+        "lightweight": false,
+        "reinforced": false,
+        "vented": false,
+        "warm": false
+      }
+    },
+    "attack": {
+      "attackType": "naturalAttack",
+      "naturalAttack": "Bite",
+      "damageType": "lethal",
+      "attackGrade": "I",
+      "quantity": 1,
+      "threatRange": 20,
+      "damage": {
+        "value": "1d4",
+        "diceSize": 4,
+        "diceNum": 1
+      },
+      "naturalUpgrades": {
+        "aligned": "",
+        "armourPiercing": 0,
+        "bleed": false,
+        "diseased": "",
+        "finesse": false,
+        "grab": false,
+        "keen": 0,
+        "reach": 0,
+        "trip": false,
+        "venomous": ""
+      },
+      "attackDescription": "Damage",
+      "saveUpgrade": "none",
+      "area": {
+        "value": 0,
+        "shape": ""
+      },
+      "supernaturalAttack": {
+        "value": false,
+        "linkedAttack": ""
+      }
+    },
+    "weapon": {
+      "templates": [
+        "object",
+        "description",
+        "enchanted",
+        "grants-spellcasting"
+      ],
+      "weaponProficiency": "Edged",
+      "weaponCategory": "axe",
+      "damage": "1d6",
+      "damageType": "lethal",
+      "attackType": "melee",
+      "threatRange": 20,
+      "errorRange": 1,
+      "readied": false,
+      "weaponRange": 0,
+      "weight": 0,
+      "weaponProperties": {
+        "craftsmanship": "none",
+        "materials": "none",
+        "ap": 0,
+        "aligned": false,
+        "blast": false,
+        "bleed": false,
+        "bludgeon": false,
+        "cavalry": false,
+        "cord": false,
+        "double": false,
+        "excruciating": false,
+        "finesse": false,
+        "grip": false,
+        "guard": 0,
+        "heavy": false,
+        "hook": false,
+        "hurl": false,
+        "inaccurate": false,
+        "indirect": false,
+        "keen": false,
+        "lightweight": false,
+        "load": 0,
+        "lure": false,
+        "massive": false,
+        "poisonous": false,
+        "pummeling": false,
+        "reach": 0,
+        "return": false,
+        "spread": false,
+        "spike": false,
+        "stationary": false,
+        "trip": false,
+        "unreliable": false
+      }
+    },
+    "general": {
+      "templates": [
+        "object",
+        "description",
+        "enchanted",
+        "grants-spellcasting"
+      ],
+      "itemType": "good",
+      "availability": 0,
+      "speed": {
+        "value": 0,
+        "run": 0
+      },
+      "travel": 0,
+      "occLoad": {
+        "value": 0,
+        "weight": ""
+      },
+      "target": {
+        "targetType": "area",
+        "object": false,
+        "width": 0,
+        "height": 0
+      },
+      "spellLevel": 0,
+      "skill": "",
+      "uses": 0,
+      "incubation": {
+        "value": 1,
+        "duration": "minute"
+      },
+      "itemUpgrades": {
+        "durable": false,
+        "hollow": false,
+        "masterwork": false,
+        "beast": false,
+        "biggerArea": false,
+        "complexMechanism": false,
+        "hairTrigger": false,
+        "moreDamage": false,
+        "poison": false,
+        "secondTrigger": false,
+        "unusualDesign": false,
+        "unusualMechanism": false,
+        "cocktail": false,
+        "distilled": false,
+        "gas": false,
+        "exotic": false,
+        "fastActing": false,
+        "persistent": false,
+        "concentrated": false,
+        "potent": false,
+        "virulent": false,
+        "solidMaterial": false,
+        "heavyMaterial": false,
+        "exceptionalSpecimen": false,
+        "training": false,
+        "agile": false,
+        "armored": false,
+        "enclosed": false,
+        "fast": false,
+        "hauling": false,
+        "powered": false,
+        "sailborne": false,
+        "warbuilt": false
+      }
+    },
+    "class": {
+      "templates": ["description", "grants-spellcasting"],
+      "levels": 1,
+      "vitality": 9,
+      "skillPoints": 6,
+      "classSkills": [],
+      "classType": "base",
+      "proficiencies": {
+        "value": 0,
+        "misc": 0
+      },
+      "eSlot": {
+        "hasESlot": false,
+        "firstLevel": 6,
+        "frequency": 3
+      },
+      "baseAttack": [],
+      "initiative": [],
+      "fortitude": [],
+      "reflex": [],
+      "will": [],
+      "defense": [],
+      "lifeStyle": [],
+      "legend": [],
+      "spellPoints": [],
+      "abilities": "",
+      "classTable": ""
+    },
+    "feature": {
+      "templates": ["description"],
+      "core": false,
+      "featureType": "class",
+      "containsFlag": false,
+      "flag": "",
+      "number": 1,
+      "xpMultiplier": "none",
+      "damageTypes": {
+        "string": ""
+      },
+      "xpValue": 0,
+      "xpDifferentOnIncrease": false,
+      "xpPerGrade": 2,
+      "grades": {
+        "value": "",
+        "maximum": "X",
+        "gradeArray": []
+      },
+      "flawless": {
+        "isFlawless": false,
+        "skill1": "",
+        "skill2": "",
+        "classSource": "assassin"
+      }
+    },
+    "feat": {
+      "templates": ["description", "grants-spellcasting"],
+      "featType": "Basic Combat",
+      "flavorText": "",
+      "prerequisites": "",
+      "changeAbility": false,
+      "changeSave": false,
+      "changeSkill": false,
+      "changeSpeed": false,
+      "changeLifestyle": false,
+      "grantsNaturalAttack": false,
+      "grantsResistance": false,
+      "ability": {
+        "value": 0,
+        "ability": "none"
+      },
+      "save": {
+        "value": 0,
+        "save": "none"
+      },
+      "skill": {
+        "value1": 0,
+        "value2": 0,
+        "value3": 0,
+        "skill1": "none",
+        "skill2": "none",
+        "skill3": "none",
+        "skill1Threat": 20,
+        "skill2Threat": 20,
+        "skill3Threat": 20
+      },
+      "movement": {
+        "movementType": "ground",
+        "value": 0
+      },
+      "lifestyle": {
+        "lifestyleType": "prudence",
+        "value": 0
+      },
+      "naturalAttack": {
+        "naturalAttackType": "claw",
+        "grade": "I"
+      },
+      "resistances": {
+        "value1": 0,
+        "value2": 0,
+        "resistance1": "",
+        "resistance2": ""
+      },
+      "trick-stance1": "",
+      "trick-stance2": "",
+      "containsFlag": false,
+      "flag": ""
+    },
+    "path": {
+      "templates": ["description", "grants-spellcasting"],
+      "pathStep": 0,
+      "step1": {
+        "damageType1": "",
+        "damageType2": "",
+        "effect1": "",
+        "value1": "",
+        "effect2": "",
+        "value2": "",
+        "effect1Scaling": false,
+        "effect2Scaling": false,
+        "spell1Reset": "per scene",
+        "spell2Reset": "per scene",
+        "target1": "",
+        "target2": "",
+        "special": "",
+        "specialTarget": ""
+      },
+      "step2": {
+        "damageType1": "",
+        "damageType2": "",
+        "effect1": "",
+        "value1": "",
+        "effect2": "",
+        "value2": "",
+        "effect1Scaling": false,
+        "effect2Scaling": false,
+        "spell1Reset": "per scene",
+        "spell2Reset": "per scene",
+        "target1": "",
+        "target2": ""
+      },
+      "step3": {
+        "damageType1": "",
+        "damageType2": "",
+        "effect1": "",
+        "value1": "",
+        "effect2": "",
+        "value2": "",
+        "effect1Scaling": false,
+        "effect2Scaling": false,
+        "spell1Reset": "per scene",
+        "spell2Reset": "per scene",
+        "target1": "",
+        "target2": ""
+      },
+      "step4": {
+        "damageType1": "",
+        "damageType2": "",
+        "effect1": "",
+        "value1": "",
+        "effect2": "",
+        "value2": "",
+        "effect1Scaling": false,
+        "effect2Scaling": false,
+        "spell1Reset": "per scene",
+        "spell2Reset": "per scene",
+        "target1": "",
+        "target2": ""
+      },
+      "step5": {
+        "damageType1": "",
+        "damageType2": "",
+        "effect1": "",
+        "value1": "",
+        "effect2": "",
+        "value2": "",
+        "effect1Scaling": false,
+        "effect2Scaling": false,
+        "spell1Reset": "per scene",
+        "spell2Reset": "per scene",
+        "target1": "",
+        "target2": ""
+      }
+    },
+    "spell": {
+      "templates": ["description", "grants-spellcasting"],
+      "school:": "none",
+      "discipline": "none",
+      "level": 0,
+      "castingTime": "half",
+      "distance": {
+        "value": "personal",
+        "rangedAttack": false
+      },
+      "duration": {
+        "value": "instant",
+        "number": 0,
+        "increment": "round",
+        "isNotInstantOrPermanent": true,
+        "perCastingLevel": false,
+        "enduring": false,
+        "dismissable": false
+      },
+      "save": {
+        "saveType": "none",
+        "saveEffect": "partial",
+        "saveKeywords": []
+      },
+      "save2": {
+        "saveType": "none",
+        "saveEffect": "partial",
+        "saveKeywords": []
+      },
+      "area": {
+        "value": 0,
+        "shape": "none",
+        "penetrating": false,
+        "perLevel": false,
+        "customShape": false
+      },
+      "preperationCost": 0,
+      "secondaryTerms": {
+        "value": []
+      },
+      "damage": {
+        "flatOrRandom": "flat",
+        "scaling": "none",
+        "diceSize": "d6",
+        "diceNum": "1",
+        "maxDamage": "12",
+        "flatDamage": 0,
+        "damageType": "fire",
+        "dealsDamage": false,
+        "bonusDamage": 0,
+        "ap": 0,
+        "secondaryDamage": "none",
+        "secondaryDamagetype": "stress"
+      },
+      "arcaneMight": false,
+      "pinned": false
+    },
+    "specialty": {
+      "templates": ["description", "grants-spellcasting"],
+      "feat": "none",
+      "requirement": "none"
+    },
+    "stance": {
+      "templates": ["description", "grants-spellcasting"],
+      "inStance": false,
+      "effect1": {
+        "effect": "",
+        "bonus": 0,
+        "bonusTarget": ""
+      },
+      "effect2": {
+        "effect": "",
+        "bonus": 0,
+        "bonusTarget": ""
+      }
+    },
+    "trick": {
+      "templates": ["description", "grants-spellcasting"],
+      "effect": {
+        "rollModifier": 0,
+        "rollModifierType": "untyped",
+        "damageModifier": 0,
+        "damageModifierType": "untyped",
+        "damageModifierStyle": "modifier",
+        "errorRangeModifier": 0,
+        "weaponQuality": "",
+        "healing": 0,
+        "minimumDamage": 0,
+        "additionalEffect": "",
+        "secondaryCheck": "none",
+        "condition": "none",
+        "conditionTarget": ""
+      },
+      "button": {
+        "requiresButton": false,
+        "buttonText": ""
+      },
+      "failurePenalty": "",
+      "trickSource": "",
+      "requiresTarget": false,
+      "uses": {
+        "value": 0,
+        "maxUses": 1,
+        "counter": "none",
+        "timeFrame": "unlimited",
+        "featType": "none"
+      },
+      "trickType": {
+        "keyword": "Basic",
+        "keyword2": "",
+        "trickTarget": "attackTrick",
+        "twoKeywords": false
+      },
+      "requiresForte": false
+    },
+    "store": {
+      "templates": ["description"],
+      "storeArray": [],
+      "shoppingCart": [],
+      "freeBuy": true,
+      "silverOnHand": 0,
+      "canBeHaggled": false,
+      "haggleSkill": "X",
+      "hasBeenHaggled": false,
+      "pricePercent": 1,
+      "merchantLevel": 1,
+      "AD": {
+        "value": 0,
+        "starting": 0
+      },
+      "playerNumber": 4,
+      "sceneType": "standard"
+    }
+  }
 }
